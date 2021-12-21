@@ -1,0 +1,37 @@
+{
+  "id": "csv-source-adapter-1",
+  "diffusion": {
+    "url": "ws://localhost:8080",
+    "principal": "admin",
+    "password": "password",
+    "reconnectIntervalMs": 5000
+  },
+  "services": [
+    {
+      "serviceName": "weatherFilePollingSource",
+      "serviceType": "POLLING_JSON_SOURCE",
+      "description": "Polls data from 'weather.csv' and publishes to server",
+      "config": {
+        "framework": {
+          "pollIntervalMs": 2000,
+          "pollTimeoutMs": 4000
+        },
+        "application": {
+          "fileName": "./weather.csv",
+          "diffusionTopicName": "polling/weather"
+        }
+      }
+    },
+    {
+      "serviceName": "weatherFileStreamingSource",
+      "serviceType": "STREAMING_JSON_SOURCE",
+      "description": "Streaming changes to 'weather.csv' file and publishes to server",
+      "config": {
+        "application": {
+          "fileName": "./weather.csv",
+          "diffusionTopicName": "streaming/weather"
+        }
+      }
+    }
+  ]
+}
