@@ -1,3 +1,5 @@
+This file contains documentation on the Gateway Framework. To view readme for specific example, please goto specific example's readme file.
+
 # Gateway-Framework
 
 ## Introduction
@@ -9,11 +11,11 @@ Gateway framework provides a standard approach to create pub/sub applications to
 Applications created using Gateway framework are termed as Gateway clients. These clients are usually adapters used to connect any external datasource with Diffusion server to perform pub/sub operations.
 
 #### Services
-A service is a sub process within the application that can be specific to publishing/subscribing streams of data to/from specific data source e.g: topic (in case of Kafka), or a queue(in case of MQs), or a table(in case of databases) in external data systems. It has its own lifecycle linked to the main application, which can be paused and resumed as required. An application can be comprised of multiple services. A service can be added, updated or removed from application during runtime. Different services can be of different types. Application developers can define different service types they want to support in an application.
+A service is a sub process within the application that can be specific to publishing/subscribing streams of data to/from specific data source e.g: topic (in case of Kafka), or a queue(in case of MQs), or a table(in case of databases) in external data systems. It has its own lifecycle linked to the main application, which can be paused and resumed as required. An application can be comprised of multiple services. A service can be added, updated or removed from application during runtime. Different services can be of different **service modes**. Application developers can define different service types for such modes which they want to support in an application.
 
 ##### Source service
 Source service refers to the service which can be used to publish data from external sources to Diffusion topics.  
-There are two types of source service:
+There are two modes of source service:
 <ol>
 <li>Polling source service:  Framework polls the developer provided implementation to poll for data to be published to Diffusion server.
 </li>
@@ -21,10 +23,10 @@ There are two types of source service:
 </ol>
 
 ##### Sink service 
-Sink service refers to the service which can be used to publish data to an external sink from Diffusion topics. When an update is available for a topic, this update is sent by the framework to application, which can then be published to external sink systems.
+Sink service refers to the service mode which can be used to publish data to an external sink from Diffusion topics. When an update is available for a topic, this update is sent by the framework to application, which can then be published to external sink systems.
 
 #### Endpoints
-Endpoint is a set of configuration that can be defined to be used in single service or reused across multiple service. Usually configurations like details to connect to external source can be defined as an endpoint, if this is reused across multiple services.
+Endpoint is a set of configuration that can be defined to be used in single service or reused across multiple service. Usually configurations like details to connect to external source can be defined as an endpoint, if this is tobe reused across multiple services. Multiple service can refer to the defined endpoint using its name in the configuration.
 
 #### Operations
 Operations are actions which can be performed against Gateway client or its services. These operations can be executed via the Diffusion Management console. Gateway client supports 'pause', 'resume' and 'shutdown' operations. Services support 'pause' and 'resume' operations.
@@ -61,7 +63,7 @@ The client can be started by only using bootstrap config as following:
 `java -jar -Ddiffusion.gateway.server.url=ws://localhost:8080 -Ddiffusion.gateway.principal=admin -Ddiffusion.gateway.password=password  -Dgateway.client.id=application-1 application-{version}.jar`
 
 ##### Configuration persistence
-The configuration passed to the application during startup or added or updated via Diffusion Management console, is persisted in Diffusion server. If a client is started with only bootstrap configuration, and configuration for the passed ID is available in server, it will be used to instantiate the client.
+The configuration passed to the application during startup or added or updated via Diffusion Management console, is persisted in Diffusion server. If a client is started with only bootstrap configuration, and configuration for the passed gateway client ID is available in the server, it will be used to instantiate the client.
 
 ##### Configuration schema
 The schema of the configuration as expected by the Framework can be seen [here](file://frameworkConfigSchema.json).
