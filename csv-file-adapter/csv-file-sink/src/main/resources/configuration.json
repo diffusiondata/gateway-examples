@@ -1,0 +1,24 @@
+{
+  "id": "csv-sink-adapter-1",
+  "diffusion": {
+    "url": "ws://localhost:8080",
+    "principal": "admin",
+    "password": "password",
+    "reconnectIntervalMs": 5000
+  },
+  "services": [
+    {
+      "serviceName": "csvSinkService",
+      "serviceType": "CSV_FILE_SINK",
+      "description": "Subscribes to JSON diffusion topic and writes its content to CSV file",
+      "config": {
+        "framework": {
+          "diffusionTopicSelector": "?data//"
+        },
+        "application": {
+          "filePath": "./csv-file-adapter/csv-file-sink/target/"
+        }
+      }
+    }
+  ]
+}

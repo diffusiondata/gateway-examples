@@ -27,6 +27,7 @@ import com.pushtechnology.gateway.framework.SourceHandler.SourceServicePropertie
 import com.pushtechnology.gateway.framework.StateHandler;
 import com.pushtechnology.gateway.framework.StateHandler.Status;
 import com.pushtechnology.gateway.framework.StreamingSourceHandler;
+import com.pushtechnology.gateway.framework.exceptions.ApplicationConfigurationException;
 import com.pushtechnology.gateway.framework.exceptions.GatewayApplicationException;
 import com.pushtechnology.gateway.framework.exceptions.InvalidConfigurationException;
 import com.pushtechnology.gateway.framework.exceptions.PayloadConversionException;
@@ -68,11 +69,7 @@ final class CsvStreamingSourceHandler implements StreamingSourceHandler {
     }
 
     @Override
-    public CompletableFuture<?> start() throws GatewayApplicationException {
-        if (path == null) {
-            initializePath();
-        }
-
+    public CompletableFuture<?> start() {
         updateAndStartWatchingFile();
 
         return CompletableFuture.completedFuture(null);
@@ -101,12 +98,10 @@ final class CsvStreamingSourceHandler implements StreamingSourceHandler {
     }
 
     @Override
-    public CompletableFuture<?> resume(ResumeReason reason) throws GatewayApplicationException {
+    public CompletableFuture<?> resume(ResumeReason reason) {
         conversionErrorCount.set(0);
 
-        updateAndStartWatchingFile();
-
-        return CompletableFuture.completedFuture(null);
+        return start();
     }
 
     private void update() {
@@ -200,11 +195,11 @@ final class CsvStreamingSourceHandler implements StreamingSourceHandler {
         }
     }
 
-    private void initializePath() throws GatewayApplicationException {
+    private void initializePath() {
         final URL url = getClass().getClassLoader().getResource(fileName);
 
         if (url == null) {
-            throw new GatewayApplicationException(fileName + " could not be " +
+            throw new ApplicationConfigurationException(fileName + " could not be " +
                 "found");
         }
 
@@ -212,11 +207,15 @@ final class CsvStreamingSourceHandler implements StreamingSourceHandler {
             this.path = Paths.get(url.toURI());
         }
         catch (URISyntaxException ex) {
-            throw new GatewayApplicationException("Failed to read file: " + fileName, ex);
+            throw new ApplicationConfigurationException("Failed to read file: " + fileName, ex);
         }
     }
 
-    private void updateAndStartWatchingFile() throws PayloadConversionException {
+    private void updateAndStartWatchingFile() {
+        if (path == null) {
+            initializePath();
+        }
+
         update();
 
         future = executorService.submit(() -> {

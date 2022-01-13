@@ -5,9 +5,6 @@ import static com.pushtechnology.gateway.framework.DiffusionGatewayFramework.new
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.pushtechnology.gateway.framework.GatewayApplication;
 import com.pushtechnology.gateway.framework.PollingSourceHandler;
 import com.pushtechnology.gateway.framework.Publisher;
@@ -18,13 +15,11 @@ import com.pushtechnology.gateway.framework.StreamingSourceHandler;
 import com.pushtechnology.gateway.framework.exceptions.InvalidConfigurationException;
 
 /**
- * Main Gateway Application implementation.
+ * Main Gateway Application implementation for Csv source application.
  *
  * @author Push Technology Limited
  */
 final class CsvFileSourceApplication implements GatewayApplication {
-    private static final Logger LOG =
-        LoggerFactory.getLogger(CsvFileSourceApplication.class);
 
     static final String POLLING_JSON_SOURCE = "POLLING_JSON_SOURCE";
     static final String STREAMING_JSON_SOURCE = "STREAMING_JSON_SOURCE";
@@ -32,7 +27,7 @@ final class CsvFileSourceApplication implements GatewayApplication {
 
     private final SourceConfigValidator sourceConfigValidator;
 
-    public CsvFileSourceApplication(
+    CsvFileSourceApplication(
         SourceConfigValidator sourceConfigValidator) {
         this.sourceConfigValidator = sourceConfigValidator;
     }

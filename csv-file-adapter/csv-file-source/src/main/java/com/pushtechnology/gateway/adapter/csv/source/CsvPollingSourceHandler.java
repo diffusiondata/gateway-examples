@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.pushtechnology.gateway.framework.PollingSourceHandler;
 import com.pushtechnology.gateway.framework.Publisher;
 import com.pushtechnology.gateway.framework.SourceHandler.SourceServiceProperties.UpdateMode;
+import com.pushtechnology.gateway.framework.exceptions.ApplicationConfigurationException;
 import com.pushtechnology.gateway.framework.exceptions.GatewayApplicationException;
 import com.pushtechnology.gateway.framework.exceptions.InvalidConfigurationException;
 import com.pushtechnology.gateway.framework.exceptions.PayloadConversionException;
@@ -46,18 +47,18 @@ final class CsvPollingSourceHandler implements PollingSourceHandler {
     }
 
     @Override
-    public CompletableFuture<?> start() throws GatewayApplicationException {
+    public CompletableFuture<?> start() {
         final URL url = getClass().getClassLoader().getResource(fileName);
 
         if (url == null) {
-            throw new GatewayApplicationException(fileName + " could not be " +
+            throw new ApplicationConfigurationException(fileName + " could not be " +
                 "found");
         }
         try {
             this.file = new File(url.toURI());
         }
         catch (URISyntaxException ex) {
-            throw new GatewayApplicationException("Failed to read file: " + fileName, ex);
+            throw new ApplicationConfigurationException("Failed to read file: " + fileName, ex);
         }
 
         return CompletableFuture.completedFuture(null);
