@@ -35,7 +35,7 @@ import com.pushtechnology.gateway.framework.exceptions.PayloadConversionExceptio
 /**
  * Tests for {@link CsvStreamingSourceHandler}.
  *
- * @author ndhougoda-hamal
+ * @author Push Technology Limited
  */
 @ExtendWith(MockitoExtension.class)
 class CsvStreamingSourceHandlerTest {

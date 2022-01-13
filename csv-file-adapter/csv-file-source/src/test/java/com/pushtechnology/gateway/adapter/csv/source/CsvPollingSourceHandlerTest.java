@@ -32,7 +32,7 @@ import com.pushtechnology.gateway.framework.exceptions.PayloadConversionExceptio
 /**
  * Tests for {@link CsvPollingSourceHandler}.
  *
- * @author ndhougoda-hamal
+ * @author Push Technology Limited
  */
 @ExtendWith({MockitoExtension.class})
 class CsvPollingSourceHandlerTest {

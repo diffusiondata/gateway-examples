@@ -38,7 +38,7 @@ import com.pushtechnology.gateway.framework.exceptions.InvalidConfigurationExcep
 /**
  * Tests for {@link CsvFileSourceApplication}.
  *
- * @author ndhougoda-hamal
+ * @author Push Technology Limited
  */
 @ExtendWith(MockitoExtension.class)
 class CsvFileSourceApplicationTest {

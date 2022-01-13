@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <Configuration status="warn"
-               name="CSV file source adapter"
+               name="CSV file sink adapter"
                shutdownHook="disable"
                monitorInterval="30">
 
@@ -17,8 +17,8 @@
             <PatternLayout pattern="${pattern}"/>
         </Console>
 
-        <RollingRandomAccessFile name="file" fileName="${log.dir}/csvFileSourceAdapter.log"
-                                 filePattern="${log.dir}/$${date:yyyy-MM}/csvFileSourceAdapter-%d{MM-dd-yyyy}-%i.log.gz">
+        <RollingRandomAccessFile name="file" fileName="${log.dir}/csvFileSinkAdapter.log"
+                                 filePattern="${log.dir}/$${date:yyyy-MM}/csvFileSinkAdapter-%d{MM-dd-yyyy}-%i.log.gz">
 
             <PatternLayout pattern="${pattern}"/>
 

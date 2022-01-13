@@ -23,7 +23,7 @@ import com.pushtechnology.gateway.framework.exceptions.InvalidConfigurationExcep
 /**
  * Tests for {@link SourceConfigValidator}.
  *
- * @author ndhougoda-hamal
+ * @author Push Technology Limited
  */
 @ExtendWith(MockitoExtension.class)
 class SourceConfigValidatorTest {
