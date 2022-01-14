@@ -48,26 +48,26 @@ Payload convertors can be used to convert data from one format to another OR to 
 `OutboundPayloadConvertor`: This is used to convert to transform data from Diffusion format into the data format or structure expected to be published to a data sink. 
 </li>
 </ol>
-In addition, some out of the box payload convertors are provided for common formats such as Avro and CSV. For full details about payload convertors and the default and issued convertors see that package Javadoc for the `com.pushtechnology.gateway.framework.convertors` package.
+Some out of the box payload convertors are provided for common formats such as Avro and CSV. For full details about payload convertors and the default and issued convertors see that package Javadoc for the `com.pushtechnology.gateway.framework.convertors` package.
 
 #### Configuration
 The framework expects applications to pass configuration as a file in JSON format. The location of this file can be passed when starting the application as a System property or Environment variable with key `config.file`. The whole configuration is a combination of framework defined configuration and application developer defined configuration for the service types and endpoint types of the application. The schema for the framework defined configuration can be found in the artifact bundle together with the framework jar. When designing the application the developers should identify the configurations required for the service types and endpoint types they are going to support and document them appropriately, so that users can create a configuration file which will be used when starting the application.
 
-Using the configuration file, the client can be started as following:  
+Using the configuration file, the application can be started as following:  
     `java -jar -Dconfig.file=./configuration.json application-{version}.jar`
 
-The clients can be started without a configuration file by passing only bootstrap configuration. Bootstrap configuration includes details required to connect to the Diffusion server and to register the client with the server. These are server URL, principal, password and Gateway client ID. The Gateway framework provides an option to set these bootstrap details as system properties or environment variables, which will be used by default, if they are not set in the configuration file. The framework will override these, if these details are also set in the configuration file. The allowed system/env properties are:  
+The applications can be started without a configuration file by passing only bootstrap configuration. Bootstrap configuration includes details required to connect to the Diffusion server and to register the application with the server. These are server URL, principal, password and Gateway application ID. The Gateway framework provides an option to set these bootstrap details as system properties or environment variables, which will be used by default, if they are not set in the configuration file. The framework will override these, if these details are also set in the configuration file. The allowed system/env properties are:  
 ``` 
 diffusion.gateway.server.url  
 diffusion.gateway.principal  
 diffusion.gateway.password  
 gateway.client.id
 ```
-The client can be started using only bootstrap config as follows:  
+The application can be started using only bootstrap config as follows:  
 `java -jar -Ddiffusion.gateway.server.url=ws://localhost:8080 -Ddiffusion.gateway.principal=admin -Ddiffusion.gateway.password=password  -Dgateway.client.id=application-1 application-{version}.jar`
 
 ##### Configuration persistence
-The configuration passed to the application during startup, or added or updated via the Diffusion Management console, is persisted in the Diffusion server. If a client is started with only bootstrap configuration, and configuration for the passed gateway client ID is available in the server, it will be used to instantiate the client.
+The configuration passed to the application during startup, or added or updated via the Diffusion Management console, is persisted in the Diffusion server. If an application is started with only bootstrap configuration, and configuration for the passed gateway application ID is available in the server, it will be used to instantiate the application.
 
 ##### Configuration schema
 The schema of the configuration as expected by the Framework can be seen [here](file://frameworkConfigSchema.json).
@@ -75,7 +75,7 @@ The schema of the configuration as expected by the Framework can be seen [here](
 The schemas for the supported service types and endpoint types should be defined and documented by application developers, to enable users to define a valid configuration. 
 
 ## Writing a Gateway application
-Implementing a Gateway client application using the framework involves writing Java classes that implement required interfaces in the framework API. The main application class should implement the `GatewayApplication` interface and use defined methods to provide supported service types (and optionally, endpoint types). For each service type, a service handler class must be implemented and instances of this class passed back to the framework when requested. For full details of how to implement a Gateway application see the package Javadoc for the `com.pushtechnology.gateway.framework` package. 
+Implementing a Gateway application using the framework involves writing Java classes that implement required interfaces in the framework API. The main application class should implement the `GatewayApplication` interface and use defined methods to provide supported service types (and optionally, endpoint types). For each service type, a service handler class must be implemented and instances of this class passed back to the framework when requested. For full details of how to implement a Gateway application see the package Javadoc for the `com.pushtechnology.gateway.framework` package. 
 
 The csv-file-adapter in this repo, can be used as a sample reference to develop a Gateway application for any other type of external data sources. 
 
