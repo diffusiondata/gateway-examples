@@ -23,7 +23,7 @@ final class CsvFileSourceApplication implements GatewayApplication {
 
     static final String POLLING_JSON_SOURCE = "POLLING_JSON_SOURCE";
     static final String STREAMING_JSON_SOURCE = "STREAMING_JSON_SOURCE";
-    static final String APPLICATION_TYPE = "CSV_File_Source";
+    static final String APPLICATION_TYPE = "CSV_FILE_SOURCE";
 
     private final SourceConfigValidator sourceConfigValidator;
 

@@ -8,9 +8,9 @@
   },
   "services": [
     {
-      "serviceName": "csvSinkService",
-      "serviceType": "CSV_FILE_SINK",
-      "description": "Subscribes to JSON diffusion topic and writes its content to CSV file",
+      "serviceName": "dataSelectorSink",
+      "serviceType": "CSV_LOCAL_FILE_SINK",
+      "description": "Subscribes to 'data' diffusion topic selector and writes its content to CSV file",
       "config": {
         "framework": {
           "diffusionTopicSelector": "?data//"

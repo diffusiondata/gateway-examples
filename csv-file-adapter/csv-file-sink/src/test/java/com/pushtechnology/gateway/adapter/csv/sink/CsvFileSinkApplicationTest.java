@@ -33,10 +33,10 @@ class CsvFileSinkApplicationTest {
         ApplicationDetails applicationDetails =
             csvFileSinkApplication.getApplicationDetails();
 
-        assertEquals("CSV_SINK", applicationDetails.getApplicationType());
+        assertEquals("CSV_FILE_SINK", applicationDetails.getApplicationType());
         assertTrue(applicationDetails.getEndpointTypes().isEmpty());
         assertEquals(1, applicationDetails.getServiceTypes().size());
-        assertEquals("CSV_FILE_SINK", applicationDetails.getServiceTypes().get(0).getName());
+        assertEquals("CSV_LOCAL_FILE_SINK", applicationDetails.getServiceTypes().get(0).getName());
     }
 
     @Test

@@ -24,7 +24,7 @@ final class CsvFileSinkApplication implements GatewayApplication {
     public ApplicationDetails getApplicationDetails() throws ApplicationConfigurationException {
         return newApplicationDetailsBuilder()
             .addServiceType(
-                "CSV_FILE_SINK",
+                "CSV_LOCAL_FILE_SINK",
                 ServiceMode.SINK,
                 "{\n" +
                     "    \"$schema\": \"http://json-schema" +
@@ -45,7 +45,7 @@ final class CsvFileSinkApplication implements GatewayApplication {
                     "        }\n" +
                     "    }\n" +
                     "}")
-            .build("CSV_SINK");
+            .build("CSV_FILE_SINK");
     }
 
     @Override
