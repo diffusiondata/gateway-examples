@@ -17,27 +17,10 @@
         <maven.compiler.release>11</maven.compiler.release>
     </properties>
 
-    <distributionManagement>
-        <repository>
-            <id>push-nexus</id>
-            <name>Public Release</name>
-            <url>http://nexus.pushtechnology.com:8081/nexus/content/repositories/releases/</url>
-        </repository>
-    </distributionManagement>
-
     <repositories>
         <repository>
-            <id>push-nexus</id>
-            <name>Public Release</name>
-            <url>http://nexus.pushtechnology.com:8081/nexus/content/repositories/releases/</url>
-        </repository>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>central</id>
-            <name>Central Repository</name>
-            <url>https://repo.maven.apache.org/maven2</url>
+            <id>push-repository</id>
+            <url>https://download.pushtechnology.com/maven/</url>
         </repository>
     </repositories>
 
@@ -45,7 +28,7 @@
         <dependency>
             <groupId>com.pushtechnology.gateway</groupId>
             <artifactId>gateway-framework</artifactId>
-            <version>0.0.0</version>
+            <version>0.2.0</version>
         </dependency>
 
         <dependency>
@@ -62,16 +45,34 @@
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.2.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0-M5</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.0</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
                 <configuration>
                     <release>11</release>
                 </configuration>
@@ -95,6 +96,9 @@
                                         <exclude>META-INF/*.SF</exclude>
                                         <exclude>META-INF/*.DSA</exclude>
                                         <exclude>META-INF/*.RSA</exclude>
+                                        <exclude>META-INF/maven/**</exclude>
+                                        <exclude>META-INF/MANIFEST.MF</exclude>
+                                        <exclude>module-info.class</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
