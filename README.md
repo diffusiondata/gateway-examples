@@ -2,6 +2,46 @@ This file contains the documentation for the Diffusion Gateway Framework. To vie
 
 # Gateway Framework
 
+## TL;DR Writing a Gateway application
+Implementing a Gateway application using the framework involves writing Java classes that implement required interfaces in the framework API. The main application class should implement the `GatewayApplication` interface and use defined methods to provide supported service types (and optionally, endpoint types). For each service type, a service handler class must be implemented and instances of this class passed back to the framework when requested. For full details of how to implement a Gateway application see the [javadoc](https://download.pushtechnology.com/docs/gateway-framework/0.2.0/)
+
+The csv-file-adapter in this repo, can be used as a sample reference to develop a Gateway application for any other type of external data sources. 
+
+### To get started
+#### Using maven
+1. Add the Push Technology public repository to your pom.xml file
+
+        <repositories>
+          <repository>
+            <id>push-repository</id>
+            <url>https://download.pushtechnology.com/maven/</url>
+          </repository>
+        </repositories>
+        
+2. Declare the following dependency in your pom.xml file
+
+        <dependency>
+            <groupId>com.pushtechnology.gateway</groupId>
+            <artifactId>gateway-framework</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+
+#### Using gradle
+1. Add the Push Technology public repository to your build.gradle file
+
+        repositories {
+          maven {
+            url "https://download.pushtechnology.com/maven/"
+          }
+        }
+
+2. Declare the following dependency in your build.gradle file
+
+        compile 'com.pushtechnology.gateway:gateway-framework:0.2.0'
+
+#### Gateway framework artifacts
+Get the bundled Gateway Framework jar and schema definition for configuration [here](https://download.pushtechnology.com/gateway-framework/0.2.0/gateway-framework-0.2.0-bundle.zip)
+
 ## Introduction
 The Gateway framework provides a standard approach for creating pub/sub applications to connect any external data systems to a Diffusion server. Under the hood it uses pub/sub APIs provided by the Diffusion Java client SDK to publish data to Diffusion topics and to subscribe to them. It enables application developers to focus on their business requirement to connect to external systems, fetch data from them and publish data to them, where Diffusion specific operations are handled by the framework. The framework performs most of the heavy lifting regarding managing connections to a server, creating topics, publishing to topics and subscribing to the topics. Using the framework, developers can also benefit from adding support for visualizing and managing their application from the Diffusion Management console. The behaviour of such an application can be changed dynamically via the Console, if required. For example, while the application is running, its configuration can be updated at runtime to add publishing to a new Diffusion topic.
 
@@ -35,7 +75,16 @@ An endpoint is a set of configuration that can be defined to be used within a si
 Operations are actions which can be performed against a Gateway application or its services. These operations can be executed via the Diffusion Management console. Gateway applications support 'pause', 'resume' and 'shutdown' operations. Services support 'pause' and 'resume' operations.
 
 #### Status items
-The status of the application and its services are presented as status items in the Diffusion Management console. The framework generates different status items relating to different events, such as publication of data to a Diffusion topic, subscription to a Diffusion topic, any error registered by the application, or the state of services. These are aggregated and presented in the Diffusion Management console. These can be observed as a mechanism to monitor the status of services and the application in general.
+The status of the application and its services are presented as status items in the Diffusion Management console. The framework generates different status items relating to different events, such as publication of data to a Diffusion topic, subscription to a Diffusion topic, any error registered by the application, or the state of services. These are aggregated and presented in the Diffusion Management console. These can be observed as a mechanism to monitor the status of services and the application in general. 
+
+Each status consists of a title, description and level. The level can be Green, Amber, or Red.
+
+* Green means that the adapter/service is functioning as it is supposed to.
+* Amber means that an issue is affecting some aspect of the operation of the service; for example, a particular message may not have been delivered, or the adapter may have been paused.
+* Red means that a terminal incident has occurred that is preventing publishing or subscribing to Diffusion topics.
+
+#### Service states
+The state of a service can be 'active' or 'paused'. When a service is added successfully, the service will be in active state. If the service is successfully registered with framework, but fails to be started due to any reason, it will be in paused state. An active service can transition to 'paused' state if 'Pause' operation is executed from Diffusion console or connection to Diffusion server is broken or application sends a Red level status to the framework. Application developers can trigger a service to pause (for some terminal error scenarios, like authentication failure with external data source) by using 'StateHandler' to send a status Item with Red level which will cause the service to pause. An application user can resume a service by executing 'Resume' operation in Diffusion console. If a service is paused due to disconnection with the server, as soon as the connection re-establishes, the service will be resumed, provided that it was paused due to disconnection and not triggered via console or application error. 
 
 #### Payload Convertors
 Payload convertors can be used to convert data from one format to another OR to transform the structure of data published to Diffusion or to an external sink. The framework supports two types of Payload convertor:
@@ -74,13 +123,10 @@ The schema of the configuration as expected by the Framework can be seen [here](
 
 The schemas for the supported service types and endpoint types should be defined and documented by application developers, to enable users to define a valid configuration. 
 
-## Writing a Gateway application
-Implementing a Gateway application using the framework involves writing Java classes that implement required interfaces in the framework API. The main application class should implement the `GatewayApplication` interface and use defined methods to provide supported service types (and optionally, endpoint types). For each service type, a service handler class must be implemented and instances of this class passed back to the framework when requested. For full details of how to implement a Gateway application see the package Javadoc for the `com.pushtechnology.gateway.framework` package. 
+#### Configuration secrets
+Any sensitive configuration value, like credentials can be set as a secret in the form of `$SECRET_VARIABLE` in configuration file, or when adding a service via Diffusion console. The actual value can be set as a System property or environment variable for the used secret variable name. This prevents the exposure of such sensitive information in configuration file and is also hidden in Diffusion console. 
 
-The csv-file-adapter in this repo, can be used as a sample reference to develop a Gateway application for any other type of external data sources. 
+#### Diffusion topic handling
+For any source service, topics are created automatically by the framework, if they are not already present. Whether these topics are removed or persisted after the termination of service / application, depends on how the service is configured by the application developer. 
 
-## Gotchas
-// TODO
-
-## Server setups to use Gateway Clients for Efficiency and High throughput
-// TODO
+To enable developers to define how to handle the topics created during publication, the framework provides option to define [Persistence policy](https://download.pushtechnology.com/docs/gateway-framework/0.2.0/com/pushtechnology/gateway/framework/SourceHandler.SourceServiceProperties.PersistencePolicy.html)
