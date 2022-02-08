@@ -23,7 +23,7 @@ import net.jcip.annotations.Immutable;
  * @author Push Technology Limited
  */
 @Immutable
-final class CsvFileSinkHandler implements SinkHandler {
+final class CsvFileSinkHandler implements SinkHandler<String> {
 
     private final String filePath;
 
@@ -40,9 +40,7 @@ final class CsvFileSinkHandler implements SinkHandler {
     }
 
     @Override
-    public CompletableFuture<?> update(String diffusionTopic, Object value) {
-
-        assert value instanceof String;
+    public CompletableFuture<?> update(String diffusionTopic, String value) {
 
         final CompletableFuture<?> updateCf =
             new CompletableFuture<>();
@@ -52,9 +50,7 @@ final class CsvFileSinkHandler implements SinkHandler {
         try (FileOutputStream outputStream =
                  new FileOutputStream(createPathToWrite(fileName).toFile())) {
 
-            byte[] strToBytes = ((String) value).getBytes();
-
-            outputStream.write(strToBytes);
+            outputStream.write(value.getBytes());
             updateCf.complete(null);
         }
         catch (IOException ex) {
