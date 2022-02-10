@@ -3,7 +3,7 @@ This file contains the documentation for the Diffusion Gateway Framework. To vie
 # Gateway Framework
 
 ## TL;DR Writing a Gateway application
-Implementing a Gateway application using the framework involves writing Java classes that implement required interfaces in the framework API. The main application class should implement the `GatewayApplication` interface and use defined methods to provide supported service types (and optionally, endpoint types). For each service type, a service handler class must be implemented and instances of this class passed back to the framework when requested. For full details of how to implement a Gateway application see the [javadoc](https://download.pushtechnology.com/docs/gateway-framework/0.2.0/)
+Implementing a Gateway application using the framework involves writing Java classes that implement required interfaces in the framework API. The main application class should implement the `GatewayApplication` interface and use defined methods to provide supported service types (and optionally, endpoint types). For each service type, a service handler class must be implemented and instances of this class passed back to the framework when requested. For full details of how to implement a Gateway application see the [javadoc](https://download.pushtechnology.com/docs/gateway-framework/latest/)
 
 The csv-file-adapter in this repo, can be used as a sample reference to develop a Gateway application for any other type of external data sources. 
 
@@ -23,7 +23,7 @@ The csv-file-adapter in this repo, can be used as a sample reference to develop 
         <dependency>
             <groupId>com.pushtechnology.gateway</groupId>
             <artifactId>gateway-framework</artifactId>
-            <version>0.2.0</version>
+            <version>0.3.0</version>
         </dependency>
 
 #### Using gradle
@@ -37,10 +37,10 @@ The csv-file-adapter in this repo, can be used as a sample reference to develop 
 
 2. Declare the following dependency in your build.gradle file
 
-        compile 'com.pushtechnology.gateway:gateway-framework:0.2.0'
+        compile 'com.pushtechnology.gateway:gateway-framework:0.3.0'
 
 #### Gateway framework artifacts
-Get the bundled Gateway Framework jar and schema definition for configuration [here](https://download.pushtechnology.com/gateway-framework/0.2.0/gateway-framework-0.2.0-bundle.zip)
+Get the bundled Gateway Framework jar and schema definition for configuration [here](https://download.pushtechnology.com/gateway-framework/0.3.0/gateway-framework-0.3.0-bundle.zip)
 
 ## Introduction
 The Gateway framework provides a standard approach for creating pub/sub applications to connect any external data systems to a Diffusion server. Under the hood it uses pub/sub APIs provided by the Diffusion Java client SDK to publish data to Diffusion topics and to subscribe to them. It enables application developers to focus on their business requirement to connect to external systems, fetch data from them and publish data to them, where Diffusion specific operations are handled by the framework. The framework performs most of the heavy lifting regarding managing connections to a server, creating topics, publishing to topics and subscribing to the topics. Using the framework, developers can also benefit from adding support for visualizing and managing their application from the Diffusion Management console. The behaviour of such an application can be changed dynamically via the Console, if required. For example, while the application is running, its configuration can be updated at runtime to add publishing to a new Diffusion topic.
@@ -129,4 +129,4 @@ Any sensitive configuration value, like credentials can be set as a secret in th
 #### Diffusion topic handling
 For any source service, topics are created automatically by the framework, if they are not already present. Whether these topics are removed or persisted after the termination of service / application, depends on how the service is configured by the application developer. 
 
-To enable developers to define how to handle the topics created during publication, the framework provides option to define [Persistence policy](https://download.pushtechnology.com/docs/gateway-framework/0.2.0/com/pushtechnology/gateway/framework/SourceHandler.SourceServiceProperties.PersistencePolicy.html)
+To enable developers to define how to handle the topics created during publication, the framework provides option to define [Persistence policy](https://download.pushtechnology.com/docs/gateway-framework/latest/com/pushtechnology/gateway/framework/SourceHandler.SourceServiceProperties.PersistencePolicy.html)

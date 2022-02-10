@@ -22,17 +22,13 @@
             <id>push-repository</id>
             <url>https://download.pushtechnology.com/maven/</url>
         </repository>
-        <repository>
-            <id>nexus-snapshot-repo</id>
-            <url>http://nexus.pushtechnology.com:8081/nexus/content/repositories/snapshots</url>
-        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
             <groupId>com.pushtechnology.gateway</groupId>
             <artifactId>gateway-framework</artifactId>
-            <version>0.3.0-3353.7e762bab-SNAPSHOT</version>
+            <version>0.3.0</version>
         </dependency>
 
         <dependency>
