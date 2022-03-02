@@ -3,7 +3,7 @@ This file contains the documentation for the Diffusion Gateway Framework. To vie
 # Gateway Framework
 
 ## TL;DR Writing a Gateway application
-Implementing a Gateway application using the framework involves writing Java classes that implement required interfaces in the framework API. The main application class should implement the `GatewayApplication` interface and use defined methods to provide supported service types (and optionally, endpoint types). For each service type, a service handler class must be implemented and instances of this class passed back to the framework when requested. For full details of how to implement a Gateway application see the [javadoc](https://download.pushtechnology.com/docs/gateway-framework/latest/)
+Implementing a Gateway application using the framework involves writing Java classes that implement required interfaces in the framework API. The main application class should implement the `GatewayApplication` interface and use defined methods to provide supported service types (and optionally, endpoint types). For each service type, a service handler class must be implemented and instances of this class passed back to the framework when requested. For full details of how to implement a Gateway application see the [javadoc](https://download.pushtechnology.com/docs/gateway-framework/latest/).
 
 The csv-file-adapter in this repo, can be used as a sample reference to develop a Gateway application for any other type of external data sources. 
 
@@ -23,7 +23,7 @@ The csv-file-adapter in this repo, can be used as a sample reference to develop 
         <dependency>
             <groupId>com.pushtechnology.gateway</groupId>
             <artifactId>gateway-framework</artifactId>
-            <version>0.3.0</version>
+            <version>0.9.0</version>
         </dependency>
 
 #### Using gradle
@@ -37,10 +37,10 @@ The csv-file-adapter in this repo, can be used as a sample reference to develop 
 
 2. Declare the following dependency in your build.gradle file
 
-        compile 'com.pushtechnology.gateway:gateway-framework:0.3.0'
+        compile 'com.pushtechnology.gateway:gateway-framework:0.9.0'
 
 #### Gateway framework artifacts
-Get the bundled Gateway Framework jar and schema definition for configuration [here](https://download.pushtechnology.com/gateway-framework/0.3.0/gateway-framework-0.3.0-bundle.zip)
+Get the bundled Gateway Framework jar and schema definition for configuration [here](https://download.pushtechnology.com/gateway-framework/0.9.0/gateway-framework-0.9.0-bundle.zip). This also contains an in-depth user guide about Gateway framework.
 
 ## Introduction
 The Gateway framework provides a standard approach for creating pub/sub applications to connect any external data systems to a Diffusion server. Under the hood it uses pub/sub APIs provided by the Diffusion Java client SDK to publish data to Diffusion topics and to subscribe to them. It enables application developers to focus on their business requirement to connect to external systems, fetch data from them and publish data to them, where Diffusion specific operations are handled by the framework. The framework performs most of the heavy lifting regarding managing connections to a server, creating topics, publishing to topics and subscribing to the topics. Using the framework, developers can also benefit from adding support for visualizing and managing their application from the Diffusion Management console. The behaviour of such an application can be changed dynamically via the Console, if required. For example, while the application is running, its configuration can be updated at runtime to add publishing to a new Diffusion topic.
@@ -100,10 +100,10 @@ Payload convertors can be used to convert data from one format to another OR to 
 Some out of the box payload convertors are provided for common formats such as Avro and CSV. For full details about payload convertors and the default and issued convertors see that package Javadoc for the `com.pushtechnology.gateway.framework.convertors` package.
 
 #### Configuration
-The framework expects applications to pass configuration as a file in JSON format. The location of this file can be passed when starting the application as a System property or Environment variable with key `config.file`. The whole configuration is a combination of framework defined configuration and application developer defined configuration for the service types and endpoint types of the application. The schema for the framework defined configuration can be found in the artifact bundle together with the framework jar. When designing the application the developers should identify the configurations required for the service types and endpoint types they are going to support and document them appropriately, so that users can create a configuration file which will be used when starting the application.
+The framework expects applications to pass configuration as a file in JSON format. The location of this file can be passed when starting the application as a System property or Environment variable with key `gateway.config.file`. The whole configuration is a combination of framework defined configuration and application developer defined configuration for the service types and endpoint types of the application. The schema for the framework defined configuration can be found in the artifact bundle together with the framework jar. When designing the application the developers should identify the configurations required for the service types and endpoint types they are going to support and document them appropriately, so that users can create a configuration file which will be used when starting the application.
 
 Using the configuration file, the application can be started as following:  
-    `java -jar -Dconfig.file=./configuration.json application-{version}.jar`
+    `java -jar -Dgateway.config.file=./configuration.json application-{version}.jar`
 
 The applications can be started without a configuration file by passing only bootstrap configuration. Bootstrap configuration includes details required to connect to the Diffusion server and to register the application with the server. These are server URL, principal, password and Gateway application ID. The Gateway framework provides an option to set these bootstrap details as system properties or environment variables, which will be used by default, if they are not set in the configuration file. The framework will override these, if these details are also set in the configuration file. The allowed system/env properties are:  
 ``` 
@@ -124,7 +124,7 @@ The schema of the configuration as expected by the Framework can be seen [here](
 The schemas for the supported service types and endpoint types should be defined and documented by application developers, to enable users to define a valid configuration. 
 
 #### Configuration secrets
-Any sensitive configuration value, like credentials can be set as a secret in the form of `$SECRET_VARIABLE` in configuration file, or when adding a service via Diffusion console. The actual value can be set as a System property or environment variable for the used secret variable name. This prevents the exposure of such sensitive information in configuration file and is also hidden in Diffusion console. 
+Any sensitive configuration value, like credentials can be set as a secret in the form of `$SECRET_VARIABLE` in configuration file, or when adding a service via Diffusion console. The actual value can be set as a System property or environment variable for the used secret variable name. This prevents the exposure of such sensitive information in configuration file and is also hidden in Diffusion console. Configurations for only 'Diffusion' key in configuration file and any configuration defined by application (usually defined in 'application' block), can be defined as secret.
 
 #### Diffusion topic handling
 For any source service, topics are created automatically by the framework, if they are not already present. Whether these topics are removed or persisted after the termination of service / application, depends on how the service is configured by the application developer. 
