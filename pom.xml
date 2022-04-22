@@ -28,7 +28,7 @@
         <dependency>
             <groupId>com.pushtechnology.gateway</groupId>
             <artifactId>gateway-framework</artifactId>
-            <version>0.11.0</version>
+            <version>0.12.0</version>
         </dependency>
 
         <dependency>
