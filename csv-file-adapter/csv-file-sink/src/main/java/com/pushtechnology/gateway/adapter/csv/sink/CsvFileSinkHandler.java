@@ -35,7 +35,7 @@ final class CsvFileSinkHandler implements SinkHandler<String> {
     public SinkServiceProperties getServiceProperties() throws InvalidConfigurationException {
         return newSinkServicePropertiesBuilder()
             .topicType(TopicType.JSON)
-            .payloadConvertor("$JSON_to_CSV_STRING")
+            .payloadConvertorName("$JSON_to_CSV_STRING")
             .build();
     }
 

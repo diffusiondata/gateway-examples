@@ -87,7 +87,7 @@ final class CsvStreamingSourceHandler implements StreamingSourceHandler {
         return
             newSourceServicePropertiesBuilder()
                 .updateMode(UpdateMode.STREAMING)
-                .payloadConvertor("$CSV_to_JSON")
+                .payloadConvertorName("$CSV_to_JSON")
                 .build();
     }
 

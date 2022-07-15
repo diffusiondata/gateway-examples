@@ -114,7 +114,7 @@ final class CsvPollingSourceHandler implements PollingSourceHandler {
         return
             newSourceServicePropertiesBuilder()
                 .updateMode(UpdateMode.STREAMING)
-                .payloadConvertor("$CSV_to_JSON")
+                .payloadConvertorName("$CSV_to_JSON")
                 .build();
     }
 }
