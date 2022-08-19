@@ -25,7 +25,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.pushtechnology.gateway.framework.Publisher;
 import com.pushtechnology.gateway.framework.SourceHandler.SourceServiceProperties;
-import com.pushtechnology.gateway.framework.SourceHandler.SourceServiceProperties.UpdateMode;
+import com.pushtechnology.gateway.framework.UpdateMode;
 import com.pushtechnology.gateway.framework.exceptions.InvalidConfigurationException;
 import com.pushtechnology.gateway.framework.exceptions.PayloadConversionException;
 
@@ -97,7 +97,7 @@ class CsvPollingSourceHandlerTest {
     @Test
     void testGetServiceProperties() throws InvalidConfigurationException {
         SourceServiceProperties serviceProperties =
-            csvPollingSourceHandler.getServiceProperties();
+            csvPollingSourceHandler.getSourceServiceProperties();
 
         assertEquals("$CSV_to_JSON", serviceProperties.getPayloadConvertorName());
         assertEquals(UpdateMode.STREAMING, serviceProperties.getUpdateMode());

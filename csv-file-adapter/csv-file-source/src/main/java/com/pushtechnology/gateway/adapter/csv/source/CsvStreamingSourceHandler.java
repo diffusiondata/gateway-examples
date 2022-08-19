@@ -23,12 +23,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.pushtechnology.gateway.framework.Publisher;
-import com.pushtechnology.gateway.framework.SourceHandler.SourceServiceProperties.UpdateMode;
 import com.pushtechnology.gateway.framework.StateHandler;
 import com.pushtechnology.gateway.framework.StateHandler.Status;
 import com.pushtechnology.gateway.framework.StreamingSourceHandler;
+import com.pushtechnology.gateway.framework.UpdateMode;
 import com.pushtechnology.gateway.framework.exceptions.ApplicationConfigurationException;
-import com.pushtechnology.gateway.framework.exceptions.GatewayApplicationException;
 import com.pushtechnology.gateway.framework.exceptions.InvalidConfigurationException;
 import com.pushtechnology.gateway.framework.exceptions.PayloadConversionException;
 
@@ -83,7 +82,7 @@ final class CsvStreamingSourceHandler implements StreamingSourceHandler {
     }
 
     @Override
-    public SourceServiceProperties getServiceProperties() throws InvalidConfigurationException {
+    public SourceServiceProperties getSourceServiceProperties() throws InvalidConfigurationException {
         return
             newSourceServicePropertiesBuilder()
                 .updateMode(UpdateMode.STREAMING)

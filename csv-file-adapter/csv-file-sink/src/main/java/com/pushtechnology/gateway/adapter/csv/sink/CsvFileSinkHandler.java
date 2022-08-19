@@ -32,7 +32,7 @@ final class CsvFileSinkHandler implements SinkHandler<String> {
     }
 
     @Override
-    public SinkServiceProperties getServiceProperties() throws InvalidConfigurationException {
+    public SinkServiceProperties getSinkServiceProperties() throws InvalidConfigurationException {
         return newSinkServicePropertiesBuilder()
             .topicType(TopicType.JSON)
             .payloadConvertorName("$JSON_to_CSV_STRING")

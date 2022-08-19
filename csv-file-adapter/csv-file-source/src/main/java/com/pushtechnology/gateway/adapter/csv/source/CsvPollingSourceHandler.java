@@ -13,9 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import com.pushtechnology.gateway.framework.PollingSourceHandler;
 import com.pushtechnology.gateway.framework.Publisher;
-import com.pushtechnology.gateway.framework.SourceHandler.SourceServiceProperties.UpdateMode;
+import com.pushtechnology.gateway.framework.UpdateMode;
 import com.pushtechnology.gateway.framework.exceptions.ApplicationConfigurationException;
-import com.pushtechnology.gateway.framework.exceptions.GatewayApplicationException;
 import com.pushtechnology.gateway.framework.exceptions.InvalidConfigurationException;
 import com.pushtechnology.gateway.framework.exceptions.PayloadConversionException;
 
@@ -110,7 +109,7 @@ final class CsvPollingSourceHandler implements PollingSourceHandler {
     }
 
     @Override
-    public SourceServiceProperties getServiceProperties() throws InvalidConfigurationException {
+    public SourceServiceProperties getSourceServiceProperties() throws InvalidConfigurationException {
         return
             newSourceServicePropertiesBuilder()
                 .updateMode(UpdateMode.STREAMING)

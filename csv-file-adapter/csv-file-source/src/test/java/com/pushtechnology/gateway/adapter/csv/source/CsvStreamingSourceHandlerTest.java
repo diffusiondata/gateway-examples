@@ -1,7 +1,8 @@
 package com.pushtechnology.gateway.adapter.csv.source;
 
 import static com.pushtechnology.gateway.adapter.csv.source.CsvPollingSourceHandler.CONVERSION_ERROR_THRESHOLD;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.doThrow;
@@ -25,9 +26,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.pushtechnology.gateway.framework.Publisher;
 import com.pushtechnology.gateway.framework.SourceHandler.SourceServiceProperties;
-import com.pushtechnology.gateway.framework.SourceHandler.SourceServiceProperties.UpdateMode;
 import com.pushtechnology.gateway.framework.StateHandler;
 import com.pushtechnology.gateway.framework.StateHandler.Status;
+import com.pushtechnology.gateway.framework.UpdateMode;
 import com.pushtechnology.gateway.framework.exceptions.GatewayApplicationException;
 import com.pushtechnology.gateway.framework.exceptions.InvalidConfigurationException;
 import com.pushtechnology.gateway.framework.exceptions.PayloadConversionException;
@@ -102,7 +103,7 @@ class CsvStreamingSourceHandlerTest {
     @Test
     void testGetServiceProperties() throws InvalidConfigurationException {
         SourceServiceProperties serviceProperties =
-            csvStreamingSourceHandler.getServiceProperties();
+            csvStreamingSourceHandler.getSourceServiceProperties();
 
         assertEquals("$CSV_to_JSON", serviceProperties.getPayloadConvertorName());
         assertEquals(UpdateMode.STREAMING, serviceProperties.getUpdateMode());
