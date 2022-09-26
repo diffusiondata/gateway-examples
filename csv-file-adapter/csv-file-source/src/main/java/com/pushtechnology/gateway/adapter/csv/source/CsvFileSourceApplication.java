@@ -37,16 +37,20 @@ final class CsvFileSourceApplication implements GatewayApplication {
         return newApplicationDetailsBuilder()
             .addServiceType(POLLING_JSON_SOURCE,
                 ServiceMode.POLLING_SOURCE,
+                "A polling source service which frequently polls the " +
+                    "configured CSV file for any updates and publishes to " +
+                    "Diffusion server",
                 null)
             .addServiceType(STREAMING_JSON_SOURCE,
                 ServiceMode.STREAMING_SOURCE,
+                "A streaming source which listens to CSV file changes and " +
+                    "publishes contents to Diffusion server.",
                 null)
-            .build(APPLICATION_TYPE);
+            .build(APPLICATION_TYPE, 1);
     }
 
     @Override
     public PollingSourceHandler addPollingSource(
-        String serviceName,
         ServiceDefinition serviceDefinition,
         Publisher publisher,
         StateHandler stateHandler) throws InvalidConfigurationException {
@@ -65,7 +69,6 @@ final class CsvFileSourceApplication implements GatewayApplication {
 
     @Override
     public StreamingSourceHandler addStreamingSource(
-        String serviceName,
         ServiceDefinition serviceDefinition,
         Publisher publisher,
         StateHandler stateHandler) throws InvalidConfigurationException {

@@ -23,7 +23,7 @@ The csv-file-adapter in this repo, can be used as a sample reference to develop 
         <dependency>
             <groupId>com.pushtechnology.gateway</groupId>
             <artifactId>gateway-framework</artifactId>
-            <version>0.15.0</version>
+            <version>0.16.0</version>
         </dependency>
 
 #### Using gradle
@@ -37,9 +37,9 @@ The csv-file-adapter in this repo, can be used as a sample reference to develop 
 
 2. Declare the following dependency in your build.gradle file
 
-        compile 'com.pushtechnology.gateway:gateway-framework:0.15.0'
+        compile 'com.pushtechnology.gateway:gateway-framework:0.16.0'
 
 #### Gateway framework artifacts
-Get the bundled Gateway Framework jar and schema definition for configuration [here](https://download.pushtechnology.com/gateway-framework/0.15.0/gateway-framework-0.15.0-bundle.zip). This also contains an in-depth user guide about Gateway framework.
+Get the bundled Gateway Framework jar and schema definition for configuration [here](https://download.pushtechnology.com/gateway-framework/0.16.0/gateway-framework-0.16.0-bundle.zip). This also contains an in-depth user guide about Gateway framework.
 
-More details about the gateway framework can be found [here](https://download.pushtechnology.com/gateway-framework/0.15.0/user-guide/FrameworkUserGuide.html)
+More details about the gateway framework can be found [here](https://download.pushtechnology.com/gateway-framework/0.16.0/user-guide/html/FrameworkUserGuide.html)

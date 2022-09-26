@@ -26,6 +26,8 @@ final class CsvFileSinkApplication implements GatewayApplication {
             .addServiceType(
                 "CSV_LOCAL_FILE_SINK",
                 ServiceMode.SINK,
+                "A sink service which writes received string updates from " +
+                    "configured Diffusion topics into CSV files",
                 "{\n" +
                     "    \"$schema\": \"http://json-schema" +
                     ".org/draft-07/schema#\",\n" +
@@ -45,12 +47,11 @@ final class CsvFileSinkApplication implements GatewayApplication {
                     "        }\n" +
                     "    }\n" +
                     "}")
-            .build("CSV_FILE_SINK");
+            .build("CSV_FILE_SINK", 1);
     }
 
     @Override
     public SinkHandler addSink(
-        String serviceName,
         ServiceDefinition serviceDefinition,
         StateHandler stateHandler) {
 

@@ -43,7 +43,6 @@ import com.pushtechnology.gateway.framework.exceptions.InvalidConfigurationExcep
 @ExtendWith(MockitoExtension.class)
 class CsvFileSourceApplicationTest {
 
-    private static final String SERVICE_NAME = "serviceName";
     private CsvFileSourceApplication csvFileSourceApplication;
 
     @Mock
@@ -78,7 +77,7 @@ class CsvFileSourceApplicationTest {
         assertEquals(
             APPLICATION_TYPE,
             applicationDetails.getApplicationType());
-        assertTrue(applicationDetails.getEndpointTypes().isEmpty());
+        assertTrue(applicationDetails.getSharedConfigTypes().isEmpty());
         List<ServiceType> serviceTypes =
             applicationDetails.getServiceTypes();
 
@@ -115,7 +114,7 @@ class CsvFileSourceApplicationTest {
         when(sourceConfigValidator.validateAndGet(parameters)).thenReturn(sourceConfig);
 
         PollingSourceHandler pollingSourceHandler =
-            csvFileSourceApplication.addPollingSource(SERVICE_NAME,
+            csvFileSourceApplication.addPollingSource(
                 serviceDefinition, publisher, stateHandler);
         assertTrue(pollingSourceHandler instanceof CsvPollingSourceHandler);
 
@@ -133,7 +132,7 @@ class CsvFileSourceApplicationTest {
         doThrow(InvalidConfigurationException.class).when(sourceConfigValidator).validateAndGet(parameters);
 
         assertThrows(InvalidConfigurationException.class,
-            () -> csvFileSourceApplication.addPollingSource(SERVICE_NAME,
+            () -> csvFileSourceApplication.addPollingSource(
             serviceDefinition, publisher, stateHandler));
 
         verifyNoMoreInteractions(parameters);
@@ -148,7 +147,7 @@ class CsvFileSourceApplicationTest {
         when(sourceConfigValidator.validateAndGet(parameters)).thenReturn(sourceConfig);
 
         StreamingSourceHandler streamingSourceHandler =
-            csvFileSourceApplication.addStreamingSource(SERVICE_NAME,
+            csvFileSourceApplication.addStreamingSource(
                 serviceDefinition, publisher, stateHandler);
         assertTrue(streamingSourceHandler instanceof CsvStreamingSourceHandler);
 
@@ -166,7 +165,7 @@ class CsvFileSourceApplicationTest {
         doThrow(InvalidConfigurationException.class).when(sourceConfigValidator).validateAndGet(parameters);
 
         assertThrows(InvalidConfigurationException.class,
-            () -> csvFileSourceApplication.addStreamingSource(SERVICE_NAME,
+            () -> csvFileSourceApplication.addStreamingSource(
             serviceDefinition, publisher, stateHandler));
 
         verifyNoMoreInteractions(parameters);

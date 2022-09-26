@@ -34,7 +34,7 @@ class CsvFileSinkApplicationTest {
             csvFileSinkApplication.getApplicationDetails();
 
         assertEquals("CSV_FILE_SINK", applicationDetails.getApplicationType());
-        assertTrue(applicationDetails.getEndpointTypes().isEmpty());
+        assertTrue(applicationDetails.getSharedConfigTypes().isEmpty());
         assertEquals(1, applicationDetails.getServiceTypes().size());
         assertEquals("CSV_LOCAL_FILE_SINK", applicationDetails.getServiceTypes().get(0).getName());
     }
@@ -46,7 +46,7 @@ class CsvFileSinkApplicationTest {
 
         when(serviceDefinition.getParameters()).thenReturn(Collections.singletonMap("filePath", "path"));
         SinkHandler sinkHandler = csvFileSinkApplication.addSink(
-            "CSV_FILE_SINK", serviceDefinition, stateHandler);
+            serviceDefinition, stateHandler);
 
         assertTrue(sinkHandler instanceof CsvFileSinkHandler);
     }
