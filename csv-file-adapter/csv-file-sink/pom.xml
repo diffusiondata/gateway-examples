@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>csv-file-adapter</artifactId>
-        <groupId>com.pushtechnology.gateway.adapter</groupId>
+        <groupId>com.diffusiondata.gateway.adapter</groupId>
         <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -22,7 +22,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.pushtechnology.gateway.adapter.csv.sink.Runner</mainClass>
+                                    <mainClass>com.diffusiondata.gateway.adapter.csv.sink.Runner</mainClass>
                                 </transformer>
                             </transformers>
                             <finalName>csv-file-sink-${project.version}</finalName>

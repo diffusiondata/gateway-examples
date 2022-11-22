@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.pushtechnology.gateway.adapter</groupId>
+    <groupId>com.diffusiondata.gateway.adapter</groupId>
     <artifactId>gateway-examples</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
@@ -20,15 +20,15 @@
     <repositories>
         <repository>
             <id>push-repository</id>
-            <url>https://download.pushtechnology.com/maven/</url>
+            <url>https://download.diffusiondata.com/maven/</url>
         </repository>
     </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>com.pushtechnology.gateway</groupId>
+            <groupId>com.diffusiondata.gateway</groupId>
             <artifactId>gateway-framework</artifactId>
-            <version>0.16.0</version>
+            <version>1.0.0_RC1</version>
         </dependency>
 
         <dependency>
