@@ -1,5 +1,7 @@
 {
   "id": "csv-sink-adapter-1",
+  "framework-version": 1,
+  "application-version": 1,
   "diffusion": {
     "url": "ws://localhost:8080",
     "principal": "admin",
