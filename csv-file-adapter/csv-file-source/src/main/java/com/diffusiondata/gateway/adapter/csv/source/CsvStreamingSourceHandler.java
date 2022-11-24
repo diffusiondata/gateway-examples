@@ -2,11 +2,9 @@ package com.diffusiondata.gateway.adapter.csv.source;
 
 import static com.diffusiondata.gateway.framework.DiffusionGatewayFramework.newSourceServicePropertiesBuilder;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.FileSystems;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
@@ -27,7 +25,6 @@ import com.diffusiondata.gateway.framework.StateHandler;
 import com.diffusiondata.gateway.framework.StateHandler.Status;
 import com.diffusiondata.gateway.framework.StreamingSourceHandler;
 import com.diffusiondata.gateway.framework.UpdateMode;
-import com.diffusiondata.gateway.framework.exceptions.ApplicationConfigurationException;
 import com.diffusiondata.gateway.framework.exceptions.InvalidConfigurationException;
 import com.diffusiondata.gateway.framework.exceptions.PayloadConversionException;
 
@@ -50,7 +47,7 @@ final class CsvStreamingSourceHandler implements StreamingSourceHandler {
     private final AtomicInteger conversionErrorCount = new AtomicInteger(0);
 
     private final String fileName;
-    private Path path;
+    private File file;
 
     private Future<?> future;
     private WatchService watchService;
@@ -107,7 +104,7 @@ final class CsvStreamingSourceHandler implements StreamingSourceHandler {
         LOG.debug("Streaming update to server from {} file", fileName);
         try {
             publisher
-                .publish(diffusionTopicName, path.toFile())
+                .publish(diffusionTopicName, file)
                 .whenComplete((result, ex) -> {
                     if (ex != null) {
                         LOG.error(
@@ -141,7 +138,7 @@ final class CsvStreamingSourceHandler implements StreamingSourceHandler {
 
         try {
             WatchKey register =
-                path.getParent().register(
+                Paths.get(fileName).getParent().register(
                     watchService,
                     StandardWatchEventKinds.ENTRY_CREATE,
                     StandardWatchEventKinds.ENTRY_MODIFY,
@@ -194,25 +191,9 @@ final class CsvStreamingSourceHandler implements StreamingSourceHandler {
         }
     }
 
-    private void initializePath() {
-        final URL url = getClass().getClassLoader().getResource(fileName);
-
-        if (url == null) {
-            throw new ApplicationConfigurationException(fileName + " could not be " +
-                "found");
-        }
-
-        try {
-            this.path = Paths.get(url.toURI());
-        }
-        catch (URISyntaxException ex) {
-            throw new ApplicationConfigurationException("Failed to read file: " + fileName, ex);
-        }
-    }
-
     private void updateAndStartWatchingFile() {
-        if (path == null) {
-            initializePath();
+        if (file == null) {
+            file = new File(fileName);
         }
 
         update();

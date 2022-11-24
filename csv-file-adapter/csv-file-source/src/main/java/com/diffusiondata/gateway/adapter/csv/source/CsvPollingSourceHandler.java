@@ -47,18 +47,7 @@ final class CsvPollingSourceHandler implements PollingSourceHandler {
 
     @Override
     public CompletableFuture<?> start() {
-        final URL url = getClass().getClassLoader().getResource(fileName);
-
-        if (url == null) {
-            throw new ApplicationConfigurationException(fileName + " could not be " +
-                "found");
-        }
-        try {
-            this.file = new File(url.toURI());
-        }
-        catch (URISyntaxException ex) {
-            throw new ApplicationConfigurationException("Failed to read file: " + fileName, ex);
-        }
+        this.file = new File(fileName);
 
         return CompletableFuture.completedFuture(null);
     }
