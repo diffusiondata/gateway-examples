@@ -33,7 +33,7 @@ final class CsvPollingSourceHandler implements PollingSourceHandler {
     private final AtomicInteger conversionErrorCount = new AtomicInteger(0);
 
     private final String fileName;
-    private File file;
+    private final File file;
 
     CsvPollingSourceHandler(
         final String fileName,
@@ -43,24 +43,7 @@ final class CsvPollingSourceHandler implements PollingSourceHandler {
         this.diffusionTopicName = diffusionTopicName;
         this.publisher = publisher;
         this.fileName = fileName;
-    }
-
-    @Override
-    public CompletableFuture<?> start() {
-        final URL url = getClass().getClassLoader().getResource(fileName);
-
-        if (url == null) {
-            throw new ApplicationConfigurationException(fileName + " could not be " +
-                "found");
-        }
-        try {
-            this.file = new File(url.toURI());
-        }
-        catch (URISyntaxException ex) {
-            throw new ApplicationConfigurationException("Failed to read file: " + fileName, ex);
-        }
-
-        return CompletableFuture.completedFuture(null);
+        this.file = new File(fileName);
     }
 
     @Override
