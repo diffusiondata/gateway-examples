@@ -19,7 +19,7 @@
           "pollTimeoutMs": 4000
         },
         "application": {
-          "fileName": "/Users/ndhougoda-hamal/Documents/projects/github/gateway-examples/csv-file-adapter/csv-file-source/src/main/resources/weather.csv",
+          "fileName": "./weather.csv",
           "diffusionTopicName": "polling/weather"
         }
       }
@@ -30,7 +30,7 @@
       "description": "Streaming changes to 'weather.csv' file and publishes to server",
       "config": {
         "application": {
-          "fileName": "/Users/ndhougoda-hamal/Documents/projects/github/gateway-examples/csv-file-adapter/csv-file-source/src/main/resources/weather.csv",
+          "fileName": "./weather.csv",
           "diffusionTopicName": "streaming/weather"
         }
       }
