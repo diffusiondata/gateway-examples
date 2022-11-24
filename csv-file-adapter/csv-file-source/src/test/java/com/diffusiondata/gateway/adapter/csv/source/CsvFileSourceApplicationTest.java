@@ -112,6 +112,7 @@ class CsvFileSourceApplicationTest {
 
         when(serviceDefinition.getParameters()).thenReturn(parameters);
         when(sourceConfigValidator.validateAndGet(parameters)).thenReturn(sourceConfig);
+        when(sourceConfig.getFileName()).thenReturn("file");
 
         PollingSourceHandler pollingSourceHandler =
             csvFileSourceApplication.addPollingSource(
@@ -145,6 +146,7 @@ class CsvFileSourceApplicationTest {
 
         when(serviceDefinition.getParameters()).thenReturn(parameters);
         when(sourceConfigValidator.validateAndGet(parameters)).thenReturn(sourceConfig);
+        when(sourceConfig.getFileName()).thenReturn("file");
 
         StreamingSourceHandler streamingSourceHandler =
             csvFileSourceApplication.addStreamingSource(

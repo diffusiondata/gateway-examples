@@ -47,7 +47,7 @@ final class CsvStreamingSourceHandler implements StreamingSourceHandler {
     private final AtomicInteger conversionErrorCount = new AtomicInteger(0);
 
     private final String fileName;
-    private File file;
+    private final File file;
 
     private Future<?> future;
     private WatchService watchService;
@@ -62,6 +62,7 @@ final class CsvStreamingSourceHandler implements StreamingSourceHandler {
         this.stateHandler = stateHandler;
         this.publisher = publisher;
         this.fileName = fileName;
+        this.file = new File(fileName);
     }
 
     @Override
@@ -192,10 +193,6 @@ final class CsvStreamingSourceHandler implements StreamingSourceHandler {
     }
 
     private void updateAndStartWatchingFile() {
-        if (file == null) {
-            file = new File(fileName);
-        }
-
         update();
 
         future = executorService.submit(() -> {

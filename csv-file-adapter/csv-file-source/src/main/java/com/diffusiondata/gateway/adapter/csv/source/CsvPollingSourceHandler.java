@@ -33,7 +33,7 @@ final class CsvPollingSourceHandler implements PollingSourceHandler {
     private final AtomicInteger conversionErrorCount = new AtomicInteger(0);
 
     private final String fileName;
-    private File file;
+    private final File file;
 
     CsvPollingSourceHandler(
         final String fileName,
@@ -43,13 +43,7 @@ final class CsvPollingSourceHandler implements PollingSourceHandler {
         this.diffusionTopicName = diffusionTopicName;
         this.publisher = publisher;
         this.fileName = fileName;
-    }
-
-    @Override
-    public CompletableFuture<?> start() {
         this.file = new File(fileName);
-
-        return CompletableFuture.completedFuture(null);
     }
 
     @Override
