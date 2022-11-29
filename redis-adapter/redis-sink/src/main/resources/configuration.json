@@ -1,0 +1,26 @@
+{
+  "id": "redis-adapter-1",
+  "framework-version": 1,
+  "application-version": 1,
+  "diffusion": {
+    "url": "ws://localhost:8080",
+    "principal": "admin",
+    "password": "password",
+    "reconnectIntervalMs": 5000
+  },
+  "services": [
+    {
+      "serviceName": "dataSelectorSink",
+      "serviceType": "REDIS_SINK",
+      "description": "Subscribes to 'data' diffusion topic selector and stores its content to a Redis instance",
+      "config": {
+        "framework": {
+          "diffusionTopicSelector": "?data//"
+        },
+        "application": {
+          "redisUrl": "redis://password@localhost:6379/"
+        }
+      }
+    }
+  ]
+}

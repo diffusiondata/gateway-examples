@@ -10,6 +10,7 @@
     <version>1.0.0</version>
     <modules>
         <module>csv-file-adapter</module>
+        <module>redis-adapter</module>
     </modules>
 
     <properties>
