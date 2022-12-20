@@ -28,7 +28,7 @@
         <dependency>
             <groupId>com.diffusiondata.gateway</groupId>
             <artifactId>gateway-framework</artifactId>
-            <version>1.0.0_RC1</version>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>
