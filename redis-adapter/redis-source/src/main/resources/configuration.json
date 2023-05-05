@@ -1,0 +1,39 @@
+{
+  "id": "redis-source-adapter-1",
+  "framework-version": 1,
+  "application-version": 1,
+  "diffusion": {
+    "url": "ws://localhost:8080",
+    "principal": "admin",
+    "password": "password",
+    "reconnectIntervalMs": 5000
+  },
+  "services": [
+    {
+      "serviceName": "redisPollingSource",
+      "serviceType": "POLLING_REDIS_SOURCE",
+      "description": "Polls data from a Redis instance and publishes to server",
+      "config": {
+        "framework": {
+          "pollIntervalMs": 2000,
+          "pollTimeoutMs": 4000
+        },
+        "application": {
+          "redisUrl": "redis://password@localhost:6379/",
+          "diffusionTopicName": "polling/redis"
+        }
+      }
+    },
+    {
+      "serviceName": "redisStreamingSource",
+      "serviceType": "STREAMING_REDIS_SOURCE",
+      "description": "Streaming changes on a Redis instance and publishes to server",
+      "config": {
+        "application": {
+          "redisUrl": "redis://password@localhost:6379/",
+          "diffusionTopicName": "streaming/redis"
+        }
+      }
+    }
+  ]
+}
