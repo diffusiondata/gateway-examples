@@ -19,7 +19,7 @@ import com.diffusiondata.gateway.framework.exceptions.PayloadConversionException
  * Implementation of a streaming source handler which registers a missing topic
  * notification handler and publishes dummy data to the missing topics.
  *
- * @author ndhougoda-hamal
+ * @author Push Technology Limited
  */
 public final class MissingTopicHandler implements StreamingSourceHandler {
     private static final Logger LOG =

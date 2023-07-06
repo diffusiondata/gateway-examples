@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <Configuration status="warn"
-               name="Misc Gateway application"
+               name="Example Gateway application"
                shutdownHook="disable"
                monitorInterval="30">
 
@@ -17,8 +17,8 @@
             <PatternLayout pattern="${pattern}"/>
         </Console>
 
-        <RollingRandomAccessFile name="file" fileName="${log.dir}/gatewayapplication.log"
-                                 filePattern="${log.dir}/$${date:yyyy-MM}/gatewayapplication-%d{MM-dd-yyyy}-%i.log.gz">
+        <RollingRandomAccessFile name="file" fileName="${log.dir}/exampleGatewayApplication.log"
+                                 filePattern="${log.dir}/$${date:yyyy-MM}/exampleGatewayApplication-%d{MM-dd-yyyy}-%i.log.gz">
 
             <PatternLayout pattern="${pattern}"/>
 
