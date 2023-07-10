@@ -14,11 +14,10 @@ This application supports two service types:
 ### DATE_APPENDER
 
 This hybrid service supports getting Diffusion JSON topic updates and appends
-timestamp to the JSON data, if the data is of type JSON object. For any other
-types of JSON data, they will be ignored. The updated data will then be
+a timestamp to the JSON data, if the data is of type JSON object. Any other types of JSON data will be ignored. The updated data will then be
 published to another Diffusion JSON topic. This target Diffusion topic path will
 be created by appending value of `targetTopicPrefix` from service configuration
-to the actual path, from where update is received. Setting `targetTopicPrefix` in configuration is optional. If this configuration paramter is not set then its default value is used which is `enhanced/`.
+to the actual path, from where the update is received. Setting `targetTopicPrefix` in configuration is optional. If this configuration parameter is not set then its default value is used which is `enhanced/`.
 
 The schema of configuration for this service type is:
 
@@ -103,11 +102,11 @@ type `MISSING_TOPIC_HANDLER`:
 
 With this configuration, the service will register for missing topic
 notifications for the `fx/EUR` topic path. If any other session subscribes to
-this path and the topic does not exist in server, this service will create a
+this path and the topic does not exist in the server, this service will create a
 JSON-type topic and publish dummy data to it.
 
 NOTE:
-> For the demonstration purposes, supplied configuration file: `src/main/resources/configuration.json` is created such that, a service of type `MISSING_TOPIC_HANDLER` will be created which will register for missing topic notification for topic path `fx/EUR`. Services of type `DATE_APPENDER` are created such that they subscribe to topic `fx/EUR`. Hence, when these services are added into the application, services `dateAppender1` and `dateAppender2` will subscribe to `fx/EUR` topic and service `missingTopicHandler` will create and update `fx/EUR` topic. As soon as the topic is created, `dateAppender1` and `dateAppender2` will send updates with date appended in them to topics `updated/fx/EUR` and `enhanced/fx/EUR` respectively. 
+> For the demonstration purposes, the supplied configuration file: `src/main/resources/configuration.json` is created such that, a service of type `MISSING_TOPIC_HANDLER` will be created which will register for missing topic notification for topic path `fx/EUR`. Services of type `DATE_APPENDER` are created such that they subscribe to topic `fx/EUR`. Hence, when these services are added into the application, services `dateAppender1` and `dateAppender2` will subscribe to `fx/EUR` topic and service `missingTopicHandler` will create and update `fx/EUR` topic. As soon as the topic is created, `dateAppender1` and `dateAppender2` will send updates with date appended in them to topics `updated/fx/EUR` and `enhanced/fx/EUR` respectively. 
 
 ## Metrics
 Out of the box metrics provided by Framework are exposed with JMX and Prometheus. 

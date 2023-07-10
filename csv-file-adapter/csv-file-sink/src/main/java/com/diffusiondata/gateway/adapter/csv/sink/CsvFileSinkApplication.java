@@ -17,7 +17,7 @@ import com.diffusiondata.gateway.framework.exceptions.ApplicationConfigurationEx
 /**
  * Main Gateway Application implementation for Csv sink application.
  *
- * @author Push Technology Limited
+ * @author DiffusionData Ltd
  */
 final class CsvFileSinkApplication implements GatewayApplication {
 

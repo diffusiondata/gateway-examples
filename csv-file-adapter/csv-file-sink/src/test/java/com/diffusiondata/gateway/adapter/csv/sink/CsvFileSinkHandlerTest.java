@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests for {@link CsvFileSinkHandler}.
  *
- * @author Push Technology Limited
+ * @author DiffusionData Ltd
  */
 class CsvFileSinkHandlerTest {
 

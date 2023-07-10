@@ -33,7 +33,7 @@ import io.micrometer.prometheus.PrometheusMeterRegistry;
  * A simple Gateway application to demonstrate creation of Hybrid service
  * handler and Missing topic notification handler.
  *
- * @author Push Technology Limited
+ * @author DiffusionData Ltd
  */
 public class ExampleGatewayApplication implements GatewayApplication {
 

@@ -35,7 +35,7 @@ import com.diffusiondata.gateway.framework.exceptions.PayloadConversionException
 /**
  * Tests for {@link CsvStreamingSourceHandler}.
  *
- * @author Push Technology Limited
+ * @author DiffusionData Ltd
  */
 @ExtendWith(MockitoExtension.class)
 class CsvStreamingSourceHandlerTest {

@@ -20,7 +20,7 @@ import net.jcip.annotations.Immutable;
 /**
  * CSV file sink handler to write received string update into a CSV file.
  *
- * @author Push Technology Limited
+ * @author DiffusionData Ltd
  */
 @Immutable
 final class CsvFileSinkHandler implements SinkHandler<String> {

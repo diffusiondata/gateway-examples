@@ -23,7 +23,7 @@ import com.diffusiondata.gateway.framework.exceptions.InvalidConfigurationExcept
 /**
  * Tests for {@link SourceConfigValidator}.
  *
- * @author Push Technology Limited
+ * @author DiffusionData Ltd
  */
 @ExtendWith(MockitoExtension.class)
 class SourceConfigValidatorTest {

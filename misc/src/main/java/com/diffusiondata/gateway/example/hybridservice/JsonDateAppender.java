@@ -20,13 +20,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
- * A Hybrid service handler which gets update from JSON Diffusion topic and
+ * A Hybrid service handler which gets an update from a JSON Diffusion topic and
  * appends current timestamp to the update and publishes it into another
  * Diffusion topic.
  * <p>
- * This handler only appends date to the update if the is of type JSON object.
+ * This handler only appends the date to the update if the update is of type JSON object.
  *
- * @author Push Technology Limited
+ * @author DiffusionData Ltd
  */
 public final class JsonDateAppender implements HybridHandler<String> {
 

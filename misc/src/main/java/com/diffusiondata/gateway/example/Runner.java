@@ -3,7 +3,7 @@ package com.diffusiondata.gateway.example;
 /**
  * Runner class.
  *
- * @author Push Technology Limited
+ * @author DiffusionData Ltd
  */
 public class Runner {
     public static void main(String[] args) {

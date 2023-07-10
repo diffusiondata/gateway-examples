@@ -38,7 +38,7 @@ import com.diffusiondata.gateway.framework.exceptions.InvalidConfigurationExcept
 /**
  * Tests for {@link CsvFileSourceApplication}.
  *
- * @author Push Technology Limited
+ * @author DiffusionData Ltd
  */
 @ExtendWith(MockitoExtension.class)
 class CsvFileSourceApplicationTest {

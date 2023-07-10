@@ -12,7 +12,7 @@ import io.micrometer.prometheus.PrometheusMeterRegistry;
 /**
  * Http server to expose Prometheus metrics.
  *
- * @author Push Technology Limited
+ * @author DiffusionData Ltd
  */
 public final class PrometheusServer implements Runnable {
     private static final String path = "/metrics";

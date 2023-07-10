@@ -8,7 +8,7 @@ import com.diffusiondata.gateway.framework.exceptions.InvalidConfigurationExcept
 /**
  * Validator for {@link SourceConfig} instance.
  *
- * @author Push Technology Limited
+ * @author DiffusionData Ltd
  */
 public final class SourceConfigValidator {
 
