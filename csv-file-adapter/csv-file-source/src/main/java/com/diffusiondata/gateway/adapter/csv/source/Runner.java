@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * Main Runner class.
  *
- * @author Push Technology Limited
+ * @author DiffusionData Ltd
  */
 public class Runner {
     public static void main(String[] args) {

@@ -32,7 +32,7 @@ import com.diffusiondata.gateway.framework.exceptions.PayloadConversionException
  * Implementation of {@link StreamingSourceHandler} which listens to csv file
  * changes and publishes contents to Diffusion server.
  *
- * @author Push Technology Limited
+ * @author DiffusionData Ltd
  */
 final class CsvStreamingSourceHandler implements StreamingSourceHandler {
     private static final Logger LOG =

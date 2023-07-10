@@ -28,7 +28,7 @@ import com.pushtechnology.diffusion.datatype.json.JSON;
  * all the items of array will be looped to extract the headers. Hence, this
  * convertor is suggested to be used only for simple and small JSON payload.
  *
- * @author Push Technology Limited
+ * @author DiffusionData Ltd
  */
 public final class SimpleJSONToCsvStringConvertor
     implements OutboundPayloadConvertor<String, JSON> {

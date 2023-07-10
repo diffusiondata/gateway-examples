@@ -5,7 +5,7 @@ import static com.diffusiondata.gateway.framework.DiffusionGatewayFramework.init
 /**
  * Main Runner class.
  *
- * @author Push Technology Limited
+ * @author DiffusionData Ltd
  */
 public class Runner {
     public static void main(String[] args) {

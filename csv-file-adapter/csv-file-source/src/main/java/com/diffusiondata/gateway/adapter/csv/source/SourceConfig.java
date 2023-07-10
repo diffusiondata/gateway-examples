@@ -3,7 +3,7 @@ package com.diffusiondata.gateway.adapter.csv.source;
 /**
  * Sample configuration required for source application.
  *
- * @author Push Technology Limited
+ * @author DiffusionData Ltd
  */
 public final class SourceConfig {
     private String fileName;

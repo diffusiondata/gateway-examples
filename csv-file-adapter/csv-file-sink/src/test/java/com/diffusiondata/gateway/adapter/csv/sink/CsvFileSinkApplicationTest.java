@@ -18,7 +18,7 @@ import com.diffusiondata.gateway.framework.StateHandler;
 /**
  * Tests for {@link CsvFileSinkApplication}.
  *
- * @author Push Technology Limited
+ * @author DiffusionData Ltd
  */
 class CsvFileSinkApplicationTest {
 

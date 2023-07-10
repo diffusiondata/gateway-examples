@@ -17,7 +17,7 @@ import com.diffusiondata.gateway.framework.exceptions.InvalidConfigurationExcept
 /**
  * Main Gateway Application implementation for Csv source application.
  *
- * @author Push Technology Limited
+ * @author DiffusionData Ltd
  */
 final class CsvFileSourceApplication implements GatewayApplication {
 

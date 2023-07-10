@@ -1,0 +1,56 @@
+{
+  "id": "example-gateway-application-1",
+  "framework-version": 1,
+  "application-version": 1,
+  "diffusion": {
+    "url": "ws://localhost:8080",
+    "principal": "admin",
+    "password": "password",
+    "reconnectIntervalMs": 5000
+  },
+  "services": [
+    {
+      "serviceName": "dateAppender1",
+      "serviceType": "DATE_APPENDER",
+      "config": {
+        "framework": {
+          "sink": {
+            "diffusionTopicSelector": "fx/EUR"
+          }
+        },
+        "application": {
+          "targetTopicPrefix": "updated/"
+        }
+      }
+    },
+    {
+      "serviceName": "dateAppender2",
+      "serviceType": "DATE_APPENDER",
+      "config": {
+        "framework": {
+          "sink": {
+            "diffusionTopicSelector": "?fx//"
+          }
+        }
+      }
+    },
+    {
+      "serviceName": "missingTopicHandler",
+      "serviceType": "MISSING_TOPIC_HANDLER",
+      "config": {
+        "application": {
+          "missingTopicSelector": "fx/EUR"
+        }
+      }
+    }
+  ],
+  "global": {
+    "framework": {
+      "threadPoolSize": 10,
+      "mode": "DYNAMIC",
+      "metrics": {
+        "enabled": true
+      }
+    }
+  }
+}

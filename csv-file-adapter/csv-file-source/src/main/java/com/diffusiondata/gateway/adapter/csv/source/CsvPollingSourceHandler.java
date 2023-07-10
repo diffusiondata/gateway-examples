@@ -21,7 +21,7 @@ import com.diffusiondata.gateway.framework.exceptions.PayloadConversionException
 /**
  * Polling source handler implementation for CSV source.
  *
- * @author Push Technology Limited
+ * @author DiffusionData Ltd
  */
 final class CsvPollingSourceHandler implements PollingSourceHandler {
     private static final Logger LOG =
