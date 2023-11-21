@@ -5,13 +5,13 @@ import static com.diffusiondata.gateway.framework.DiffusionGatewayFramework.newA
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 
 import com.diffusiondata.gateway.example.hybridservice.JsonDateAppender;
 import com.diffusiondata.gateway.example.missingtopicnotification.MissingTopicHandler;
-import com.diffusiondata.gateway.framework.ApplicationDefinition;
+import com.diffusiondata.gateway.framework.ApplicationContext;
 import com.diffusiondata.gateway.framework.DiffusionGatewayFramework;
 import com.diffusiondata.gateway.framework.GatewayApplication;
-import com.diffusiondata.gateway.framework.GatewayFramework;
 import com.diffusiondata.gateway.framework.GatewayMeterRegistry;
 import com.diffusiondata.gateway.framework.HybridHandler;
 import com.diffusiondata.gateway.framework.Publisher;
@@ -19,6 +19,7 @@ import com.diffusiondata.gateway.framework.ServiceDefinition;
 import com.diffusiondata.gateway.framework.ServiceMode;
 import com.diffusiondata.gateway.framework.StateHandler;
 import com.diffusiondata.gateway.framework.StreamingSourceHandler;
+import com.diffusiondata.gateway.framework.Subscriber;
 import com.diffusiondata.gateway.framework.exceptions.ApplicationConfigurationException;
 import com.diffusiondata.gateway.framework.exceptions.ApplicationInitializationException;
 import com.diffusiondata.gateway.framework.exceptions.InvalidConfigurationException;
@@ -37,17 +38,21 @@ import io.micrometer.prometheus.PrometheusMeterRegistry;
  */
 public class ExampleGatewayApplication implements GatewayApplication {
 
-    private GatewayFramework gatewayFramework;
     private PrometheusServer prometheusServer;
     private PrometheusMeterRegistry prometheusMeterRegistry;
     private final CompositeMeterRegistry meterRegistry =
         new CompositeMeterRegistry();
+    private boolean isMetricsEnabled;
+    private ExecutorService executorService;
 
     @Override
     public void initialize(
-        final ApplicationDefinition applicationDefinition) throws ApplicationConfigurationException {
+        final ApplicationContext applicationContext) throws ApplicationConfigurationException {
 
-        if (!gatewayFramework.isMetricsEnabled()) {
+        this.executorService = applicationContext.getExecutorService();
+        isMetricsEnabled = applicationContext.isMetricsEnabled();
+
+        if (!isMetricsEnabled) {
             return;
         }
 
@@ -116,6 +121,7 @@ public class ExampleGatewayApplication implements GatewayApplication {
     public HybridHandler<?> addHybrid(
         ServiceDefinition serviceDefinition,
         Publisher publisher,
+        Subscriber subscriber,
         StateHandler stateHandler) throws InvalidConfigurationException {
 
 
@@ -162,24 +168,24 @@ public class ExampleGatewayApplication implements GatewayApplication {
 
     @Override
     public CompletableFuture<?> start() {
-        if (gatewayFramework.isMetricsEnabled()) {
+        if (isMetricsEnabled) {
 
             try {
-                prometheusServer = new PrometheusServer(prometheusMeterRegistry);
+                prometheusServer =
+                    new PrometheusServer(prometheusMeterRegistry);
             }
             catch (IOException ex) {
                 throw new ApplicationInitializationException("Failed to " +
                     "initialize Prometheus server", ex);
             }
 
-            gatewayFramework.getExecutorService().submit(prometheusServer);
+            executorService.submit(prometheusServer);
         }
 
         return CompletableFuture.completedFuture(null);
     }
 
     void initializeFramework() {
-        gatewayFramework = DiffusionGatewayFramework.initialize(this);
-        gatewayFramework.connect();
+        DiffusionGatewayFramework.start(this);
     }
 }

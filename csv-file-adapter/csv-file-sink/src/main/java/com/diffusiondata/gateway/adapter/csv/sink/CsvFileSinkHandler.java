@@ -12,6 +12,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.concurrent.CompletableFuture;
 
 import com.diffusiondata.gateway.framework.SinkHandler;
+import com.diffusiondata.gateway.framework.TopicProperties;
 import com.diffusiondata.gateway.framework.TopicType;
 import com.diffusiondata.gateway.framework.exceptions.InvalidConfigurationException;
 
@@ -34,12 +35,12 @@ final class CsvFileSinkHandler implements SinkHandler<String> {
     @Override
     public SinkServiceProperties getSinkServiceProperties() throws InvalidConfigurationException {
         return newSinkServicePropertiesBuilder()
-            .payloadConvertorName("$JSON_to_CSV_STRING")
+            .payloadConverter("JSON_to_CSV_STRING")
             .build();
     }
 
     @Override
-    public CompletableFuture<?> update(String diffusionTopic, String value) {
+    public CompletableFuture<?> update(String diffusionTopic, String value, TopicProperties topicProperties) {
 
         final CompletableFuture<?> updateCf =
             new CompletableFuture<>();
@@ -57,6 +58,11 @@ final class CsvFileSinkHandler implements SinkHandler<String> {
         }
 
         return updateCf;
+    }
+
+    @Override
+    public Class<String> valueType() {
+        return String.class;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.diffusiondata.gateway.adapter.csv.source;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.doThrow;
@@ -104,7 +105,7 @@ class CsvStreamingSourceHandlerTest {
         SourceServiceProperties serviceProperties =
             csvStreamingSourceHandler.getSourceServiceProperties();
 
-        assertEquals("$CSV_to_JSON", serviceProperties.getPayloadConvertorName());
+        assertTrue(serviceProperties.getPayloadConverterNames().contains("$CSV_to_JSON"));
         assertEquals(UpdateMode.STREAMING, serviceProperties.getUpdateMode());
     }
 }

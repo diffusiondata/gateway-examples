@@ -11,6 +11,7 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -62,7 +63,7 @@ final class CsvStreamingSourceHandler implements StreamingSourceHandler {
         this.stateHandler = stateHandler;
         this.publisher = publisher;
         this.fileName = fileName;
-        this.file = new File(fileName);
+        this.file = new File(Objects.requireNonNull(this.getClass().getResource(fileName)).getFile());
     }
 
     @Override
@@ -83,8 +84,7 @@ final class CsvStreamingSourceHandler implements StreamingSourceHandler {
     public SourceServiceProperties getSourceServiceProperties() throws InvalidConfigurationException {
         return
             newSourceServicePropertiesBuilder()
-                .updateMode(UpdateMode.STREAMING)
-                .payloadConvertorName("$CSV_to_JSON")
+                .payloadConverter("$CSV_to_JSON")
                 .build();
     }
 

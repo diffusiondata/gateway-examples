@@ -112,7 +112,7 @@ class CsvFileSourceApplicationTest {
 
         when(serviceDefinition.getParameters()).thenReturn(parameters);
         when(sourceConfigValidator.validateAndGet(parameters)).thenReturn(sourceConfig);
-        when(sourceConfig.getFileName()).thenReturn("file");
+        when(sourceConfig.getFileName()).thenReturn("./weather.csv");
 
         PollingSourceHandler pollingSourceHandler =
             csvFileSourceApplication.addPollingSource(
@@ -146,7 +146,7 @@ class CsvFileSourceApplicationTest {
 
         when(serviceDefinition.getParameters()).thenReturn(parameters);
         when(sourceConfigValidator.validateAndGet(parameters)).thenReturn(sourceConfig);
-        when(sourceConfig.getFileName()).thenReturn("file");
+        when(sourceConfig.getFileName()).thenReturn("./weather.csv");
 
         StreamingSourceHandler streamingSourceHandler =
             csvFileSourceApplication.addStreamingSource(

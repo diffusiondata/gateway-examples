@@ -11,6 +11,7 @@ import com.diffusiondata.gateway.framework.ServiceDefinition;
 import com.diffusiondata.gateway.framework.ServiceMode;
 import com.diffusiondata.gateway.framework.SinkHandler;
 import com.diffusiondata.gateway.framework.StateHandler;
+import com.diffusiondata.gateway.framework.Subscriber;
 import com.diffusiondata.gateway.framework.exceptions.ApplicationConfigurationException;
 
 
@@ -52,8 +53,9 @@ final class CsvFileSinkApplication implements GatewayApplication {
     }
 
     @Override
-    public SinkHandler addSink(
+    public SinkHandler<?> addSink(
         ServiceDefinition serviceDefinition,
+        Subscriber subscriber,
         StateHandler stateHandler) {
 
         final Map<String, Object> parameters =

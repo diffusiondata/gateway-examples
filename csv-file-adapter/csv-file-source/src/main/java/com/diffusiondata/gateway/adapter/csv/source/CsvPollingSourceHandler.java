@@ -5,6 +5,7 @@ import static com.diffusiondata.gateway.framework.DiffusionGatewayFramework.newS
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -43,7 +44,7 @@ final class CsvPollingSourceHandler implements PollingSourceHandler {
         this.diffusionTopicName = diffusionTopicName;
         this.publisher = publisher;
         this.fileName = fileName;
-        this.file = new File(fileName);
+        this.file = new File(Objects.requireNonNull(this.getClass().getResource(fileName)).getFile());
     }
 
     @Override
@@ -96,7 +97,7 @@ final class CsvPollingSourceHandler implements PollingSourceHandler {
         return
             newSourceServicePropertiesBuilder()
                 .updateMode(UpdateMode.STREAMING)
-                .payloadConvertorName("$CSV_to_JSON")
+                .payloadConverter("$CSV_to_JSON")
                 .build();
     }
 }
