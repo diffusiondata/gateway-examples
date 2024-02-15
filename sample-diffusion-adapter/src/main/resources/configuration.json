@@ -1,0 +1,57 @@
+{
+  "framework-version" : 1,
+  "application-version" : 1,
+  "id" : "gateway-application-1",
+  "diffusion" : {
+    "url" : "ws://localhost:8090",
+    "principal" : "admin",
+    "password" : "password"
+  },
+  "services" : [ {
+    "serviceName" : "localStreamer",
+    "description" : "",
+    "serviceType" : "LOCAL_STREAMER",
+    "config" : {
+      "framework" : {
+        "diffusionTopicSelector" : "?data//"
+      }
+    }
+  }, {
+    "serviceName" : "weatherConsumer",
+    "description" : "Consumes from remote topic and publishes to local",
+    "serviceType" : "REMOTE_STREAMER",
+    "config" : {
+      "framework" : {
+        "publicationRetries" : 5,
+        "retryIntervalMs" : 5000,
+        "payloadConverters" : [ {
+          "name" : "$Object_to_String"
+        } ],
+        "topicProperties" : {
+          "persistencePolicy" : "SESSION",
+          "timeSeries" : false,
+          "publishValuesOnly" : false,
+          "dontRetainValue" : false
+        }
+      },
+      "application" : {
+        "principal" : "admin",
+        "password" : "password",
+        "topicSelector" : "?weather//",
+        "url" : "ws://localhost:7090"
+      },
+      "state" : "ACTIVE"
+    }
+  } ],
+  "global" : {
+    "framework" : {
+      "threadPoolSize" : 11,
+      "mode" : "DYNAMIC",
+      "metrics" : {
+        "enabled" : true,
+        "filterMetricsPrefixes" : [ ]
+      }
+    },
+    "application" : { }
+  }
+}

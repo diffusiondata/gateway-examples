@@ -11,6 +11,8 @@
     <modules>
         <module>csv-file-adapter</module>
         <module>misc</module>
+        <module>sample-diffusion-adapter</module>
+        <module>languageConverter</module>
     </modules>
 
     <properties>
@@ -32,9 +34,9 @@
             <version>2.0.0_RC1</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j2-impl</artifactId>
-            <version>2.20.0</version>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-jmx</artifactId>
+            <version>1.8.1</version>
         </dependency>
     </dependencies>
 
