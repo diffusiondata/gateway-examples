@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="CsvFileSinkRunner" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="com.diffusiondata.gateway.adapter.csv.sink.Runner" />
+    <module name="csv-file-sink" />
+    <option name="VM_PARAMETERS" value="-Dgateway.config.file=$PROJECT_DIR$/csv-file-adapter/csv-file-sink/src/main/resources/configuration.json -Dgateway.config.use-local-services=true" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.diffusiondata.gateway.adapter.csv.sink.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

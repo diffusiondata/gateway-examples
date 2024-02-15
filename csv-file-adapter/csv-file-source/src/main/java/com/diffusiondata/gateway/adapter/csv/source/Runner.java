@@ -1,7 +1,6 @@
 package com.diffusiondata.gateway.adapter.csv.source;
 
-import static com.diffusiondata.gateway.framework.DiffusionGatewayFramework.initialize;
-
+import com.diffusiondata.gateway.framework.DiffusionGatewayFramework;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -14,7 +13,6 @@ public class Runner {
         final CsvFileSourceApplication csvFileSourceApplication =
             new CsvFileSourceApplication(new SourceConfigValidator(new ObjectMapper()));
 
-        initialize(csvFileSourceApplication)
-            .connect();
+        DiffusionGatewayFramework.start(csvFileSourceApplication);
     }
 }

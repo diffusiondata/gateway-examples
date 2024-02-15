@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.diffusiondata.gateway.framework.HybridHandler;
 import com.diffusiondata.gateway.framework.Publisher;
+import com.diffusiondata.gateway.framework.TopicProperties;
 import com.diffusiondata.gateway.framework.TopicType;
 import com.diffusiondata.gateway.framework.exceptions.InvalidConfigurationException;
 import com.diffusiondata.gateway.framework.exceptions.PayloadConversionException;
@@ -51,7 +52,7 @@ public final class JsonDateAppender implements HybridHandler<String> {
     }
 
     @Override
-    public CompletableFuture<?> update(String path, String value) {
+    public CompletableFuture<?> update(String path, String value, TopicProperties topicProperties) {
 
         try {
             final JsonNode jsonNode = OBJECT_MAPPER.readTree(value);
@@ -80,6 +81,11 @@ public final class JsonDateAppender implements HybridHandler<String> {
     }
 
     @Override
+    public Class<String> valueType() {
+        return String.class;
+    }
+
+    @Override
     public CompletableFuture<?> pause(PauseReason pauseReason) {
         return CompletableFuture.completedFuture(null);
     }
@@ -87,14 +93,6 @@ public final class JsonDateAppender implements HybridHandler<String> {
     @Override
     public CompletableFuture<?> resume(ResumeReason resumeReason) {
         return CompletableFuture.completedFuture(null);
-    }
-
-    @Override
-    public SinkServiceProperties getSinkServiceProperties() throws InvalidConfigurationException {
-        return
-            newSinkServicePropertiesBuilder()
-                .topicType(TopicType.JSON)
-                .build();
     }
 
     @Override

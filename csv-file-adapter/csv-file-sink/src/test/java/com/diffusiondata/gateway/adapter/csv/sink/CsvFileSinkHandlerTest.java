@@ -13,6 +13,9 @@ import java.util.Comparator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+
+import com.diffusiondata.gateway.framework.TopicProperties;
 
 /**
  * Tests for {@link CsvFileSinkHandler}.
@@ -23,6 +26,9 @@ class CsvFileSinkHandlerTest {
 
     private static final String testFilePath = "./testPath";
     private CsvFileSinkHandler csvFileSinkHandler;
+
+    @Mock
+    private TopicProperties topicProperties;
 
     @BeforeEach
     void setUp() {
@@ -46,7 +52,7 @@ class CsvFileSinkHandlerTest {
 
         assertFalse(new File(expectedFinalFileName).exists());
 
-        csvFileSinkHandler.update(diffusionTopic, dataToWrite);
+        csvFileSinkHandler.update(diffusionTopic, dataToWrite, topicProperties);
 
         assertTrue(new File(expectedFinalFileName).exists());
 
@@ -63,7 +69,7 @@ class CsvFileSinkHandlerTest {
 
         assertFalse(new File(expectedFinalFileName).exists());
 
-        csvFileSinkHandler.update(diffusionTopic, dataToWrite);
+        csvFileSinkHandler.update(diffusionTopic, dataToWrite, topicProperties);
 
         assertTrue(new File(expectedFinalFileName).exists());
 
@@ -80,7 +86,7 @@ class CsvFileSinkHandlerTest {
 
         assertFalse(new File(expectedFinalFileName).exists());
 
-        csvFileSinkHandler.update(diffusionTopic, firstDataToWrite);
+        csvFileSinkHandler.update(diffusionTopic, firstDataToWrite, topicProperties);
 
         assertTrue(new File(expectedFinalFileName).exists());
 
@@ -88,7 +94,7 @@ class CsvFileSinkHandlerTest {
         assertEquals(firstDataToWrite, fileContent);
 
         String lastDataToWrite = "newData";
-        csvFileSinkHandler.update(diffusionTopic, lastDataToWrite);
+        csvFileSinkHandler.update(diffusionTopic, lastDataToWrite, topicProperties);
 
         assertTrue(new File(expectedFinalFileName).exists());
 
@@ -108,7 +114,7 @@ class CsvFileSinkHandlerTest {
 
         assertFalse(new File(expectedFinalFileName).exists());
 
-        csvFileSinkHandler.update(diffusionTopic, dataToWrite);
+        csvFileSinkHandler.update(diffusionTopic, dataToWrite, topicProperties);
 
         assertTrue(new File(expectedFinalFileName).exists());
 

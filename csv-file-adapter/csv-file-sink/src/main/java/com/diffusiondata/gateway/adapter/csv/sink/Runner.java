@@ -1,6 +1,6 @@
 package com.diffusiondata.gateway.adapter.csv.sink;
 
-import static com.diffusiondata.gateway.framework.DiffusionGatewayFramework.initialize;
+import static com.diffusiondata.gateway.framework.DiffusionGatewayFramework.start;
 
 /**
  * Main Runner class.
@@ -12,7 +12,6 @@ public class Runner {
         final CsvFileSinkApplication csvFileSinkApplication =
             new CsvFileSinkApplication();
 
-        initialize(csvFileSinkApplication)
-            .connect();
+        start(csvFileSinkApplication);
     }
 }

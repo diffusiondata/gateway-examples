@@ -14,6 +14,7 @@ import com.diffusiondata.gateway.framework.GatewayApplication.ApplicationDetails
 import com.diffusiondata.gateway.framework.ServiceDefinition;
 import com.diffusiondata.gateway.framework.SinkHandler;
 import com.diffusiondata.gateway.framework.StateHandler;
+import com.diffusiondata.gateway.framework.Subscriber;
 
 /**
  * Tests for {@link CsvFileSinkApplication}.
@@ -47,7 +48,7 @@ class CsvFileSinkApplicationTest {
 
         when(serviceDefinition.getParameters()).thenReturn(Collections.singletonMap("filePath", "path"));
         SinkHandler sinkHandler = csvFileSinkApplication.addSink(
-            serviceDefinition, stateHandler);
+            serviceDefinition, mock(Subscriber.class), stateHandler);
 
         assertTrue(sinkHandler instanceof CsvFileSinkHandler);
     }

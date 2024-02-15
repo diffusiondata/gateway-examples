@@ -9,11 +9,11 @@ import com.diffusiondata.gateway.framework.exceptions.PayloadConversionException
 import com.pushtechnology.diffusion.client.Diffusion;
 
 /**
- * Tests for {@link SimpleJSONToCsvStringConvertor}.
+ * Tests for {@link SimpleJSONToCsvStringConverter}.
  *
  * @author ndhougoda-hamal
  */
-class SimpleJSONToCsvStringConvertorTest {
+class SimpleJSONToCsvStringConverterTest {
 
     private static final String SIMPLE_JSON_OBJECT_TEST_DATA = "{\n" +
         "  \"name\": \"Sam\",\n" +
@@ -51,13 +51,13 @@ class SimpleJSONToCsvStringConvertorTest {
         "    ]\n" +
         "  ]";
 
-    private final SimpleJSONToCsvStringConvertor simpleJsonToCsvStringConvertor =
-        new SimpleJSONToCsvStringConvertor();
+    private final SimpleJSONToCsvStringConverter simpleJsonToCsvStringConverter =
+        new SimpleJSONToCsvStringConverter();
 
     @Test
     void testFromDiffusionTypeForObjectJsonData() throws PayloadConversionException {
         String convertedValue =
-            simpleJsonToCsvStringConvertor.fromDiffusionType(
+            simpleJsonToCsvStringConverter.convert(
                 Diffusion.dataTypes().json().fromJsonString(SIMPLE_JSON_OBJECT_TEST_DATA));
 
         assertEquals("name,profession,age\n" +
@@ -67,7 +67,7 @@ class SimpleJSONToCsvStringConvertorTest {
     @Test
     void testFromDiffusionTypeForArrayJsonData() throws PayloadConversionException {
         String convertedValue =
-            simpleJsonToCsvStringConvertor.fromDiffusionType(
+            simpleJsonToCsvStringConverter.convert(
                 Diffusion.dataTypes().json().fromJsonString(SIMPLE_JSON_ARRAY_TEST_DATA));
 
         assertEquals("user,membership,age,salary\n" +
@@ -79,7 +79,7 @@ class SimpleJSONToCsvStringConvertorTest {
     void testFromDiffusionTypeForComplexObjectJsonData() {
         PayloadConversionException exception =
             assertThrows(PayloadConversionException.class,
-                () -> simpleJsonToCsvStringConvertor.fromDiffusionType(
+                () -> simpleJsonToCsvStringConverter.convert(
                     Diffusion.dataTypes().json().fromJsonString(COMPLEX_JSON_OBJECT_TEST_DATA)));
 
         assertEquals(
@@ -91,17 +91,17 @@ class SimpleJSONToCsvStringConvertorTest {
     void testFromDiffusionTypeForComplexArrayJsonData() {
         PayloadConversionException exception =
             assertThrows(PayloadConversionException.class,
-                () -> simpleJsonToCsvStringConvertor.fromDiffusionType(
+                () -> simpleJsonToCsvStringConverter.convert(
                     Diffusion.dataTypes().json().fromJsonString(COMPLEX_JSON_ARRAY_TEST_DATA)));
 
         assertEquals(
-            "This convertor can convert only simple JSON objects and JSON " +
+            "This converter can convert only simple JSON objects and JSON " +
                 "array containing simple JSON objects",
             exception.getMessage());
     }
 
     void testGetNameAndToString() {
-        assertEquals("$JSON_to_CSV_STRING", simpleJsonToCsvStringConvertor.getName());
-        assertEquals("$JSON_to_CSV_STRING", simpleJsonToCsvStringConvertor.toString());
+        assertEquals("JSON_to_CSV_STRING", simpleJsonToCsvStringConverter.getName());
+        assertEquals("JSON_to_CSV_STRING", simpleJsonToCsvStringConverter.toString());
     }
 }

@@ -35,7 +35,7 @@ import com.diffusiondata.gateway.framework.exceptions.PayloadConversionException
  */
 @ExtendWith({MockitoExtension.class})
 class CsvPollingSourceHandlerTest {
-    private static final String FILE_NAME = "file.csv";
+    private static final String FILE_NAME = "./weather.csv";
     private static final String DIFFUSION_TOPIC_NAME = "csvSourceTopic";
 
     private CsvPollingSourceHandler csvPollingSourceHandler;
@@ -98,8 +98,7 @@ class CsvPollingSourceHandlerTest {
         SourceServiceProperties serviceProperties =
             csvPollingSourceHandler.getSourceServiceProperties();
 
-        assertEquals("$CSV_to_JSON",
-            serviceProperties.getPayloadConvertorName());
+        assertTrue(serviceProperties.getPayloadConverterNames().contains("$CSV_to_JSON"));
         assertEquals(UpdateMode.STREAMING, serviceProperties.getUpdateMode());
     }
 }

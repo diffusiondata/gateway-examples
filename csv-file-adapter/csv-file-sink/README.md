@@ -4,7 +4,7 @@
 This adapter can be used to get updates from Diffusion JSON topics and write the update to a CSV file. It supports only one type of service. 
 
 ### CSV_FILE_SINK  
-This sink service supports getting Diffusion JSON topic updates and publishing them to a CSV file specified in the configuration. This service will correctly function only for Diffusion topics of JSON topic type. If any other type of topic selector is used in its configuration, or the topic selector matches any non JSON topic type, when an update is received for this topic, Payload convertor exception will be thrown. This service type requires the following configuration to be declared in each defined service in the configuration file:
+This sink service supports getting Diffusion JSON topic updates and publishing them to a CSV file specified in the configuration. This service will correctly function only for Diffusion topics of JSON topic type. If any other type of topic selector is used in its configuration, or the topic selector matches any non JSON topic type, when an update is received for this topic, Payload converter exception will be thrown. This service type requires the following configuration to be declared in each defined service in the configuration file:
   
     "application": {
       "filePath": "./pathToCreateTheCsvFile/"
