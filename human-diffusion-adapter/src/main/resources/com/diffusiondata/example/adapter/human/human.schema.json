@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "greeting": {
+      "type": "string",
+      "default": "Hello Human!",
+      "description": "Friendly greeting shown to the user"
+    },
+    "topic": {
+      "type": "string",
+      "default": "human/says",
+      "description": "Topic to which human messages are published"
+    }
+  },
+  "required": ["greeting", "topic"]
+}

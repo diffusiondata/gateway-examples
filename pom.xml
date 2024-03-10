@@ -12,6 +12,7 @@
         <module>csv-file-adapter</module>
         <module>misc</module>
         <module>sample-diffusion-adapter</module>
+        <module>human-diffusion-adapter</module>
         <module>languageConverter</module>
     </modules>
 
