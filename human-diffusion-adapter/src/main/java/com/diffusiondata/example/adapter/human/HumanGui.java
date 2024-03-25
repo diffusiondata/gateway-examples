@@ -7,6 +7,7 @@ import static java.awt.BorderLayout.SOUTH;
 import static java.awt.GridBagConstraints.EAST;
 import static java.awt.GridBagConstraints.HORIZONTAL;
 import static java.awt.GridBagConstraints.WEST;
+import static java.util.Objects.requireNonNull;
 import static javax.swing.BorderFactory.createLoweredBevelBorder;
 import static javax.swing.KeyStroke.getKeyStroke;
 import static javax.swing.SwingConstants.RIGHT;
@@ -50,6 +51,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -75,6 +77,10 @@ public class HumanGui {
         Supplier<ServiceState> serviceStateSupplier,
         Function<SetStateEvent, ServiceState> setStateListener
     ) {
+        requireNonNull(greeting, "greeting cannot be null");
+        requireNonNull(serviceStateSupplier, "serviceStateSupplier cannot be null");
+        requireNonNull(setStateListener, "setStateListener cannot be null");
+
         this.frame = new JFrame(greeting);
         frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         frame.setSize(400, 300);
@@ -198,7 +204,7 @@ public class HumanGui {
 
         final JPopupMenu menu = new JPopupMenu();
         menu.add(new JMenuItem("Get")).addActionListener((ev) ->
-                serviceStateText.setText(this.serviceStateSupplier.get().toString())
+            serviceStateText.setText(this.serviceStateSupplier.get().toString())
         );
         attach(serviceStateText, menu);
         attach(serviceStateLabel, menu);
@@ -206,14 +212,12 @@ public class HumanGui {
         result.add(formPanel, CENTER);
         final JButton setStatusButton = new JButton("Set Status");
         setStatusButton.addActionListener((ev) -> {
-            if (this.setStateListener != null) {
-                final ServiceState serviceState = this.setStateListener.apply(new SetStateEvent(
-                    (StateHandler.Status)statusCombo.getSelectedItem(),
-                    titleText.getText(),
-                    descriptionText.getText())
-                );
-                this.serviceStateText.setText(serviceState.toString());
-            }
+            final ServiceState serviceState = this.setStateListener.apply(new SetStateEvent(
+                (StateHandler.Status)statusCombo.getSelectedItem(),
+                titleText.getText(),
+                descriptionText.getText())
+            );
+            this.serviceStateText.setText(serviceState.toString());
         });
         result.add(setStatusButton, SOUTH);
 
