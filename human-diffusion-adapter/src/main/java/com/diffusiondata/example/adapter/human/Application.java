@@ -1,6 +1,7 @@
 package com.diffusiondata.example.adapter.human;
 
 import static com.diffusiondata.example.adapter.human.Common.getParam;
+import static com.diffusiondata.example.adapter.human.Common.getResourceFileAsString;
 import static com.diffusiondata.gateway.framework.DiffusionGatewayFramework.newApplicationDetailsBuilder;
 import static com.diffusiondata.gateway.framework.ServiceMode.STREAMING_SOURCE;
 
@@ -18,7 +19,9 @@ import java.util.concurrent.CompletableFuture;
 
 public class Application implements GatewayApplication  {
 
-    private static final String GUI_SERVICE_SCHEMA = Common.getResourceFileAsString(Application.class, "human.schema.json");
+    private static final String GUI_SERVICE_SCHEMA = getResourceFileAsString(
+        Application.class,
+        "human.schema.json");
 
     @Override
     public ApplicationDetails getApplicationDetails() throws ApplicationConfigurationException {
@@ -33,8 +36,11 @@ public class Application implements GatewayApplication  {
     }
 
     @Override
-    public StreamingSourceHandler addStreamingSource(ServiceDefinition serviceDefinition, Publisher publisher, StateHandler stateHandler) throws InvalidConfigurationException {
-
+    public StreamingSourceHandler addStreamingSource(
+        ServiceDefinition serviceDefinition,
+        Publisher publisher,
+        StateHandler stateHandler
+    ) throws InvalidConfigurationException {
         final Map<String, Object> params = serviceDefinition.getParameters();
         final String greeting = getParam(params, "greeting", String.class, "Hello Human!");
         final String topicPath = getParam(params, "topic", String.class, "human/says");

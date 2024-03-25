@@ -22,9 +22,18 @@ public class HumanStreamingSourceHandler implements StreamingSourceHandler {
     private final StateHandler stateHandler;
     private final HumanGui gui;
 
-    public HumanStreamingSourceHandler(Publisher publisher, StateHandler stateHandler, String greeting, String topicPath) {
+    public HumanStreamingSourceHandler(
+        Publisher publisher,
+        StateHandler stateHandler,
+        String greeting,
+        String topicPath
+    ) {
         this.stateHandler = stateHandler;
-        this.gui = new HumanGui(greeting);
+        this.gui = new HumanGui(
+            greeting,
+            this.stateHandler::getState,
+            ev -> this.stateHandler.reportStatus(ev.getStatus(), ev.getTitle(), ev.getDescription())
+        );
         this.gui.addSendEventHandler((ev) -> {
             try {
                 publisher.publish(topicPath, ev.getMessage()).get(1, TimeUnit.SECONDS);
@@ -33,10 +42,6 @@ public class HumanStreamingSourceHandler implements StreamingSourceHandler {
                 LOG.error("Cannot publish '{}' to {}", ev.getMessage(), topicPath, ex);
             }
         });
-        this.gui.addSetStateEventHandler(ev ->
-            this.stateHandler.reportStatus(ev.getStatus(), ev.getTitle(), ev.getDescription())
-        );
-        this.gui.setServiceStateProducer(this.stateHandler::getState);
     }
 
     @Override

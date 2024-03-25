@@ -8,7 +8,7 @@ import java.awt.Insets;
  */
 public class Constraints {
 
-    GridBagConstraints result = new GridBagConstraints();
+    private final GridBagConstraints result = new GridBagConstraints();
 
     private Constraints(int x, int y, int width, int height) {
         this.result.gridx = x;

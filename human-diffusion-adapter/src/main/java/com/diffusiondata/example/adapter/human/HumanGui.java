@@ -21,7 +21,6 @@ import com.diffusiondata.gateway.framework.StateHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -51,7 +50,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -66,13 +64,17 @@ public class HumanGui {
     private final JFrame frame;
     private final JTextArea messageTextArea;
     private final JButton sendButton;
+    private final Supplier<ServiceState> serviceStateSupplier;
+    private final Function<SetStateEvent, ServiceState> setStateListener;
     private JLabel serviceStateText;
 
     // Mutable state
-    private Supplier<ServiceState> serviceStateSupplier = null;
-    private Function<SetStateEvent, ServiceState> setStateListeners = null;
 
-    public HumanGui(String greeting) {
+    public HumanGui(
+        String greeting,
+        Supplier<ServiceState> serviceStateSupplier,
+        Function<SetStateEvent, ServiceState> setStateListener
+    ) {
         this.frame = new JFrame(greeting);
         frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         frame.setSize(400, 300);
@@ -112,6 +114,9 @@ public class HumanGui {
 
         frame.setLocationRelativeTo(null); // Center on screen
         frame.add(splitPane);
+
+        this.serviceStateSupplier = serviceStateSupplier;
+        this.setStateListener = setStateListener;
     }
 
     private JComponent buildStatusPanel() {
@@ -201,8 +206,8 @@ public class HumanGui {
         result.add(formPanel, CENTER);
         final JButton setStatusButton = new JButton("Set Status");
         setStatusButton.addActionListener((ev) -> {
-            if (this.setStateListeners != null) {
-                final ServiceState serviceState = this.setStateListeners.apply(new SetStateEvent(
+            if (this.setStateListener != null) {
+                final ServiceState serviceState = this.setStateListener.apply(new SetStateEvent(
                     (StateHandler.Status)statusCombo.getSelectedItem(),
                     titleText.getText(),
                     descriptionText.getText())
@@ -225,7 +230,12 @@ public class HumanGui {
         return result;
     }
 
-    private static void bindKeyStrokeToAction(JComponent component, KeyStroke keyStroke, String actionKey, Action action) {
+    private static void bindKeyStrokeToAction(
+        JComponent component,
+        KeyStroke keyStroke,
+        String actionKey,
+        Action action
+    ) {
         final InputMap inputMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = component.getActionMap();
 
@@ -246,31 +256,23 @@ public class HumanGui {
         this.sendMessageListeners.add(handler);
     }
 
-    public void addSetStateEventHandler(Function<SetStateEvent, ServiceState> handler) {
-        this.setStateListeners = handler;
-    }
-
-    public void setServiceStateProducer(java.util.function.Supplier<ServiceState> supplier) {
-        this.serviceStateSupplier = supplier;
-    }
-
     public static void main(String[] args) {
         invokeLater(() -> {
             try {
                 setLookAndFeel(getSystemLookAndFeelClassName());
             }
-            catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            catch (UnsupportedLookAndFeelException | ClassNotFoundException |
+                   InstantiationException | IllegalAccessException ex) {
                 LOG.warn("Cannot set look and feel", ex);
             }
 
-            final HumanGui gui = new HumanGui("Simple test");
+            final HumanGui gui = new HumanGui("Simple test",
+                () -> ServiceState.INITIAL,
+                ev ->ServiceState.INITIAL);
             gui.setVisible(true);
             gui.addSendEventHandler(ev -> LOG.info("Sending: {}", ev));
-            gui.addSetStateEventHandler(ev ->{LOG.info("Setting status: {}", ev); return ServiceState.INITIAL;});
-            gui.setServiceStateProducer(() -> ServiceState.INITIAL);
         });
     }
-
 
 }
 
