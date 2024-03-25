@@ -12,7 +12,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class Common {
+final class Common {
+
+    private Common() {
+        /* this is a namespace */
+    }
 
     /**
      * Fetch a text resource relative to a given class for initialising a constant.
