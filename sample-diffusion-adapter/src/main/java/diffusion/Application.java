@@ -27,7 +27,8 @@ public class Application implements GatewayApplication {
         new JmxMeterRegistry(s -> null, Clock.SYSTEM);
 
     @Override
-    public GatewayMeterRegistry getGatewayMeterRegistry() {
+    public GatewayMeterRegistry initializeGatewayMeterRegistry(
+        Map<String, Object> globalParams) {
         return () -> meterRegistry;
     }
 

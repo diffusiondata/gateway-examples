@@ -32,7 +32,19 @@ public class HumanStreamingSourceHandler implements StreamingSourceHandler {
         this.gui = new HumanGui(
             greeting,
             this.stateHandler::getState,
-            ev -> this.stateHandler.reportStatus(ev.getStatus(), ev.getTitle(), ev.getDescription())
+            ev -> {
+                try {
+                    return
+                        this
+                            .stateHandler
+                            .reportStatus(ev.getStatus(), ev.getTitle(), ev.getDescription())
+                            .get(5000, TimeUnit.MILLISECONDS);
+                }
+                catch (InterruptedException | ExecutionException |
+                       TimeoutException ex) {
+                    throw new IllegalStateException(ex);
+                }
+            }
         );
         this.gui.addSendEventHandler((ev) -> {
             try {

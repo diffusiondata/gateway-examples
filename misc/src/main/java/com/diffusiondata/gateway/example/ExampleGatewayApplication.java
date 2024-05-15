@@ -64,7 +64,8 @@ public class ExampleGatewayApplication implements GatewayApplication {
     }
 
     @Override
-    public GatewayMeterRegistry getGatewayMeterRegistry() {
+    public GatewayMeterRegistry initializeGatewayMeterRegistry(
+        Map<String, Object> globalParams) {
         return () -> meterRegistry;
     }
 
