@@ -23,7 +23,7 @@ import io.micrometer.jmx.JmxMeterRegistry;
 
 
 public class Application implements GatewayApplication {
-    private JmxMeterRegistry meterRegistry =
+    private final JmxMeterRegistry meterRegistry =
         new JmxMeterRegistry(s -> null, Clock.SYSTEM);
 
     @Override
