@@ -15,13 +15,6 @@ of Diffusion.
     java -Dgateway.config.file=activity-feed-adapter/src/main/resources/configuration.json -Dgateway.config.use-local-services=true -jar .\activity-feed-adapter\target\activity-feed-adapter-1.0.0-jar-with-dependencies.jar
 
 
-MORE INFORMATION TO FOLLOW......
-
-NOTES:
-
-        //TODO: JH - get parameters - for now, won't use a schema - but I do need to mention it.
-
-
 ```mermaid
 flowchart LR
 

@@ -100,14 +100,14 @@ public final class ActivityFeedSnapshotPollingSourceHandlerImpl
 
     @Override
     public CompletableFuture<?> pause(PauseReason reason) {
-        LOG.info("Activity feed polling handler paused");
+        LOG.info("Paused activity feed polling handler");
 
         return CompletableFuture.completedFuture(null);
     }
 
     @Override
     public CompletableFuture<?> resume(ResumeReason reason) {
-        LOG.info("Activity feed polling handler resumed");
+        LOG.info("Resumed activity feed polling handler");
 
         return CompletableFuture.completedFuture(null);
     }
