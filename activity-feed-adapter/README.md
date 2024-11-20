@@ -26,7 +26,7 @@ NOTES:
 flowchart LR
 
 %% Nodes
-AFS("Pretend \n Activity feed \n server"):::orange
+AFS("Pretend <br /> Activity feed \n server"):::orange
 AFG("Activity feed \n Gateway adapter"):::green
 DIF("Diffusion server"):::blue
 
