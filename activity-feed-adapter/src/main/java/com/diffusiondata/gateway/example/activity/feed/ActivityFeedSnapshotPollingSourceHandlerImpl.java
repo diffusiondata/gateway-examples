@@ -19,6 +19,9 @@ import com.diffusiondata.pretend.example.activity.feed.model.Activity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.jcip.annotations.ThreadSafe;
+
+@ThreadSafe
 public final class ActivityFeedSnapshotPollingSourceHandlerImpl
     implements PollingSourceHandler {
 
