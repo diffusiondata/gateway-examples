@@ -8,7 +8,7 @@ public final class ActivityTestUtils {
     }
 
     public static Activity createPopulatedActivity() {
-        return createPopulatedActivity("s");
+        return createPopulatedActivity("some-sport");
     }
 
     public static Activity createPopulatedActivity(String sport) {
