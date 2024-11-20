@@ -99,25 +99,26 @@ public final class ActivityFeedListenerStreamingSourceHandlerImpl
     public CompletableFuture<?> stop() {
         activityFeedClient.unregisterListener(listenerIdentifier);
 
-        LOG.info("Activity feed streaming handler stopped");
+        LOG.info("Stopped activity feed streaming handler");
 
         return CompletableFuture.completedFuture(null);
     }
 
     @Override
     public CompletableFuture<?> pause(PauseReason reason) {
-        LOG.info("Activity feed streaming handler paused");
+        activityFeedClient.unregisterListener(listenerIdentifier);
 
-        //TODO: JH - could unregister for events here
+        LOG.info("Paused activity feed streaming handler");
 
         return CompletableFuture.completedFuture(null);
     }
 
     @Override
     public CompletableFuture<?> resume(ResumeReason reason) {
-        LOG.info("Activity feed streaming handler resumed");
+        listenerIdentifier =
+            activityFeedClient.registerListener(this);
 
-        //TODO: JH - could register for events here
+        LOG.info("Resumed activity feed streaming handler");
 
         return CompletableFuture.completedFuture(null);
     }

@@ -175,7 +175,13 @@ class ActivityFeedListenerStreamingSourceHandlerImplTest {
     }
 
     @Test
+    @Order(30)
     void testPause() {
+        final String listenerIdentifier = invokeStart();
+
+        when(activityFeedClientMock.unregisterListener(listenerIdentifier))
+            .thenReturn(true);
+
         final CompletableFuture<?> cf = handler.pause(PauseReason.REQUESTED);
 
         assertThat(cf, notNullValue());
@@ -183,7 +189,15 @@ class ActivityFeedListenerStreamingSourceHandlerImplTest {
     }
 
     @Test
+    @Order(40)
     void testResume() {
+        final String listenerIdentifier = "listener-identifier";
+
+        final ActivityFeedListener listener = (ActivityFeedListener) handler;
+
+        when(activityFeedClientMock.registerListener(listener))
+            .thenReturn(listenerIdentifier);
+
         final CompletableFuture<?> cf = handler.resume(ResumeReason.REQUESTED);
 
         assertThat(cf, notNullValue());
