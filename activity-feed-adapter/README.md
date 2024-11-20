@@ -21,10 +21,10 @@ This article introduces the Diffusion Gateway Framework and an example Gateway A
 ## Gateway Framework Overview
 The Diffusion 'Gateway Framework' was written to make it easier to create adapters for getting data into Diffusion from source systems or publishing out of Diffusion into target/sink systems.  Whilst it is feasible to develop everything using the standard Diffusion SDKs, the Gateway Framework transparently provides additional features that are frequently required:
 
-• Fault tolerance and failover
-• A standard configuration file format with schema IDE support
-• The ability to control the adapter, either programmatically, via REST API calls or through the Diffusion management console.
-• Monitoring facilities, including integration with Prometheus, JMX and the Diffusion management console.
+- Fault tolerance and failover
+- A standard configuration file format with schema IDE support
+The ability to control the adapter, either programmatically, via REST API calls or through the Diffusion management console.
+- Monitoring facilities, including integration with Prometheus, JMX and the Diffusion management console.
 
 ## Activity Feed Example Overview
 This example uses the concept of a sporting activity feed (think along the lines of popular exercise/social networks).  Naturally, we don't build the platform for this tutorial; instead, we use a pretend activity feed server that generates realistic random sports activity data.
