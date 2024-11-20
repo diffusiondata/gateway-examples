@@ -26,8 +26,8 @@ NOTES:
 flowchart LR
 
 %% Nodes
-AFS("Pretend <br /> Activity feed \n server"):::orange
-AFG("Activity feed \n Gateway adapter"):::green
+AFS("Pretend <br /> Activity feed <br /> server"):::orange
+AFG("Activity feed <br /> Gateway adapter"):::green
 DIF("Diffusion server"):::blue
 
 
@@ -37,8 +37,8 @@ AFS -. 1a) Send activity event .-> AFG
 AFG -- 2a) Invoke get latest activities ---> AFS
 AFS -- 2b) Return latest activities --> AFG
 
-AFG -- 1b) Update specific \n sport activity --> DIF
-AFG -- 2c) Update the \n activities snapshot ---> DIF
+AFG -- 1b) Update specific <br /> sport activity --> DIF
+AFG -- 2c) Update the <br /> activities snapshot ---> DIF
 
 %% Styling
 classDef green fill:#B2DFDB,stroke:#00897B,stroke-width:2px;
