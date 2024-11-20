@@ -1,0 +1,1 @@
+# Activity feed adapter example
