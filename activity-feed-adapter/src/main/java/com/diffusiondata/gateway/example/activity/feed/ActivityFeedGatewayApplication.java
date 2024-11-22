@@ -79,7 +79,6 @@ public final class ActivityFeedGatewayApplication
         StateHandler stateHandler)
         throws InvalidConfigurationException {
 
-/*
         final String serviceType =
             serviceDefinition.getServiceType().getName();
 
@@ -91,11 +90,9 @@ public final class ActivityFeedGatewayApplication
                 stateHandler,
                 objectMapper);
         }
-*/
 
         throw new InvalidConfigurationException(
-            "Unknown service type: ");
-//                + serviceType);
+            "Unknown service type: " + serviceType);
     }
 
     @Override
@@ -105,7 +102,6 @@ public final class ActivityFeedGatewayApplication
         StateHandler stateHandler)
         throws InvalidConfigurationException {
 
-/*
         final String serviceType =
             serviceDefinition.getServiceType().getName();
 
@@ -117,11 +113,9 @@ public final class ActivityFeedGatewayApplication
                 stateHandler,
                 objectMapper);
         }
-*/
 
         throw new InvalidConfigurationException(
-            "Unknown service type: ");
-//                + serviceType);
+            "Unknown service type: " + serviceType);
     }
 
     @Override
