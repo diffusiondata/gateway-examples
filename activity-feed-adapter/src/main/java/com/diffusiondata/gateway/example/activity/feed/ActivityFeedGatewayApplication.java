@@ -38,19 +38,18 @@ public final class ActivityFeedGatewayApplication
     private static final Logger LOG =
         LoggerFactory.getLogger(ActivityFeedGatewayApplication.class);
 
-    private final ObjectMapper objectMapper;
-
     private final ActivityFeedClient activityFeedClient;
+    private final ObjectMapper objectMapper;
 
     public ActivityFeedGatewayApplication(
         ActivityFeedClient activityFeedClient,
         ObjectMapper objectMapper) {
 
-        this.objectMapper =
-            requireNonNull(objectMapper, "objectMapper");
-
         this.activityFeedClient =
             requireNonNull(activityFeedClient, "activityFeedClient");
+
+        this.objectMapper =
+            requireNonNull(objectMapper, "objectMapper");
     }
 
     @Override

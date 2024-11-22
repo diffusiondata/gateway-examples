@@ -15,7 +15,9 @@ of Diffusion.
     java -Dgateway.config.file=activity-feed-adapter/src/main/resources/configuration.json -Dgateway.config.use-local-services=true -jar .\activity-feed-adapter\target\activity-feed-adapter-1.0.0-jar-with-dependencies.jar
 
 
-# Activity Feed Gateway Adapter Example
+---
+# Activity feed Gateway adapter example
+
 ## Introduction
 In this tutorial, you will learn how to use the 'Diffusion Gateway Framework' to develop a Gateway adapter for feeding streaming and batch/polled data into your Diffusion server. The Gateway framework makes it easy to integrate with different datasources for getting data in and out of Diffusion. You will see how the Gateway Framework provides a common and consistent application structure and a higher level of abstraction over the Diffusion SDK, as well as handling things like retries and timeouts.
 
@@ -75,10 +77,10 @@ To get started with the sports activity feed example, you will need the followin
 - Java 11.
 - Your preferred Java IDE.
 - A running Diffusion server, this can be running locally or remotely; some of the options are:
-    - Install Diffusion via the standard Diffusion installer.
-    - Use the Diffusion Docker image to run a container.
-    - Use Diffusion Cloud, the DiffusionData SaaS offering.
-    - Connect to a Diffusion server running remotely.
+  - Install Diffusion via the standard Diffusion installer.
+  - Use the Diffusion Docker image to run a container.
+  - Use Diffusion Cloud, the DiffusionData SaaS offering.
+  - Connect to a Diffusion server running remotely.
 
 The activity feed example code is available on GitHub and is part of the overall Gateway examples project:
 * [diffusiondata/gateway-examples](https://github.com/diffusiondata/gateway-examples)
@@ -93,25 +95,169 @@ Developing the activity feed Gateway adapter requires very little code and just 
 - Simple Gateway adapter runner.
 - Create a Gateway adapter configuration file that will be used to configure our streaming and polling handlers.
 
-### Gateway application
-The class is a standard way of writing Gateway adapters.  An adapter can then have different types of ServiceHandler for handling streaming, polling or sinking data against various data sources.
+Note: the code is available in GitHub, so you may find referring to the completed solution helpful.
 
+### Gateway application class
+Firstly, create a class called `ActivityFeedGatewayApplication` that implements the `GatewayApplication` interface.  The class is a standard way of writing Gateway adapters.  An adapter can then have different types of `ServiceHandler` for handling streaming, polling or sinking data against your chosen datasources.  You will need to implement a few methods, such as:
+- `getApplicationDetails` - provides details of the adapter, such as which types of `ServiceHandler` are available and can be configured.
+- `stop` - called when the Gateway adapter is shutdown.
 
-The ActivityFeedGatewayApplication class, which implements the GatewayApplication interface.  Here we'll need to implement a few methods, such as:
-- getApplicationDetails
-- stop
+As we go through the tutorial, you will need to override two methods:
+- `addPollingSource` - adds a polling source to the adapter.
+- `addStreamingSource` - adds a streaming source to the adapter.
 
-Then, based upon the fact we'll be using a streaming and polling handler, these two methods:
-- addStreamingSource
-- addPollingSource
+Because our Gateway adapter will integrate with the pretend activity feed server, we'll pass an `ActivityFeedClient` reference in the constructor for later use by the streaming and polling service handlers.  The `ObjectMapper` is used to convert our Activity object into JSON.  Our code will initially look something like:
 
+```java
+public class ActivityFeedGatewayApplication  
+    implements GatewayApplication {  
 
-### Gateway application runner
-class with a main method, this is a typical idiom used by Gateway adapter Developers for launching the Gateway application.
+	private final ObjectMapper objectMapper;  
+	private final ActivityFeedClient activityFeedClient;
+	
+    public ActivityFeedGatewayApplication(  
+        ActivityFeedClient activityFeedClient,  
+        ObjectMapper objectMapper) {  
 
+		this.activityFeedClient = activityFeedClient;
+		this.objectMapper = objectMapper;
+    }  
+  
+    @Override  
+    public ApplicationDetails getApplicationDetails()  
+        throws ApplicationConfigurationException {  
 
-### Polling source handler
-We will use this to periodically poll and request the activities snapshot from the pretend activity feed server.
+		// You will add service handlers as you progress through the tutorial 
+        return DiffusionGatewayFramework.newApplicationDetailsBuilder()  
+			.build(APPLICATION_TYPE, 1);  
+    }  
+  
+    @Override  
+    public CompletableFuture<?> stop() {  
+        LOG.info("Application stop");  
+  
+        return CompletableFuture.completedFuture(null);  
+    }
+```
 
-### Streaming source handler
+### Gateway application runner class
+Create a new class called `Runner` - a simple Java class with a main method; this is a typical idiom Gateway adapters use for launching the Gateway application.
+
+```java
+public class Runner {  
+    public static void main(String[] args) {
+	    final ObjectMapper objectMapper = new ObjectMapper();  
+		objectMapper.registerModule(new JavaTimeModule());
+		
+        DiffusionGatewayFramework.start(
+	        new ActivityFeedGatewayApplication(
+		        ActivityFeedClientImpl.connectToActivityFeedServer(),  
+	            objectMapper);  
+    }  
+}
+```
+
+### Polling source handler class and configuration
+Create a class called `ActivityFeedSnapshotPollingSourceHandlerImpl` and have it implement the `PollingSourceHandler` interface.  We will use this to periodically poll and request the activities snapshot from the pretend activity feed server.  The `PollingSourceHandler` interface will require us to implement the following methods:
+- `poll` - this method is periodically called by the Gateway framework based on configuration.
+- `pause` - called when the Gateway adapter enters the paused state.
+- `resume` - is called when the Gateway adapter can resume.
+
+In your `poll` method, we will call the pretend activity feed server's `getLatestActivities()` using the `ActivityFeedClient` reference passed into the constructor.  Below is the complete code for the polling source handler:
+
+```java
+public class ActivityFeedSnapshotPollingSourceHandlerImpl  
+    implements PollingSourceHandler {  
+  
+    static final String DEFAULT_POLLING_TOPIC_PATH =  
+        "polling/activity/feed";  
+  
+    private static final Logger LOG =  
+        LoggerFactory.getLogger(ActivityFeedSnapshotPollingSourceHandlerImpl.class);  
+  
+    private final ActivityFeedClient activityFeedClient;  
+    private final Publisher publisher;  
+    private final StateHandler stateHandler;  
+    private final ObjectMapper objectMapper;  
+    private final String topicPath;  
+  
+    public ActivityFeedSnapshotPollingSourceHandlerImpl(  
+        ActivityFeedClient activityFeedClient,  
+        ServiceDefinition serviceDefinition,  
+        Publisher publisher,  
+        StateHandler stateHandler,  
+        ObjectMapper objectMapper) {  
+  
+        this.activityFeedClient = activityFeedClient;  
+        this.publisher = publisher;  
+        this.stateHandler = stateHandler;  
+        this.objectMapper = objectMapper;  
+  
+        topicPath = serviceDefinition.getParameters()  
+            .getOrDefault("topicPath", DEFAULT_POLLING_TOPIC_PATH)  
+            .toString();  
+    }  
+  
+    @Override  
+    public CompletableFuture<?> poll() {  
+        final CompletableFuture<?> pollCf = new CompletableFuture<>();  
+  
+        if (!stateHandler.getState().equals(ServiceState.ACTIVE)) {  
+            pollCf.complete(null);  
+  
+            return pollCf;  
+        }  
+  
+        final Collection<Activity> activities =  
+            activityFeedClient.getLatestActivities();  
+  
+        if (activities.isEmpty()) {  
+            pollCf.complete(null);  
+  
+            return pollCf;  
+        }  
+  
+        try {  
+            final String value = objectMapper.writeValueAsString(activities);  
+  
+            publisher.publish(topicPath, value)  
+                .whenComplete((o, throwable) -> {  
+                    if (throwable != null) {  
+                        pollCf.completeExceptionally(throwable);  
+                    }  
+                    else {  
+                        pollCf.complete(null);  
+                    }  
+                });  
+        }  
+        catch (JsonProcessingException |  
+               PayloadConversionException e) {  
+  
+            LOG.error("Cannot publish", e);  
+            pollCf.completeExceptionally(e);  
+  
+            return pollCf;  
+        }  
+  
+        return pollCf;  
+    }  
+  
+    @Override  
+    public CompletableFuture<?> pause(PauseReason reason) {  
+        LOG.info("Paused activity feed polling handler");  
+  
+        return CompletableFuture.completedFuture(null);  
+    }  
+  
+    @Override  
+    public CompletableFuture<?> resume(ResumeReason reason) {  
+        LOG.info("Resumed activity feed polling handler");  
+  
+        return CompletableFuture.completedFuture(null);  
+    }  
+}
+```
+
+### Streaming source handler class and configuration
 For our example, this will handle the activities sent from the pretend activity feed server and put the data into Diffusion topics.
+
