@@ -26,10 +26,11 @@ public final class SportsActivityFeedSnapshotPollingSourceHandlerImpl
     implements PollingSourceHandler {
 
     static final String DEFAULT_POLLING_TOPIC_PATH =
-        "polling/activity/feed";
+        "default/sports/activity/feed/snapshot";
 
     private static final Logger LOG =
-        LoggerFactory.getLogger(SportsActivityFeedSnapshotPollingSourceHandlerImpl.class);
+        LoggerFactory.getLogger(
+            SportsActivityFeedSnapshotPollingSourceHandlerImpl.class);
 
     private final SportsActivityFeedClient sportsActivityFeedClient;
     private final Publisher publisher;
@@ -45,7 +46,8 @@ public final class SportsActivityFeedSnapshotPollingSourceHandlerImpl
         ObjectMapper objectMapper) {
 
         this.sportsActivityFeedClient =
-            requireNonNull(sportsActivityFeedClient, "activityFeedClient");
+            requireNonNull(sportsActivityFeedClient,
+                "sportActivityFeedClient");
 
         this.publisher = requireNonNull(publisher, "publisher");
         this.stateHandler = requireNonNull(stateHandler, "stateHandler");
@@ -68,7 +70,7 @@ public final class SportsActivityFeedSnapshotPollingSourceHandlerImpl
         }
 
         final Collection<SportsActivity> activities =
-            sportsActivityFeedClient.getLatestActivities();
+            sportsActivityFeedClient.getLatestSportsActivities();
 
         if (activities.isEmpty()) {
             pollCf.complete(null);
@@ -101,14 +103,14 @@ public final class SportsActivityFeedSnapshotPollingSourceHandlerImpl
 
     @Override
     public CompletableFuture<?> pause(PauseReason reason) {
-        LOG.info("Paused activity feed polling handler");
+        LOG.info("Paused sports activity feed polling handler");
 
         return CompletableFuture.completedFuture(null);
     }
 
     @Override
     public CompletableFuture<?> resume(ResumeReason reason) {
-        LOG.info("Resumed activity feed polling handler");
+        LOG.info("Resumed sports activity feed polling handler");
 
         return CompletableFuture.completedFuture(null);
     }

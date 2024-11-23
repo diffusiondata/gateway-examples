@@ -12,12 +12,12 @@ import net.datafaker.Faker;
 import net.jcip.annotations.ThreadSafe;
 
 @ThreadSafe
-public final class RandomSportsActivityGeneratorSupplier
+public final class RandomSportsActivitySupplier
     implements Supplier<SportsActivity> {
 
     private final Faker faker;
 
-    public RandomSportsActivityGeneratorSupplier(Faker faker) {
+    public RandomSportsActivitySupplier(Faker faker) {
         this.faker = faker;
     }
 

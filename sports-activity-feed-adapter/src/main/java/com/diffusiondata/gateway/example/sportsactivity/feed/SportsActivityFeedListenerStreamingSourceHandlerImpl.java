@@ -27,10 +27,11 @@ public final class SportsActivityFeedListenerStreamingSourceHandlerImpl
     StreamingSourceHandler {
 
     static final String DEFAULT_STREAMING_TOPIC_PREFIX =
-        "streaming/activity/feed";
+        "default/sports/activity/feed/stream";
 
     private static final Logger LOG =
-        LoggerFactory.getLogger(SportsActivityFeedListenerStreamingSourceHandlerImpl.class);
+        LoggerFactory.getLogger(
+            SportsActivityFeedListenerStreamingSourceHandlerImpl.class);
 
     private final SportsActivityFeedClient sportsActivityFeedClient;
     private final Publisher publisher;
@@ -48,7 +49,8 @@ public final class SportsActivityFeedListenerStreamingSourceHandlerImpl
         ObjectMapper objectMapper) {
 
         this.sportsActivityFeedClient =
-            requireNonNull(sportsActivityFeedClient, "activityFeedClient");
+            requireNonNull(sportsActivityFeedClient,
+                "sportsActivityFeedClient");
 
         this.publisher = requireNonNull(publisher, "publisher");
         this.stateHandler = requireNonNull(stateHandler, "stateHandler");
@@ -62,12 +64,15 @@ public final class SportsActivityFeedListenerStreamingSourceHandlerImpl
 
     @Override
     public void onMessage(SportsActivity sportsActivity) {
-        requireNonNull(sportsActivity, "activity");
+        requireNonNull(sportsActivity, "sportsActivity");
 
         if (stateHandler.getState().equals(ServiceState.ACTIVE)) {
             try {
-                final String topicPath = topicPrefix + "/" + sportsActivity.getSport();
-                final String value = objectMapper.writeValueAsString(sportsActivity);
+                final String topicPath = topicPrefix + "/" +
+                    sportsActivity.getSport();
+
+                final String value =
+                    objectMapper.writeValueAsString(sportsActivity);
 
                 publisher.publish(topicPath, value)
                     .exceptionally(throwable -> {
@@ -90,7 +95,7 @@ public final class SportsActivityFeedListenerStreamingSourceHandlerImpl
         listenerIdentifier =
             sportsActivityFeedClient.registerListener(this);
 
-        LOG.info("Started activity feed streaming handler");
+        LOG.info("Started sports activity feed streaming handler");
 
         return CompletableFuture.completedFuture(null);
     }
@@ -99,7 +104,7 @@ public final class SportsActivityFeedListenerStreamingSourceHandlerImpl
     public CompletableFuture<?> stop() {
         sportsActivityFeedClient.unregisterListener(listenerIdentifier);
 
-        LOG.info("Stopped activity feed streaming handler");
+        LOG.info("Stopped sports activity feed streaming handler");
 
         return CompletableFuture.completedFuture(null);
     }
@@ -108,7 +113,7 @@ public final class SportsActivityFeedListenerStreamingSourceHandlerImpl
     public CompletableFuture<?> pause(PauseReason reason) {
         sportsActivityFeedClient.unregisterListener(listenerIdentifier);
 
-        LOG.info("Paused activity feed streaming handler");
+        LOG.info("Paused sports activity feed streaming handler");
 
         return CompletableFuture.completedFuture(null);
     }
@@ -118,7 +123,7 @@ public final class SportsActivityFeedListenerStreamingSourceHandlerImpl
         listenerIdentifier =
             sportsActivityFeedClient.registerListener(this);
 
-        LOG.info("Resumed activity feed streaming handler");
+        LOG.info("Resumed sports activity feed streaming handler");
 
         return CompletableFuture.completedFuture(null);
     }

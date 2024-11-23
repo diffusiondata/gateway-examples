@@ -40,8 +40,8 @@ class PretendSportsSportsActivityFeedServerImplTest {
     private ExecutorService executorServiceMock;
 
     @Mock
-    private RandomSportsActivityGeneratorSupplier
-        randomSportsActivityGeneratorSupplierMock;
+    private RandomSportsActivitySupplier
+        randomSportsActivitySupplierMock;
 
     @Mock
     private SportsActivityFeedListener sportsActivityFeedListenerMock;
@@ -57,7 +57,7 @@ class PretendSportsSportsActivityFeedServerImplTest {
             PretendSportsActivityFeedServerImpl
                 .createAndStartActivityFeedServer(
                     executorServiceMock,
-                    randomSportsActivityGeneratorSupplierMock,
+                    randomSportsActivitySupplierMock,
                     0);
     }
 
@@ -65,7 +65,7 @@ class PretendSportsSportsActivityFeedServerImplTest {
     void afterEachTest() {
         verifyNoMoreInteractions(
             executorServiceMock,
-            randomSportsActivityGeneratorSupplierMock,
+            randomSportsActivitySupplierMock,
             sportsActivityFeedListenerMock
         );
     }
@@ -174,7 +174,7 @@ class PretendSportsSportsActivityFeedServerImplTest {
 
         final SportsActivity sportsActivity = createPopulatedActivity(SPORT);
 
-        when(randomSportsActivityGeneratorSupplierMock.get())
+        when(randomSportsActivitySupplierMock.get())
             .thenReturn(sportsActivity);
 
         getImpl().runOnce();

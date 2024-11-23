@@ -1,17 +1,17 @@
 {
-  "id": "activity-feed-adapter-1",
+  "id": "sports-activity-feed-adapter-1",
   "framework-version": 1,
   "application-version": 1,
   "diffusion": {
-    "url": "ws://localhost:18080",
+    "url": "ws://localhost:8080",
     "principal": "admin",
     "password": "password",
     "reconnectIntervalMs": 5000
   },
   "services": [
     {
-      "serviceName": "polling-activity-feed-service-1",
-      "serviceType": "polling-activity-feed-service",
+      "serviceName": "polling-sports-activity-feed-service-1",
+      "serviceType": "polling-sports-activity-feed-service",
       "config": {
         "framework": {
           "pollIntervalMs": 4500,
@@ -24,7 +24,24 @@
           }
         },
         "application": {
-          "topicPath": "activity/feed/snapshot"
+          "topicPath": "sports/activity/feed/snapshot"
+        }
+      }
+    },
+    {
+      "serviceName": "streaming-sports-activity-feed-service-1",
+      "serviceType": "streaming-sports-activity-feed-service",
+      "config": {
+        "framework": {
+          "topicProperties": {
+            "topicType": "JSON",
+            "persistencePolicy": "SESSION",
+            "publishValuesOnly": false,
+            "dontRetainValue": false
+          }
+        },
+        "application": {
+          "topicPrefix": "sports/activity/feed/stream"
         }
       }
     }

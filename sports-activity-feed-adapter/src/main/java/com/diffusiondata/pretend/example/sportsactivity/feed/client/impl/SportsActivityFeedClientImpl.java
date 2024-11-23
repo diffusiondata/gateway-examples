@@ -37,7 +37,7 @@ public final class SportsActivityFeedClientImpl
     }
 
     @Override
-    public Collection<SportsActivity> getLatestActivities() {
+    public Collection<SportsActivity> getLatestSportsActivities() {
         return sportsActivityFeedServer.getLatestSportsActivities();
     }
 

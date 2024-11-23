@@ -6,7 +6,8 @@ import com.diffusiondata.pretend.example.sportsactivity.feed.client.SportsActivi
 import com.diffusiondata.pretend.example.sportsactivity.feed.model.SportsActivity;
 
 public interface SportsActivityFeedServer {
-    String registerClientListener(SportsActivityFeedListener sportsActivityFeedListener);
+    String registerClientListener(
+        SportsActivityFeedListener sportsActivityFeedListener);
 
     boolean unregisterClientListener(String listenerIdentifier);
 

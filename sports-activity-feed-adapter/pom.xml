@@ -79,7 +79,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.diffusiondata.gateway.example.sportsActivity.feed.Runner</mainClass>
+                            <mainClass>com.diffusiondata.gateway.example.sportsactivity.feed.Runner</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

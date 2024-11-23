@@ -1,8 +1,8 @@
 package com.diffusiondata.gateway.example.sportsactivity.feed;
 
 import static com.diffusiondata.gateway.example.sportsactivity.feed.SportsActivityFeedGatewayApplication.APPLICATION_TYPE;
-import static com.diffusiondata.gateway.example.sportsactivity.feed.SportsActivityFeedGatewayApplication.POLLING_ACTIVITY_FEED_SERVICE_TYPE_NAME;
-import static com.diffusiondata.gateway.example.sportsactivity.feed.SportsActivityFeedGatewayApplication.STREAMING_ACTIVITY_FEED_SERVICE_TYPE_NAME;
+import static com.diffusiondata.gateway.example.sportsactivity.feed.SportsActivityFeedGatewayApplication.POLLING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME;
+import static com.diffusiondata.gateway.example.sportsactivity.feed.SportsActivityFeedGatewayApplication.STREAMING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME;
 import static com.diffusiondata.gateway.example.sportsactivity.feed.SportsActivityFeedListenerStreamingSourceHandlerImpl.DEFAULT_STREAMING_TOPIC_PREFIX;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
@@ -102,7 +102,7 @@ class SportsSportsActivityFeedGatewayApplicationTest {
             .thenReturn(serviceTypeMock);
 
         when(serviceTypeMock.getName())
-            .thenReturn(STREAMING_ACTIVITY_FEED_SERVICE_TYPE_NAME);
+            .thenReturn(STREAMING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME);
 
         when(serviceDefinitionMock.getParameters())
             .thenReturn(Map.of("topicPrefix", DEFAULT_STREAMING_TOPIC_PREFIX));
@@ -142,7 +142,7 @@ class SportsSportsActivityFeedGatewayApplicationTest {
             .thenReturn(serviceTypeMock);
 
         when(serviceTypeMock.getName())
-            .thenReturn(POLLING_ACTIVITY_FEED_SERVICE_TYPE_NAME);
+            .thenReturn(POLLING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME);
 
         when(serviceDefinitionMock.getParameters())
             .thenReturn(Map.of("topicPrefix", DEFAULT_STREAMING_TOPIC_PREFIX));

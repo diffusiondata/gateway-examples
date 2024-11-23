@@ -40,17 +40,17 @@ public final class PretendSportsActivityFeedServerImpl
     private final Map<String, SportsActivityFeedListener> listeners =
         new HashMap<>();
 
-    private final ConcurrentMap<String, SportsActivity> cachedLatestActivities =
-        new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, SportsActivity>
+        cachedSportedLatestActivities = new ConcurrentHashMap<>();
 
-    private final Supplier<SportsActivity> activityGeneratorSupplier;
+    private final Supplier<SportsActivity> sportsActivitySupplier;
     private final int maxSleepMillisBetweenActivityGeneration;
 
     private PretendSportsActivityFeedServerImpl(
-        Supplier<SportsActivity> activityGeneratorSupplier,
+        Supplier<SportsActivity> sportsActivitySupplier,
         int maxSleepMillisBetweenActivityGeneration) {
 
-        this.activityGeneratorSupplier = activityGeneratorSupplier;
+        this.sportsActivitySupplier = sportsActivitySupplier;
         this.maxSleepMillisBetweenActivityGeneration =
             Math.max(maxSleepMillisBetweenActivityGeneration, 1);
     }
@@ -59,7 +59,8 @@ public final class PretendSportsActivityFeedServerImpl
     public synchronized String registerClientListener(
         SportsActivityFeedListener sportsActivityFeedListener) {
 
-        requireNonNull(sportsActivityFeedListener, "activityFeedListener");
+        requireNonNull(sportsActivityFeedListener,
+            "sportsActivityFeedListener");
 
         final String listenerIdentifier = UUID.randomUUID().toString();
 
@@ -92,12 +93,12 @@ public final class PretendSportsActivityFeedServerImpl
 
     @Override
     public Collection<SportsActivity> getLatestSportsActivities() {
-        return unmodifiableCollection(cachedLatestActivities.values());
+        return unmodifiableCollection(cachedSportedLatestActivities.values());
     }
 
     @Override
     public void run() {
-        LOG.info("Started activity feed server");
+        LOG.info("Started sports activity feed server");
 
         try {
             while (!Thread.currentThread().isInterrupted()) {
@@ -122,7 +123,7 @@ public final class PretendSportsActivityFeedServerImpl
     void runOnce()
         throws InterruptedException {
 
-        final SportsActivity sportsActivity = activityGeneratorSupplier.get();
+        final SportsActivity sportsActivity = sportsActivitySupplier.get();
 
         internalUpdateStateAndListeners(sportsActivity);
 
@@ -136,14 +137,14 @@ public final class PretendSportsActivityFeedServerImpl
      * package for tests.
      */
     Map<String, SportsActivity> getCachedSportsLatestActivities() {
-        return cachedLatestActivities;
+        return cachedSportedLatestActivities;
     }
 
     /**
      * package for tests.
      */
     void internalUpdateStateAndListeners(SportsActivity sportsActivity) {
-        cachedLatestActivities.put(sportsActivity.getSport(), sportsActivity);
+        cachedSportedLatestActivities.put(sportsActivity.getSport(), sportsActivity);
 
         listeners.values()
             .forEach(listener -> {
@@ -157,8 +158,8 @@ public final class PretendSportsActivityFeedServerImpl
     }
 
     public static SportsActivityFeedServer createAndStartActivityFeedServer() {
-        final Supplier<SportsActivity> activityGeneratorSupplier =
-            new RandomSportsActivityGeneratorSupplier(new Faker());
+        final Supplier<SportsActivity> sportsActivitySupplier =
+            new RandomSportsActivitySupplier(new Faker());
 
         return createAndStartActivityFeedServer(
             Executors.newSingleThreadExecutor(r -> {
@@ -168,7 +169,7 @@ public final class PretendSportsActivityFeedServerImpl
 
                 return t;
             }),
-            activityGeneratorSupplier,
+            sportsActivitySupplier,
             250);
     }
 
@@ -177,12 +178,12 @@ public final class PretendSportsActivityFeedServerImpl
      */
     static SportsActivityFeedServer createAndStartActivityFeedServer(
         ExecutorService executorService,
-        Supplier<SportsActivity> activityGeneratorSupplier,
+        Supplier<SportsActivity> sportsActivitySupplier,
         int maxSleepMillisBetweenActivityGeneration) {
 
         final PretendSportsActivityFeedServerImpl server =
             new PretendSportsActivityFeedServerImpl(
-                activityGeneratorSupplier,
+                sportsActivitySupplier,
                 maxSleepMillisBetweenActivityGeneration);
 
         executorService.submit(server);

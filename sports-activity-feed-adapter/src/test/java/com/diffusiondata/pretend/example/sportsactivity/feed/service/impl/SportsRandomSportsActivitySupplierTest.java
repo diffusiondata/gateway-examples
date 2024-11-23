@@ -14,9 +14,9 @@ import com.diffusiondata.pretend.example.sportsactivity.feed.model.SportsActivit
 
 import net.datafaker.Faker;
 
-class SportsRandomSportsActivityGeneratorSupplierTest {
+class SportsRandomSportsActivitySupplierTest {
     private final Supplier<SportsActivity> supplier =
-        new RandomSportsActivityGeneratorSupplier(new Faker());
+        new RandomSportsActivitySupplier(new Faker());
 
     @Test
     void testGet() {
@@ -31,8 +31,8 @@ class SportsRandomSportsActivityGeneratorSupplierTest {
 
     @Test
     void testTimeAndDatePast() {
-        final RandomSportsActivityGeneratorSupplier impl =
-            (RandomSportsActivityGeneratorSupplier) supplier;
+        final RandomSportsActivitySupplier impl =
+            (RandomSportsActivitySupplier) supplier;
 
         final Instant pastDate = impl.timeAndDatePast(2, MINUTES);
 

@@ -10,5 +10,5 @@ public interface SportsActivityFeedClient {
 
     boolean unregisterListener(String listenerIdentifier);
 
-    Collection<SportsActivity> getLatestActivities();
+    Collection<SportsActivity> getLatestSportsActivities();
 }

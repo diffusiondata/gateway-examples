@@ -96,7 +96,7 @@ class SportsSportsActivityFeedSnapshotPollingSourceHandlerImplTest {
         when(stateHandlerMock.getState())
             .thenReturn(ServiceState.ACTIVE);
 
-        when(sportsActivityFeedClientMock.getLatestActivities())
+        when(sportsActivityFeedClientMock.getLatestSportsActivities())
             .thenReturn(activities);
 
         final CompletableFuture<?> cf = handler.poll();
@@ -117,7 +117,7 @@ class SportsSportsActivityFeedSnapshotPollingSourceHandlerImplTest {
         when(stateHandlerMock.getState())
             .thenReturn(ServiceState.ACTIVE);
 
-        when(sportsActivityFeedClientMock.getLatestActivities())
+        when(sportsActivityFeedClientMock.getLatestSportsActivities())
             .thenReturn(activities);
 
         when(objectMapperMock.writeValueAsString(activities))
@@ -144,7 +144,7 @@ class SportsSportsActivityFeedSnapshotPollingSourceHandlerImplTest {
         when(stateHandlerMock.getState())
             .thenReturn(ServiceState.ACTIVE);
 
-        when(sportsActivityFeedClientMock.getLatestActivities())
+        when(sportsActivityFeedClientMock.getLatestSportsActivities())
             .thenReturn(activities);
 
         when(objectMapperMock.writeValueAsString(activities))
@@ -172,7 +172,7 @@ class SportsSportsActivityFeedSnapshotPollingSourceHandlerImplTest {
         when(stateHandlerMock.getState())
             .thenReturn(ServiceState.ACTIVE);
 
-        when(sportsActivityFeedClientMock.getLatestActivities())
+        when(sportsActivityFeedClientMock.getLatestSportsActivities())
             .thenReturn(activities);
 
         doThrow(JsonProcessingException.class).when(objectMapperMock)

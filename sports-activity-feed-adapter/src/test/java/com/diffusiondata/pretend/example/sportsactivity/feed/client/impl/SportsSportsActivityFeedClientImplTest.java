@@ -74,7 +74,7 @@ class SportsSportsActivityFeedClientImplTest {
             .thenReturn(expectedActivities);
 
         final Collection<SportsActivity> latestActivities =
-            sportsActivityFeedClient.getLatestActivities();
+            sportsActivityFeedClient.getLatestSportsActivities();
 
         assertThat(latestActivities, equalTo(expectedActivities));
     }
