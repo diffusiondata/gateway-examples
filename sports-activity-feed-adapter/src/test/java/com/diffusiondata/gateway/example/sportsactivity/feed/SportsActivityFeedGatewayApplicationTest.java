@@ -38,7 +38,7 @@ import com.diffusiondata.pretend.example.sportsactivity.feed.client.SportsActivi
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
-class SportsSportsActivityFeedGatewayApplicationTest {
+class SportsActivityFeedGatewayApplicationTest {
     @Mock
     private SportsActivityFeedClient sportsActivityFeedClientMock;
 

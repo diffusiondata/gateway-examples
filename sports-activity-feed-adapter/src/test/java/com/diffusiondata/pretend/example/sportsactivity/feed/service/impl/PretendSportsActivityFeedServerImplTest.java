@@ -33,7 +33,7 @@ import com.diffusiondata.pretend.example.sportsactivity.feed.model.SportsActivit
 import com.diffusiondata.pretend.example.sportsactivity.feed.service.SportsActivityFeedServer;
 
 @ExtendWith(MockitoExtension.class)
-class PretendSportsSportsActivityFeedServerImplTest {
+class PretendSportsActivityFeedServerImplTest {
     private static final String SPORT = "tennis";
 
     @Mock
@@ -143,7 +143,8 @@ class PretendSportsSportsActivityFeedServerImplTest {
     @Test
     @Order(33)
     void testInternalUpdateStateAndListenersWhenNoListenersRegistered() {
-        final SportsActivity sportsActivity = createPopulatedSportsActivity(SPORT);
+        final SportsActivity sportsActivity =
+            createPopulatedSportsActivity(SPORT);
 
         getImpl().internalUpdateStateAndListeners(sportsActivity);
 
@@ -153,7 +154,8 @@ class PretendSportsSportsActivityFeedServerImplTest {
     @Test
     @Order(36)
     void testInternalUpdateStateAndListenersWhenListenerRegisterAndExceptions() {
-        final SportsActivity sportsActivity = createPopulatedSportsActivity(SPORT);
+        final SportsActivity sportsActivity =
+            createPopulatedSportsActivity(SPORT);
 
         doThrow(IllegalStateException.class)
             .when(sportsActivityFeedListenerMock)
@@ -172,7 +174,8 @@ class PretendSportsSportsActivityFeedServerImplTest {
     void testGetLatestSportsActivitiesWhenSomeGenerated()
         throws Exception {
 
-        final SportsActivity sportsActivity = createPopulatedSportsActivity(SPORT);
+        final SportsActivity sportsActivity =
+            createPopulatedSportsActivity(SPORT);
 
         when(randomSportsActivitySupplierMock.get())
             .thenReturn(sportsActivity);

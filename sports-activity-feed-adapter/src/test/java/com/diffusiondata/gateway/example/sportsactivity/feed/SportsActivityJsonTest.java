@@ -7,7 +7,6 @@ import static org.hamcrest.core.StringContains.containsString;
 import org.junit.jupiter.api.Test;
 
 import com.diffusiondata.gateway.example.common.jackson.ObjectMapperUtils;
-import com.diffusiondata.pretend.example.sportsactivity.feed.model.SportsActivityTestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 class SportsActivityJsonTest {
@@ -19,7 +18,7 @@ class SportsActivityJsonTest {
         throws Exception {
 
         final String result =
-            objectMapper.writeValueAsString(SportsActivityTestUtils.createPopulatedSportsActivity());
+            objectMapper.writeValueAsString(createPopulatedSportsActivity());
 
         assertThat(result, containsString("dateOfActivity"));
     }

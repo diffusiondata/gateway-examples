@@ -41,7 +41,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
-class SportsSportsActivityFeedSnapshotPollingSourceHandlerImplTest {
+class SportsActivityFeedSnapshotPollingSourceHandlerImplTest {
     @Mock
     private SportsActivityFeedClient sportsActivityFeedClientMock;
 

@@ -19,6 +19,7 @@ import com.diffusiondata.pretend.example.sportsactivity.feed.model.SportsActivit
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
 @ThreadSafe
@@ -39,6 +40,7 @@ public final class SportsActivityFeedListenerStreamingSourceHandlerImpl
     private final ObjectMapper objectMapper;
     private final String topicPrefix;
 
+    @GuardedBy("this")
     private String listenerIdentifier;
 
     public SportsActivityFeedListenerStreamingSourceHandlerImpl(
@@ -91,7 +93,7 @@ public final class SportsActivityFeedListenerStreamingSourceHandlerImpl
     }
 
     @Override
-    public CompletableFuture<?> start() {
+    public synchronized CompletableFuture<?> start() {
         listenerIdentifier =
             sportsActivityFeedClient.registerListener(this);
 
@@ -101,8 +103,9 @@ public final class SportsActivityFeedListenerStreamingSourceHandlerImpl
     }
 
     @Override
-    public CompletableFuture<?> stop() {
+    public synchronized CompletableFuture<?> stop() {
         sportsActivityFeedClient.unregisterListener(listenerIdentifier);
+        listenerIdentifier = null;
 
         LOG.info("Stopped sports activity feed streaming handler");
 
@@ -110,8 +113,9 @@ public final class SportsActivityFeedListenerStreamingSourceHandlerImpl
     }
 
     @Override
-    public CompletableFuture<?> pause(PauseReason reason) {
+    public synchronized CompletableFuture<?> pause(PauseReason reason) {
         sportsActivityFeedClient.unregisterListener(listenerIdentifier);
+        listenerIdentifier = null;
 
         LOG.info("Paused sports activity feed streaming handler");
 
@@ -119,7 +123,7 @@ public final class SportsActivityFeedListenerStreamingSourceHandlerImpl
     }
 
     @Override
-    public CompletableFuture<?> resume(ResumeReason reason) {
+    public synchronized CompletableFuture<?> resume(ResumeReason reason) {
         listenerIdentifier =
             sportsActivityFeedClient.registerListener(this);
 
@@ -133,5 +137,12 @@ public final class SportsActivityFeedListenerStreamingSourceHandlerImpl
      */
     String getTopicPrefix() {
         return topicPrefix;
+    }
+
+    /**
+     * package for tests.
+     */
+    public String getListenerIdentifier() {
+        return listenerIdentifier;
     }
 }

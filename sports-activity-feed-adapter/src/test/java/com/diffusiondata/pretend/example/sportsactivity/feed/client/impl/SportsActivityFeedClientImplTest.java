@@ -24,7 +24,7 @@ import com.diffusiondata.pretend.example.sportsactivity.feed.model.SportsActivit
 import com.diffusiondata.pretend.example.sportsactivity.feed.service.SportsActivityFeedServer;
 
 @ExtendWith(MockitoExtension.class)
-class SportsSportsActivityFeedClientImplTest {
+class SportsActivityFeedClientImplTest {
     @Mock
     private SportsActivityFeedServer sportsActivityFeedServerMock;
 

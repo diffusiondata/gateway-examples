@@ -33,12 +33,11 @@ import com.diffusiondata.gateway.util.Util;
 import com.diffusiondata.pretend.example.sportsactivity.feed.client.SportsActivityFeedClient;
 import com.diffusiondata.pretend.example.sportsactivity.feed.client.SportsActivityFeedListener;
 import com.diffusiondata.pretend.example.sportsactivity.feed.model.SportsActivity;
-import com.diffusiondata.pretend.example.sportsactivity.feed.model.SportsActivityTestUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
-class SportsSportsActivityFeedListenerStreamingSourceHandlerImplTest {
+class SportsActivityFeedListenerStreamingSourceHandlerImplTest {
     @Mock
     private SportsActivityFeedClient sportsActivityFeedClientMock;
 
@@ -59,7 +58,8 @@ class SportsSportsActivityFeedListenerStreamingSourceHandlerImplTest {
     @BeforeEach
     void beforeEachTest() {
         when(serviceDefinitionMock.getParameters())
-            .thenReturn(Map.of("topicPrefix", DEFAULT_STREAMING_TOPIC_PREFIX));
+            .thenReturn(Map.of("topicPrefix",
+                DEFAULT_STREAMING_TOPIC_PREFIX));
 
         handler = new SportsActivityFeedListenerStreamingSourceHandlerImpl(
             sportsActivityFeedClientMock,
@@ -68,9 +68,7 @@ class SportsSportsActivityFeedListenerStreamingSourceHandlerImplTest {
             stateHandlerMock,
             objectMapperMock);
 
-        final String topicPrefix =
-            ((SportsActivityFeedListenerStreamingSourceHandlerImpl) handler)
-                .getTopicPrefix();
+        final String topicPrefix = getImplsTopicPrefix();
 
         assertThat(topicPrefix, notNullValue());
         assertThat(topicPrefix, equalTo(DEFAULT_STREAMING_TOPIC_PREFIX));
@@ -91,7 +89,7 @@ class SportsSportsActivityFeedListenerStreamingSourceHandlerImplTest {
     void testOnMessageWhenServiceStateIsActive()
         throws Exception {
 
-        final SportsActivity sportsActivity = SportsActivityTestUtils.createPopulatedSportsActivity();
+        final SportsActivity sportsActivity = createPopulatedSportsActivity();
         final String expectedTopicPath = DEFAULT_STREAMING_TOPIC_PREFIX + "/"
             + sportsActivity.getSport();
 
@@ -113,7 +111,7 @@ class SportsSportsActivityFeedListenerStreamingSourceHandlerImplTest {
     void testOnMessageWhenServiceStateIsActiveAndPublishExceptionIsThrown()
         throws Exception {
 
-        final SportsActivity sportsActivity = SportsActivityTestUtils.createPopulatedSportsActivity();
+        final SportsActivity sportsActivity = createPopulatedSportsActivity();
         final String topicPath = DEFAULT_STREAMING_TOPIC_PREFIX + "/" +
             sportsActivity.getSport();
 
@@ -136,7 +134,7 @@ class SportsSportsActivityFeedListenerStreamingSourceHandlerImplTest {
     void testOnMessageWhenServiceStateIsActiveAndCheckedExceptionIsThrown()
         throws Exception {
 
-        final SportsActivity sportsActivity = SportsActivityTestUtils.createPopulatedSportsActivity();
+        final SportsActivity sportsActivity = createPopulatedSportsActivity();
 
         when(stateHandlerMock.getState())
             .thenReturn(ServiceState.ACTIVE);
@@ -152,7 +150,8 @@ class SportsSportsActivityFeedListenerStreamingSourceHandlerImplTest {
         when(stateHandlerMock.getState())
             .thenReturn(ServiceState.PAUSED);
 
-        ((SportsActivityFeedListener) handler).onMessage(SportsActivityTestUtils.createPopulatedSportsActivity());
+        ((SportsActivityFeedListener) handler)
+            .onMessage(createPopulatedSportsActivity());
     }
 
     @Test
@@ -166,13 +165,16 @@ class SportsSportsActivityFeedListenerStreamingSourceHandlerImplTest {
     void testStop() {
         final String listenerIdentifier = invokeStart();
 
-        when(sportsActivityFeedClientMock.unregisterListener(listenerIdentifier))
+        when(sportsActivityFeedClientMock
+            .unregisterListener(listenerIdentifier))
             .thenReturn(true);
 
         final CompletableFuture<?> cf = handler.stop();
 
         assertThat(cf, notNullValue());
         assertThat(cf.join(), nullValue());
+
+        assertThat(getImplsListenerIdentifier(), nullValue());
     }
 
     @Test
@@ -180,13 +182,16 @@ class SportsSportsActivityFeedListenerStreamingSourceHandlerImplTest {
     void testPause() {
         final String listenerIdentifier = invokeStart();
 
-        when(sportsActivityFeedClientMock.unregisterListener(listenerIdentifier))
+        when(sportsActivityFeedClientMock
+            .unregisterListener(listenerIdentifier))
             .thenReturn(true);
 
         final CompletableFuture<?> cf = handler.pause(PauseReason.REQUESTED);
 
         assertThat(cf, notNullValue());
         assertThat(cf.join(), nullValue());
+
+        assertThat(getImplsListenerIdentifier(), nullValue());
     }
 
     @Test
@@ -194,7 +199,8 @@ class SportsSportsActivityFeedListenerStreamingSourceHandlerImplTest {
     void testResume() {
         final String listenerIdentifier = "listener-identifier";
 
-        final SportsActivityFeedListener listener = (SportsActivityFeedListener) handler;
+        final SportsActivityFeedListener listener =
+            (SportsActivityFeedListener) handler;
 
         when(sportsActivityFeedClientMock.registerListener(listener))
             .thenReturn(listenerIdentifier);
@@ -203,12 +209,15 @@ class SportsSportsActivityFeedListenerStreamingSourceHandlerImplTest {
 
         assertThat(cf, notNullValue());
         assertThat(cf.join(), nullValue());
+
+        assertThat(getImplsListenerIdentifier(), notNullValue());
     }
 
     private String invokeStart() {
         final String listenerIdentifier = "listener-identifier";
 
-        final SportsActivityFeedListener listener = (SportsActivityFeedListener) handler;
+        final SportsActivityFeedListener listener =
+            (SportsActivityFeedListener) handler;
 
         when(sportsActivityFeedClientMock.registerListener(listener))
             .thenReturn(listenerIdentifier);
@@ -218,6 +227,18 @@ class SportsSportsActivityFeedListenerStreamingSourceHandlerImplTest {
         assertThat(cf, notNullValue());
         assertThat(cf.join(), nullValue());
 
+        assertThat(getImplsListenerIdentifier(), notNullValue());
+
         return listenerIdentifier;
+    }
+
+    private String getImplsTopicPrefix() {
+        return ((SportsActivityFeedListenerStreamingSourceHandlerImpl) handler)
+            .getTopicPrefix();
+    }
+
+    private String getImplsListenerIdentifier() {
+        return ((SportsActivityFeedListenerStreamingSourceHandlerImpl) handler)
+            .getListenerIdentifier();
     }
 }
