@@ -370,4 +370,4 @@ Note: the system property `-Dgateway.config.use-local-services=true` tells the a
 
 Once the Gateway adapter has started up, new topics should appear in Diffusion.  Looking in the Diffusion console, it will look something like below:
 
-![[polling-sports-activity-feed-in-diffusion-console.png]]
+![Diffusion console showing - polling sports activity feed](polling-sports-activity-feed-in-diffusion-console.png)
