@@ -87,7 +87,7 @@ public final class SportsActivityFeedListenerStreamingSourceHandlerImpl
             catch (JsonProcessingException |
                    PayloadConversionException e) {
 
-                LOG.error("Cannot publish", e);
+                LOG.error("Failed to convert sports activity to JSON", e);
             }
         }
     }

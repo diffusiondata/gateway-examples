@@ -59,16 +59,15 @@ public final class SportsActivityFeedGatewayApplication
 
         return DiffusionGatewayFramework.newApplicationDetailsBuilder()
             .addServiceType(
+                POLLING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME,
+                ServiceMode.POLLING_SOURCE,
+                "Polled sports activity feed snapshot",
+                null)
+            .addServiceType(
                 STREAMING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME,
                 ServiceMode.STREAMING_SOURCE,
                 "Streaming sports activity feed",
                 null)
-            .addServiceType(
-                POLLING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME,
-                ServiceMode.POLLING_SOURCE,
-                "Polled sports activity feed snapshot",
-                null
-            )
             .build(APPLICATION_TYPE, 1);
     }
 

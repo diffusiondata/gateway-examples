@@ -94,7 +94,7 @@ public final class SportsActivityFeedSnapshotPollingSourceHandlerImpl
         catch (JsonProcessingException |
                PayloadConversionException e) {
 
-            LOG.error("Cannot publish", e);
+            LOG.error("Failed to convert sports activity to JSON", e);
             pollCf.completeExceptionally(e);
         }
 
