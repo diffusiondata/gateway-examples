@@ -1,6 +1,6 @@
 package com.diffusiondata.pretend.example.sportsactivity.feed.client.impl;
 
-import static com.diffusiondata.pretend.example.sportsactivity.feed.model.ActivityTestUtils.createPopulatedActivity;
+import static com.diffusiondata.pretend.example.sportsactivity.feed.model.SportsActivityTestUtils.createPopulatedSportsActivity;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.mock;
@@ -20,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.diffusiondata.pretend.example.sportsactivity.feed.client.SportsActivityFeedClient;
 import com.diffusiondata.pretend.example.sportsactivity.feed.client.SportsActivityFeedListener;
 import com.diffusiondata.pretend.example.sportsactivity.feed.model.SportsActivity;
+import com.diffusiondata.pretend.example.sportsactivity.feed.model.SportsActivityTestUtils;
 import com.diffusiondata.pretend.example.sportsactivity.feed.service.SportsActivityFeedServer;
 
 @ExtendWith(MockitoExtension.class)
@@ -68,7 +69,7 @@ class SportsSportsActivityFeedClientImplTest {
     @Test
     void testGetActivityFeed() {
         final Collection<SportsActivity> expectedActivities =
-            List.of(createPopulatedActivity());
+            List.of(SportsActivityTestUtils.createPopulatedSportsActivity());
 
         when(sportsActivityFeedServerMock.getLatestSportsActivities())
             .thenReturn(expectedActivities);

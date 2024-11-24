@@ -1,6 +1,6 @@
 package com.diffusiondata.pretend.example.sportsactivity.feed.service.impl;
 
-import static com.diffusiondata.pretend.example.sportsactivity.feed.model.ActivityTestUtils.createPopulatedActivity;
+import static com.diffusiondata.pretend.example.sportsactivity.feed.model.SportsActivityTestUtils.createPopulatedSportsActivity;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsEmptyIterable.emptyIterable;
 import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
@@ -127,7 +127,7 @@ class PretendSportsSportsActivityFeedServerImplTest {
     @Test
     @Order(30)
     void testInternalUpdateStateAndListenersWhenListenerRegistered() {
-        final SportsActivity sportsActivity = createPopulatedActivity(SPORT);
+        final SportsActivity sportsActivity = createPopulatedSportsActivity(SPORT);
 
         doNothing().when(sportsActivityFeedListenerMock)
             .onMessage(sportsActivity);
@@ -143,7 +143,7 @@ class PretendSportsSportsActivityFeedServerImplTest {
     @Test
     @Order(33)
     void testInternalUpdateStateAndListenersWhenNoListenersRegistered() {
-        final SportsActivity sportsActivity = createPopulatedActivity(SPORT);
+        final SportsActivity sportsActivity = createPopulatedSportsActivity(SPORT);
 
         getImpl().internalUpdateStateAndListeners(sportsActivity);
 
@@ -153,7 +153,7 @@ class PretendSportsSportsActivityFeedServerImplTest {
     @Test
     @Order(36)
     void testInternalUpdateStateAndListenersWhenListenerRegisterAndExceptions() {
-        final SportsActivity sportsActivity = createPopulatedActivity(SPORT);
+        final SportsActivity sportsActivity = createPopulatedSportsActivity(SPORT);
 
         doThrow(IllegalStateException.class)
             .when(sportsActivityFeedListenerMock)
@@ -172,7 +172,7 @@ class PretendSportsSportsActivityFeedServerImplTest {
     void testGetLatestSportsActivitiesWhenSomeGenerated()
         throws Exception {
 
-        final SportsActivity sportsActivity = createPopulatedActivity(SPORT);
+        final SportsActivity sportsActivity = createPopulatedSportsActivity(SPORT);
 
         when(randomSportsActivitySupplierMock.get())
             .thenReturn(sportsActivity);

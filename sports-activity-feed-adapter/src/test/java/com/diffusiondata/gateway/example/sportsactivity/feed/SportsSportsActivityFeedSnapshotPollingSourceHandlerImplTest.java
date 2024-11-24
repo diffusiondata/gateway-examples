@@ -1,7 +1,7 @@
 package com.diffusiondata.gateway.example.sportsactivity.feed;
 
 import static com.diffusiondata.gateway.example.sportsactivity.feed.SportsActivityFeedSnapshotPollingSourceHandlerImpl.DEFAULT_POLLING_TOPIC_PATH;
-import static com.diffusiondata.pretend.example.sportsactivity.feed.model.ActivityTestUtils.createPopulatedActivity;
+import static com.diffusiondata.pretend.example.sportsactivity.feed.model.SportsActivityTestUtils.createPopulatedSportsActivity;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
@@ -36,6 +36,7 @@ import com.diffusiondata.gateway.framework.exceptions.DiffusionClientException;
 import com.diffusiondata.gateway.util.Util;
 import com.diffusiondata.pretend.example.sportsactivity.feed.client.SportsActivityFeedClient;
 import com.diffusiondata.pretend.example.sportsactivity.feed.model.SportsActivity;
+import com.diffusiondata.pretend.example.sportsactivity.feed.model.SportsActivityTestUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -110,7 +111,7 @@ class SportsSportsActivityFeedSnapshotPollingSourceHandlerImplTest {
         throws Exception {
 
         final Collection<SportsActivity> activities =
-            List.of(createPopulatedActivity());
+            List.of(SportsActivityTestUtils.createPopulatedSportsActivity());
 
         final String jsonAsString = "{}";
 
@@ -137,7 +138,7 @@ class SportsSportsActivityFeedSnapshotPollingSourceHandlerImplTest {
         throws Exception {
 
         final Collection<SportsActivity> activities =
-            List.of(createPopulatedActivity());
+            List.of(SportsActivityTestUtils.createPopulatedSportsActivity());
 
         final String jsonAsString = "{}";
 
@@ -167,7 +168,7 @@ class SportsSportsActivityFeedSnapshotPollingSourceHandlerImplTest {
         throws Exception {
 
         final Collection<SportsActivity> activities =
-            List.of(createPopulatedActivity());
+            List.of(SportsActivityTestUtils.createPopulatedSportsActivity());
 
         when(stateHandlerMock.getState())
             .thenReturn(ServiceState.ACTIVE);
