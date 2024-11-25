@@ -373,6 +373,6 @@ Note: the system property `-Dgateway.config.use-local-services=true` tells the a
 
 Once the Gateway adapter has started, new topics should appear in Diffusion.  Looking in the Diffusion console, it will look something like below:
 
-![[polling-sports-activity-feed-in-diffusion-console.png]]
+![Polled sports activity feed in Diffusion console](polling-sports-activity-feed-in-diffusion-console.png)
 
 You should now have a running sports activity feed Gateway adapter polling the pretend sports activity feed server.
