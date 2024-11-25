@@ -153,8 +153,7 @@ public final class SportsActivityFeedGatewayApplication
   
         return CompletableFuture.completedFuture(null);  
     }  
-}
-```
+}```
 
 ### Gateway application runner class
 Create a new class called `Runner` - a simple Java class with a `main` method; this is a typical idiom Gateway adapters use for launching the Gateway application.
@@ -174,7 +173,7 @@ public final class Runner {
 ```
 
 ### Polling source handler class and configuration
-Create a class called `SportsActivityFeedPollingSourceHandler` and have it implement the `PollingSourceHandler` interface.  We will use this to periodically poll and request the activities snapshot from the pretend sports activity feed server.  The `PollingSourceHandler` interface will require us to implement the following methods:
+Create a class called `SportsActivityFeedSnapshotPollingSourceHandlerImpl` and have it implement the `PollingSourceHandler` interface.  We will use this to periodically poll and request the activities snapshot from the pretend sports activity feed server.  The `PollingSourceHandler` interface will require us to implement the following methods:
 - `poll` - this method is periodically called by the Gateway framework based on configuration.
 - `pause` - called when the Gateway adapter enters the paused state.
 - `resume` - is called when the Gateway adapter can resume.
@@ -182,7 +181,7 @@ Create a class called `SportsActivityFeedPollingSourceHandler` and have it imple
 In your `poll` method, we will call the pretend sports activity feed server's `getSportsLatestActivities()` using the `SportsActivityFeedClient` reference passed into the constructor.  Below is the complete code for the polling source handler:
 
 ```java
-public final class SportsActivityFeedPollingSourceHandler  
+public final class SportsActivityFeedSnapshotPollingSourceHandlerImpl  
     implements PollingSourceHandler {  
   
     static final String DEFAULT_POLLING_TOPIC_PATH =  
@@ -190,7 +189,7 @@ public final class SportsActivityFeedPollingSourceHandler
   
     private static final Logger LOG =  
         LoggerFactory.getLogger(  
-            SportsActivityFeedPollingSourceHandler.class);  
+            SportsActivityFeedSnapshotPollingSourceHandlerImpl.class);  
   
     private final SportsActivityFeedClient sportsActivityFeedClient;  
     private final Publisher publisher;  
@@ -198,7 +197,7 @@ public final class SportsActivityFeedPollingSourceHandler
     private final ObjectMapper objectMapper;  
     private final String topicPath;  
   
-    public SportsActivityFeedPollingSourceHandler(  
+    public SportsActivityFeedSnapshotPollingSourceHandlerImpl(  
         SportsActivityFeedClient sportsActivityFeedClient,  
         ServiceDefinition serviceDefinition,  
         Publisher publisher,  
@@ -254,9 +253,7 @@ public final class SportsActivityFeedPollingSourceHandler
         catch (JsonProcessingException |  
                PayloadConversionException e) {  
   
-            LOG.error(
-                "Failed to convert sports activity to configured type", e);
-            
+            LOG.error("Failed to convert sports activity to JSON", e);
             pollCf.completeExceptionally(e);  
         }  
   
@@ -289,13 +286,13 @@ public ApplicationDetails getApplicationDetails()
   
     return DiffusionGatewayFramework.newApplicationDetailsBuilder()  
         .addServiceType(  
-            POLLING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME,  
+            SPORTS_ACTIVITY_FEED_POLLER_SERVICE_TYPE_NAME,  
             ServiceMode.POLLING_SOURCE,  
-            "Polled sports activity feed snapshot",  
+            "Polls the sports activity feed at a regular interval",  
             null)  
         .build(APPLICATION_TYPE, 1);  
-}
-
+}  
+  
 @Override  
 public PollingSourceHandler addPollingSource(  
     ServiceDefinition serviceDefinition,  
@@ -306,7 +303,7 @@ public PollingSourceHandler addPollingSource(
     final String serviceType =  
         serviceDefinition.getServiceType().getName();  
   
-    if (POLLING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME.equals(serviceType)) {  
+    if (SPORTS_ACTIVITY_FEED_POLLER_SERVICE_TYPE_NAME.equals(serviceType)) {  
         return new SportsActivityFeedPollingSourceHandler(  
             sportsActivityFeedClient,  
             serviceDefinition,  
@@ -336,8 +333,8 @@ The code for the polling source handler is now complete, so you need to configur
   },  
   "services": [  
     {  
-      "serviceName": "polling-sports-activity-feed-service-1",  
-      "serviceType": "polling-sports-activity-feed-service",  
+      "serviceName": "sportsActivityFeedPoller",  
+      "serviceType": "SPORTS_ACTIVITY_FEED_POLLER",  
       "config": {  
         "framework": {  
           "pollIntervalMs": 4500,  
@@ -353,8 +350,8 @@ The code for the polling source handler is now complete, so you need to configur
           "topicPath": "sports/activity/feed/snapshot"  
         }  
       }  
-    }  
-  ]  
+    }
+   ]  
 }
 ```
 
@@ -369,10 +366,292 @@ After building the project, you can run the sports activity feed Gateway adapter
 java -Dgateway.config.file=sports-activity-feed-adapter/src/main/resources/configuration.json -Dgateway.config.use-local-services=true -jar .\sports-activity-feed-adapter\target\sports-activity-feed-adapter-1.0.0-jar-with-dependencies.jar
 ```
 
-Note: the system property `-Dgateway.config.use-local-services=true` tells the adapter to use the configuration that is specified in the configuration file and not to use any configuration cached in the Diffusion server.
+Note: the system property `-Dgateway.config.use-local-services=true` tells the adapter to use the configuration specified in the configuration file and not to use any configuration cached in the Diffusion server.
 
 Once the Gateway adapter has started, new topics should appear in Diffusion.  Looking in the Diffusion console, it will look something like below:
 
-![Polled sports activity feed in Diffusion console](polling-sports-activity-feed-in-diffusion-console.png)
+![Polling sports activity feed in Diffusion console](polling-sports-activity-feed-in-diffusion-console.png)
 
-You should now have a running sports activity feed Gateway adapter polling the pretend sports activity feed server.
+You should now have a running sports activity feed Gateway adapter polling the pretend sports activity feed server and populating Diffusion topics.
+
+### Streaming source handler class and configuration
+Create a class called `SportsActivityFeedStreamingSourceHandler`, which implements the `StreamingSourceHandler` interface from the Gateway framework and the `SportsActivityFeedListener` interface available with the pretend sports activity feed server.  For our example, this will handle the activities streamed from the pretend sports activity feed server and put the data into Diffusion topics:
+
+```java
+public final class SportsActivityFeedStreamingSourceHandler  
+    implements SportsActivityFeedListener,  
+    StreamingSourceHandler {  
+  
+    static final String DEFAULT_STREAMING_TOPIC_PREFIX =  
+        "default/sports/activity/feed/stream";  
+  
+    private static final Logger LOG =  
+        LoggerFactory.getLogger(  
+            SportsActivityFeedStreamingSourceHandler.class);  
+  
+    private final SportsActivityFeedClient sportsActivityFeedClient;  
+    private final Publisher publisher;  
+    private final StateHandler stateHandler;  
+    private final ObjectMapper objectMapper;  
+    private final String topicPrefix;  
+  
+    private String listenerIdentifier;  
+  
+    public SportsActivityFeedStreamingSourceHandler(  
+        SportsActivityFeedClient sportsActivityFeedClient,  
+        ServiceDefinition serviceDefinition,  
+        Publisher publisher,  
+        StateHandler stateHandler,  
+        ObjectMapper objectMapper) {  
+  
+        this.sportsActivityFeedClient =  
+            requireNonNull(sportsActivityFeedClient,  
+                "sportsActivityFeedClient");  
+  
+        this.publisher = requireNonNull(publisher, "publisher");  
+        this.stateHandler = requireNonNull(stateHandler, "stateHandler");  
+        requireNonNull(serviceDefinition, "serviceDefinition");  
+        this.objectMapper = requireNonNull(objectMapper, "objectMapper");  
+  
+        topicPrefix = serviceDefinition.getParameters()  
+            .getOrDefault("topicPrefix", DEFAULT_STREAMING_TOPIC_PREFIX)  
+            .toString();  
+    }  
+  
+    @Override  
+    public void onMessage(SportsActivity sportsActivity) {  
+        requireNonNull(sportsActivity, "sportsActivity");  
+  
+        if (stateHandler.getState().equals(ServiceState.ACTIVE)) {  
+            try {  
+                final String topicPath = topicPrefix + "/" +  
+                    sportsActivity.getSport();  
+  
+                final String value =  
+                    objectMapper.writeValueAsString(sportsActivity);  
+  
+                publisher.publish(topicPath, value)  
+                    .exceptionally(throwable -> {  
+                        LOG.error("Cannot publish to topic: '{}'",  
+                            topicPath, throwable);  
+  
+                        return null;  
+                    });  
+            }  
+            catch (JsonProcessingException |  
+                   PayloadConversionException e) {  
+  
+                LOG.error(  
+                    "Failed to convert sports activity to configured type", e);  
+            }  
+        }  
+    }  
+  
+    @Override  
+    public synchronized CompletableFuture<?> start() {  
+        listenerIdentifier =  
+            sportsActivityFeedClient.registerListener(this);  
+  
+        LOG.info("Started sports activity feed streaming handler");  
+  
+        return CompletableFuture.completedFuture(null);  
+    }  
+  
+    @Override  
+    public synchronized CompletableFuture<?> stop() {  
+        sportsActivityFeedClient.unregisterListener(listenerIdentifier);  
+        listenerIdentifier = null;  
+  
+        LOG.info("Stopped sports activity feed streaming handler");  
+  
+        return CompletableFuture.completedFuture(null);  
+    }  
+  
+    @Override  
+    public synchronized CompletableFuture<?> pause(PauseReason reason) {  
+        sportsActivityFeedClient.unregisterListener(listenerIdentifier);  
+        listenerIdentifier = null;  
+  
+        LOG.info("Paused sports activity feed streaming handler");  
+  
+        return CompletableFuture.completedFuture(null);  
+    }  
+  
+    @Override  
+    public synchronized CompletableFuture<?> resume(ResumeReason reason) {  
+        listenerIdentifier =  
+            sportsActivityFeedClient.registerListener(this);  
+  
+        LOG.info("Resumed sports activity feed streaming handler");  
+  
+        return CompletableFuture.completedFuture(null);  
+    }  
+}
+```
+
+#### Add streaming service to the Gateway application class
+Now you have created the streaming service class, we can add it to the `getApplicationDetails` as a supported service type and then include the code within the `addStreamingSource` method that will instantiate an instance of the streaming source handler class.  The completed Gateway application class looks like this:
+
+```java
+public final class SportsActivityFeedGatewayApplication  
+    implements GatewayApplication {  
+  
+    static final String APPLICATION_TYPE =  
+        "sports-activity-feed-application";  
+  
+    static final String SPORTS_ACTIVITY_FEED_STREAMER_SERVICE_TYPE_NAME =  
+        "SPORTS_ACTIVITY_FEED_STREAMER";  
+  
+    static final String SPORTS_ACTIVITY_FEED_POLLER_SERVICE_TYPE_NAME =  
+        "SPORTS_ACTIVITY_FEED_POLLER";  
+  
+    private static final Logger LOG =  
+        LoggerFactory.getLogger(SportsActivityFeedGatewayApplication.class);  
+  
+    private final SportsActivityFeedClient sportsActivityFeedClient;  
+    private final ObjectMapper objectMapper;  
+  
+    public SportsActivityFeedGatewayApplication(  
+        SportsActivityFeedClient sportsActivityFeedClient,  
+        ObjectMapper objectMapper) {  
+  
+        this.sportsActivityFeedClient =  
+            requireNonNull(sportsActivityFeedClient,  
+                "sportsActivityFeedClient");  
+  
+        this.objectMapper =  
+            requireNonNull(objectMapper, "objectMapper");  
+    }  
+  
+    @Override  
+    public ApplicationDetails getApplicationDetails()  
+        throws ApplicationConfigurationException {  
+  
+        return DiffusionGatewayFramework.newApplicationDetailsBuilder()  
+            .addServiceType(  
+                SPORTS_ACTIVITY_FEED_POLLER_SERVICE_TYPE_NAME,  
+                ServiceMode.POLLING_SOURCE,  
+                "Polls the sports activity feed at a regular interval",  
+                null)  
+            .addServiceType(  
+                SPORTS_ACTIVITY_FEED_STREAMER_SERVICE_TYPE_NAME,  
+                ServiceMode.STREAMING_SOURCE,  
+                "Streams the sports activity feed as they are available",  
+                null)  
+            .build(APPLICATION_TYPE, 1);  
+    }  
+  
+    @Override  
+    public StreamingSourceHandler addStreamingSource(  
+        ServiceDefinition serviceDefinition,  
+        Publisher publisher,  
+        StateHandler stateHandler)  
+        throws InvalidConfigurationException {  
+  
+        final String serviceType =  
+            serviceDefinition.getServiceType().getName();  
+  
+        if (SPORTS_ACTIVITY_FEED_STREAMER_SERVICE_TYPE_NAME.equals(serviceType)) {  
+            return new SportsActivityFeedStreamingSourceHandler(  
+                sportsActivityFeedClient,  
+                serviceDefinition,  
+                publisher,  
+                stateHandler,  
+                objectMapper);  
+        }  
+  
+        throw new InvalidConfigurationException(  
+            "Unknown service type: " + serviceType);  
+    }  
+  
+    @Override  
+    public PollingSourceHandler addPollingSource(  
+        ServiceDefinition serviceDefinition,  
+        Publisher publisher,  
+        StateHandler stateHandler)  
+        throws InvalidConfigurationException {  
+  
+        final String serviceType =  
+            serviceDefinition.getServiceType().getName();  
+  
+        if (SPORTS_ACTIVITY_FEED_POLLER_SERVICE_TYPE_NAME.equals(serviceType)) {  
+            return new SportsActivityFeedPollingSourceHandler(  
+                sportsActivityFeedClient,  
+                serviceDefinition,  
+                publisher,  
+                stateHandler,  
+                objectMapper);  
+        }  
+  
+        throw new InvalidConfigurationException(  
+            "Unknown service type: " + serviceType);  
+    }  
+  
+    @Override  
+    public CompletableFuture<?> stop() {  
+        LOG.info("Application stop");  
+  
+        return CompletableFuture.completedFuture(null);  
+    }  
+}
+```
+
+#### Update the configuration file with the streaming service instance
+Finally, you need to add the streaming source to the configuration.  The complete configuration file is as per below:
+
+```json
+{  
+  "id": "sports-activity-feed-adapter-1",  
+  "framework-version": 1,  
+  "application-version": 1,  
+  "diffusion": {  
+    "url": "ws://localhost:8080",  
+    "principal": "admin",  
+    "password": "password",  
+    "reconnectIntervalMs": 5000  
+  },  
+  "services": [  
+    {  
+      "serviceName": "sportsActivityFeedPoller",  
+      "serviceType": "SPORTS_ACTIVITY_FEED_POLLER",  
+      "config": {  
+        "framework": {  
+          "pollIntervalMs": 4500,  
+          "pollTimeoutMs": 300000,  
+          "topicProperties": {  
+            "topicType": "JSON",  
+            "persistencePolicy": "SESSION",  
+            "publishValuesOnly": false,  
+            "dontRetainValue": false  
+          }  
+        },  
+        "application": {  
+          "topicPath": "sports/activity/feed/snapshot"  
+        }  
+      }  
+    },  
+    {  
+      "serviceName": "sportsActivityFeedStreamer",  
+      "serviceType": "SPORTS_ACTIVITY_FEED_STREAMER",  
+      "config": {  
+        "framework": {  
+          "topicProperties": {  
+            "topicType": "JSON",  
+            "persistencePolicy": "SESSION",  
+            "publishValuesOnly": false,  
+            "dontRetainValue": false  
+          }  
+        },  
+        "application": {  
+          "topicPrefix": "sports/activity/feed/stream"  
+        }  
+      }  
+    }  
+  ]  
+}
+```
+
+#### Run the adapter with both services
+You can now build and run the entire Gateway adapter.  It will periodically poll for a snapshot of the latest activities and handle the changes in streaming sports activity as they occur.  With both the streaming and polling running, you should have a topic tree in the Diffusion console similar to the one below:
+
+![Polled and streaming sports activity feed in Diffusion console](polling-and-streaming-sports-activity-feeds-in-diffusion-console.png)
