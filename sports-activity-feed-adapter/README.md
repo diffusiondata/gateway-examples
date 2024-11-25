@@ -42,7 +42,7 @@ The sports activity domain object has the following attributes:
 - **Date of activity:** when the sporting activity took place.
 
 The pretend sports activity feed client has the following features:
-- **Register a listener:** a sports activity feed listener instance is required, with a callback method of 'onMessage' called when a new sports activity is sent to the subscriber (in our case, the Gateway adapter).
+- **Register a listener:** a sports activity feed listener instance is required, with a callback method of `onMessage` called when a new sports activity is sent to the subscriber (in our case, the Gateway adapter).
 - **Unregister a listener:** a way of unregistering from the sports activity feed to stop receiving updates.
 - **Get latest activities:** returns a snapshot list of the latest sporting activities when called.
 
@@ -60,8 +60,8 @@ DIF("Diffusion <br /> server"):::blue
 %% Edges
 
 AFS -. 1a) Send sports activity event .-> AFG 
-AFG -- 2a) Invoke get latest activities ---> AFS
-AFS -- 2b) Return latest activities --> AFG
+AFG -- 2a) Invoke get latest sports activities ---> AFS
+AFS -- 2b) Return latest sports activities --> AFG
 
 AFG -- 1b) Update specific \n sports activity --> DIF
 AFG -- 2c) Update the \n activities snapshot ---> DIF
@@ -113,15 +113,15 @@ public final class SportsActivityFeedGatewayApplication
     implements GatewayApplication {  
   
     static final String APPLICATION_TYPE =  
-        "sports-activity-feed-application";  
-  
-    static final String STREAMING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME =  
-        "streaming-sports-activity-feed-service";  
-  
-    static final String POLLING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME =  
-        "polling-sports-activity-feed-service";  
-  
-    private static final Logger LOG =  
+        "sports-activity-feed-application";
+
+  static final String SPORTS_ACTIVITY_FEED_STREAMER_SERVICE_TYPE_NAME =
+          "SPORTS_ACTIVITY_FEED_STREAMER";
+
+  static final String SPORTS_ACTIVITY_FEED_POLLER_SERVICE_TYPE_NAME =
+          "SPORTS_ACTIVITY_FEED_POLLER";
+
+  private static final Logger LOG =  
         LoggerFactory.getLogger(SportsActivityFeedGatewayApplication.class);  
   
     private final SportsActivityFeedClient sportsActivityFeedClient;  
@@ -153,7 +153,8 @@ public final class SportsActivityFeedGatewayApplication
   
         return CompletableFuture.completedFuture(null);  
     }  
-}```
+}
+```
 
 ### Gateway application runner class
 Create a new class called `Runner` - a simple Java class with a `main` method; this is a typical idiom Gateway adapters use for launching the Gateway application.
@@ -357,7 +358,7 @@ The code for the polling source handler is now complete, so you need to configur
 
 Note: change the Diffusion URL, principal and password to match what is required to connect to your Diffusion server.
 
-Note: the service type "polling-sports-activity-feed-service" is how the configuration is linked to the code in the `getApplicationDetails` method.
+Note: the service type `"SPORTS_ACTIVITY_FEED_POLLER"` is how the configuration is linked to the code in the `getApplicationDetails` method.
 
 #### Run the adapter with the polling service added
 After building the project, you can run the sports activity feed Gateway adapter from the root of the Gateway examples project:
