@@ -375,7 +375,7 @@ Once the Gateway adapter has started, new topics should appear in Diffusion.  Lo
 You should now have a running sports activity feed Gateway adapter polling the pretend sports activity feed server and populating Diffusion topics.
 
 ### Streaming source handler class and configuration
-Create a class called `SportsActivityFeedStreamingSourceHandler`, which implements the `StreamingSourceHandler` interface from the Gateway framework and the `SportsActivityFeedListener` interface available with the pretend sports activity feed server.  For our example, this will handle the activities streamed from the pretend sports activity feed server and put the data into Diffusion topics:
+Create a class called `SportsActivityFeedStreamingSourceHandler`, which implements the `StreamingSourceHandler` interface from the Gateway framework and the `SportsActivityFeedListener` interface available with the pretend sports activity feed server.  For our example, this will handle the activities streamed from the pretend sports activity feed server, with the `onMessage` invoked as your handler receives each new sporting activity.  Within the `onMessage` method, you use the `publisher` reference to put the data into Diffusion topics:
 
 ```java
 public final class SportsActivityFeedStreamingSourceHandler  
