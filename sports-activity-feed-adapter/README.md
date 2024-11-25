@@ -1,4 +1,4 @@
-# Activity feed Gateway adapter example
+# Sports activity feed Gateway adapter example
 
 This project demonstrates the use of the Diffusion Gateway Framework.  The 
 Gateway Framework provides an easy and consistent way to develop applications
