@@ -12,7 +12,7 @@ of Diffusion.
 
 ## How to run the Activity feed Gateway adapter
 
-    java -Dgateway.config.file=sportsActivity-feed-adapter/src/main/resources/configuration.json -Dgateway.config.use-local-services=true -jar .\sportsActivity-feed-adapter\target\sportsActivity-feed-adapter-1.0.0-jar-with-dependencies.jar
+    java -Dgateway.config.file=sports-activity-feed-adapter/src/main/resources/configuration.json -Dgateway.config.use-local-services=true -jar .\sports-activity-feed-adapter\target\sports-activity-feed-adapter-1.0.0-jar-with-dependencies.jar
 
 
 ---
@@ -26,9 +26,9 @@ After completing the tutorial, you can expect to understand how the Gateway fram
 ## Overview
 This example uses the concept of a sporting activity feed (think along the lines of popular exercise/social networks). Naturally, we don't build the platform for this tutorial; instead, we use a pretend sports activity feed server that generates realistic random sports activity data.
 
-The pretend sports activity feed server provides a client API that allows an application to subscribe to a feed of activities, with the changes pushed to the subscribed clients as they happen - so, this would be like someone completing an sports activity, uploading it and then the sports activity is sent as an event to subscribers. Additionally, the pretend sports activity feed client API has a mechanism for requesting a snapshot of the latest activities at a point in time.
+The pretend sports activity feed server provides a client API that allows an application to subscribe to a feed of activities, with the changes pushed to the subscribed clients as they happen - so, this would be like someone completing a sports activity, uploading it and then the sports activity is sent as an event to subscribers. Additionally, the pretend sports activity feed client API has a mechanism for requesting a snapshot of the latest activities at a point in time.
 
-In this tutorial, we'll integrate the Gateway Framework with the pretend sports activity feed server and demonstrate data streaming into the Gateway adapter and polling to receive the sports activity snapshot.
+In this tutorial, we'll integrate the Gateway Framework with the pretend sports activity feed server, demonstrate data streaming into the Gateway adapter and poll the data to receive the sports activity snapshot.
 
 The final solution comprises the following:
 - Pretend sports activity feed server - this provides a client API for receiving streaming events and the ability to request a snapshot of the latest activities.
@@ -36,7 +36,7 @@ The final solution comprises the following:
 - Diffusion server - this is a running instance of Diffusion; you can run Diffusion in several different ways, such as running locally on your machine or connecting to a remote Diffusion server.
 
 The sports activity domain object has the following attributes:
-- **Sport:** the sporting activity, such as swimming, sailing, tennis and other sports.
+- **Sport:** the sporting activity includes swimming, sailing, tennis and other sports.
 - **Country:** the country where the sports activity took place.
 - **Winner:** the name of the person who won the sporting activity.
 - **Date of activity:** when the sporting activity took place.
@@ -80,9 +80,9 @@ To get started with the sports activity feed example, you will need the followin
   - Install Diffusion via the standard Diffusion installer.
   - Use the Diffusion Docker image to run a container.
   - Use Diffusion Cloud, the DiffusionData SaaS offering.
-  - Connect to a Diffusion server running remotely.
+  - Connect to a Diffusion server that is running remotely.
 
-The sports activity feed example code is available on GitHub and is part of the overall Gateway examples project:
+The Sports activity feed example code is available on GitHub and is part of the overall Gateway examples project:
 * [diffusiondata/gateway-examples](https://github.com/diffusiondata/gateway-examples)
 
 Follow the README file within the sports-activity-feed-adapter module to start building the project and running the example.
@@ -93,20 +93,20 @@ Developing the sports activity feed Gateway adapter requires very little code an
 - A class that implements the `PollingSourceHandler` interface.
 - A class that implements the `StreamingSourceHandler` interface.
 - Simple Gateway adapter runner.
-- Create a Gateway adapter configuration file that will be used to configure our streaming and polling handlers.
+- Create a Gateway adapter configuration file to configure the streaming and polling handlers.
 
-Note: the code is available in GitHub, so you may find referring to the completed solution helpful.
+Note: the example code is available in GitHub, so referring to the completed solution may be helpful.
 
 ### Gateway application class
-Firstly, create a class called `SportsActivityFeedGatewayApplication` that implements the `GatewayApplication` interface.  The class is a standard way of writing Gateway adapters.  An adapter can then have different types of `ServiceHandler` for handling streaming, polling or sinking data against your chosen datasources.  You will need to implement a few methods, such as:
+Firstly, create a class called `SportsActivityFeedGatewayApplication` that implements the `GatewayApplication` interface.  The class is a standard way of writing Gateway adapters.  An adapter can have different types of `ServiceHandler` for handling streaming, polling or sinking data against your chosen datasources.  You will need to implement a few methods, such as:
 - `getApplicationDetails` - provides details of the adapter, such as which types of `ServiceHandler` are available and can be configured.
-- `stop` - called when the Gateway adapter is shutdown.
+- `stop` - called when the Gateway adapter shuts down.
 
 As we go through the tutorial, you will need to override two methods:
 - `addPollingSource` - adds a polling source to the adapter.
 - `addStreamingSource` - adds a streaming source to the adapter.
 
-Because our Gateway adapter will integrate with the pretend sports activity feed server, we'll pass an `SportsActivityFeedClient` reference in the constructor for later use by the streaming and polling service handlers.  The `ObjectMapper` is used to convert our SportsActivity object into JSON.  Our code will initially look something like:
+Because our Gateway adapter will integrate with the pretend sports activity feed server, we'll pass a `SportsActivityFeedClient` reference in the constructor for later use by the streaming and polling service handlers.  The `ObjectMapper` is used to convert our SportsActivity object into JSON.  Our code will initially look something like:
 
 ```java
 public final class SportsActivityFeedGatewayApplication  
@@ -156,7 +156,7 @@ public final class SportsActivityFeedGatewayApplication
 }```
 
 ### Gateway application runner class
-Create a new class called `Runner` - a simple Java class with a main method; this is a typical idiom Gateway adapters use for launching the Gateway application.
+Create a new class called `Runner` - a simple Java class with a `main` method; this is a typical idiom Gateway adapters use for launching the Gateway application.
 
 ```java
 public final class Runner {  
@@ -277,7 +277,7 @@ public final class SportsActivityFeedSnapshotPollingSourceHandlerImpl
 ```
 
 #### Add polling service to the Gateway application class
-Now you have created the polling service class, we can add it to the `getApplicationDetails` as a supported service type and then include the code within the `addPollingSource` method that will instantiate an instance of the polling source handler class.
+Now you have created the polling service class, we can add it to the `getApplicationDetails` as a supported service type and then include the code within the `addPollingSource` method that will instantiate an instance of the polling source handler class:
 
 ```java
 @Override  
@@ -360,7 +360,7 @@ Note: change the Diffusion URL, principal and password to match what is required
 Note: the service type "polling-sports-activity-feed-service" is how the configuration is linked to the code in the `getApplicationDetails` method.
 
 #### Run the adapter with the polling service added
-After building the project, you can run the sports activity feed Gateway adapter from the root of  Gateway examples project:
+After building the project, you can run the sports activity feed Gateway adapter from the root of the Gateway examples project:
 
 ```shell
 java -Dgateway.config.file=sports-activity-feed-adapter/src/main/resources/configuration.json -Dgateway.config.use-local-services=true -jar .\sports-activity-feed-adapter\target\sports-activity-feed-adapter-1.0.0-jar-with-dependencies.jar
@@ -368,6 +368,8 @@ java -Dgateway.config.file=sports-activity-feed-adapter/src/main/resources/confi
 
 Note: the system property `-Dgateway.config.use-local-services=true` tells the adapter to use the configuration that is specified in the configuration file and not to use any configuration cached in the Diffusion server.
 
-Once the Gateway adapter has started up, new topics should appear in Diffusion.  Looking in the Diffusion console, it will look something like below:
+Once the Gateway adapter has started, new topics should appear in Diffusion.  Looking in the Diffusion console, it will look something like below:
 
-![Diffusion console showing - polling sports activity feed](polling-sports-activity-feed-in-diffusion-console.png)
+![[polling-sports-activity-feed-in-diffusion-console.png]]
+
+You should now have a running sports activity feed Gateway adapter polling the pretend sports activity feed server.
