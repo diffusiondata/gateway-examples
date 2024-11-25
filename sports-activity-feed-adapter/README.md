@@ -535,9 +535,9 @@ public final class SportsActivityFeedGatewayApplication
                 "Polls the sports activity feed at a regular interval",  
                 null)  
             .addServiceType(  
-                SPORTS_ACTIVITY_FEED_STREAMER_SERVICE_TYPE_NAME,  
+                SPORTS_ACTIVITY_FEED_STREAMER_SERVICE_TYPE_NAME, 
                 ServiceMode.STREAMING_SOURCE,  
-				"Streams the sports activities as they are available",
+                "Streams the sports activities as they are available",
                 null)  
             .build(APPLICATION_TYPE, 1);  
     }  
