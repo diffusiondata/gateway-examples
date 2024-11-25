@@ -94,7 +94,9 @@ public final class SportsActivityFeedPollingSourceHandler
         catch (JsonProcessingException |
                PayloadConversionException e) {
 
-            LOG.error("Failed to convert sports activity to JSON", e);
+            LOG.error(
+                "Failed to convert sports activity to configured type", e);
+
             pollCf.completeExceptionally(e);
         }
 
