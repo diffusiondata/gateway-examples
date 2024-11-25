@@ -536,7 +536,7 @@ public final class SportsActivityFeedGatewayApplication
             .addServiceType(  
                 SPORTS_ACTIVITY_FEED_STREAMER_SERVICE_TYPE_NAME,  
                 ServiceMode.STREAMING_SOURCE,  
-                "Streams the sports activity feed as they are available",  
+				"Streams the sports activities as they are available",
                 null)  
             .build(APPLICATION_TYPE, 1);  
     }  
@@ -655,3 +655,15 @@ Finally, you need to add the streaming source to the configuration.  The complet
 You can now build and run the entire Gateway adapter.  It will periodically poll for a snapshot of the latest activities and handle the changes in streaming sports activity as they occur.  With both the streaming and polling running, you should have a topic tree in the Diffusion console similar to the one below:
 
 ![Polled and streaming sports activity feed in Diffusion console](polling-and-streaming-sports-activity-feeds-in-diffusion-console.png)
+
+## Conclusion
+You have now built a fully functioning Gateway adapter that handles both streaming and polled/non-streaming data with relatively few lines of code and just a little configuration.  Hopefully, This tutorial has given you enough knowledge to get you started developing your own Gateway adapters.  There is a lot more to explore with the Gateway framework, such as:
+- Develop a sink handler that receives streaming data from Diffusion and sends it to your chosen datasources/system.
+- Prometheus metrics.
+- Controlling the Gateway adapter through the Diffusion console (pause, resume and stop).
+
+Several prebuilt Gateway adapters are ready and require configuration to connect to various datasources.  The existing DiffusionData Gateway adapters are:
+- Kafka Adapter
+- CDC Adapter
+- REST Adapter
+- Redis Adapter

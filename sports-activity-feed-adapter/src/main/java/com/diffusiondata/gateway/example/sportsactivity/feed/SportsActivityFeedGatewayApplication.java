@@ -62,12 +62,12 @@ public final class SportsActivityFeedGatewayApplication
                 SPORTS_ACTIVITY_FEED_POLLER_SERVICE_TYPE_NAME,
                 ServiceMode.POLLING_SOURCE,
                 "Polls the sports activity feed at a regular interval",
-                null)
+                null) // For this example we won't use schema validation
             .addServiceType(
                 SPORTS_ACTIVITY_FEED_STREAMER_SERVICE_TYPE_NAME,
                 ServiceMode.STREAMING_SOURCE,
-                "Streams the sports activity feed as they are available",
-                null)
+                "Streams the sports activities as they are available",
+                null) // For this example we won't use schema validation
             .build(APPLICATION_TYPE, 1);
     }
 
