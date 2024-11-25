@@ -153,7 +153,8 @@ public final class SportsActivityFeedGatewayApplication
   
         return CompletableFuture.completedFuture(null);  
     }  
-}```
+}
+```
 
 ### Gateway application runner class
 Create a new class called `Runner` - a simple Java class with a `main` method; this is a typical idiom Gateway adapters use for launching the Gateway application.
