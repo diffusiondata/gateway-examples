@@ -63,8 +63,8 @@ AFS -. 1a) Send sports activity event .-> AFG
 AFG -- 2a) Invoke get latest sports activities ---> AFS
 AFS -- 2b) Return latest sports activities --> AFG
 
-AFG -- 1b) Update specific \n sports activity --> DIF
-AFG -- 2c) Update the \n activities snapshot ---> DIF
+AFG -- 1b) Update specific <br /> sports activity --> DIF
+AFG -- 2c) Update the <br /> activities snapshot ---> DIF
 
 %% Styling
 classDef green fill:#B2DFDB,stroke:#00897B,stroke-width:2px;
@@ -174,7 +174,7 @@ public final class Runner {
 ```
 
 ### Polling source handler class and configuration
-Create a class called `SportsActivityFeedSnapshotPollingSourceHandlerImpl` and have it implement the `PollingSourceHandler` interface.  We will use this to periodically poll and request the activities snapshot from the pretend sports activity feed server.  The `PollingSourceHandler` interface will require us to implement the following methods:
+Create a class called `SportsActivityFeedPollingSourceHandler` and have it implement the `PollingSourceHandler` interface.  We will use this to periodically poll and request the activities snapshot from the pretend sports activity feed server.  The `PollingSourceHandler` interface will require us to implement the following methods:
 - `poll` - this method is periodically called by the Gateway framework based on configuration.
 - `pause` - called when the Gateway adapter enters the paused state.
 - `resume` - is called when the Gateway adapter can resume.
@@ -182,98 +182,100 @@ Create a class called `SportsActivityFeedSnapshotPollingSourceHandlerImpl` and h
 In your `poll` method, we will call the pretend sports activity feed server's `getSportsLatestActivities()` using the `SportsActivityFeedClient` reference passed into the constructor.  Below is the complete code for the polling source handler:
 
 ```java
-public final class SportsActivityFeedSnapshotPollingSourceHandlerImpl  
-    implements PollingSourceHandler {  
-  
-    static final String DEFAULT_POLLING_TOPIC_PATH =  
-        "default/sports/activity/feed/snapshot";  
-  
-    private static final Logger LOG =  
-        LoggerFactory.getLogger(  
-            SportsActivityFeedSnapshotPollingSourceHandlerImpl.class);  
-  
-    private final SportsActivityFeedClient sportsActivityFeedClient;  
-    private final Publisher publisher;  
-    private final StateHandler stateHandler;  
-    private final ObjectMapper objectMapper;  
-    private final String topicPath;  
-  
-    public SportsActivityFeedSnapshotPollingSourceHandlerImpl(  
-        SportsActivityFeedClient sportsActivityFeedClient,  
-        ServiceDefinition serviceDefinition,  
-        Publisher publisher,  
-        StateHandler stateHandler,  
-        ObjectMapper objectMapper) {  
-  
-        this.sportsActivityFeedClient =  
-            requireNonNull(sportsActivityFeedClient,  
-                "sportActivityFeedClient");  
-  
-        this.publisher = requireNonNull(publisher, "publisher");  
-        this.stateHandler = requireNonNull(stateHandler, "stateHandler");  
-        requireNonNull(serviceDefinition, "serviceDefinition");  
-        this.objectMapper = requireNonNull(objectMapper, "objectMapper");  
-  
-        topicPath = serviceDefinition.getParameters()  
-            .getOrDefault("topicPath", DEFAULT_POLLING_TOPIC_PATH)  
-            .toString();  
-    }  
-  
-    @Override  
-    public CompletableFuture<?> poll() {  
-        final CompletableFuture<?> pollCf = new CompletableFuture<>();  
-  
-        if (!stateHandler.getState().equals(ServiceState.ACTIVE)) {  
-            pollCf.complete(null);  
-  
-            return pollCf;  
-        }  
-  
-        final Collection<SportsActivity> activities =  
-            sportsActivityFeedClient.getLatestSportsActivities();  
-  
-        if (activities.isEmpty()) {  
-            pollCf.complete(null);  
-  
-            return pollCf;  
-        }  
-  
-        try {  
-            final String value = objectMapper.writeValueAsString(activities);  
-  
-            publisher.publish(topicPath, value)  
-                .whenComplete((o, throwable) -> {  
-                    if (throwable != null) {  
-                        pollCf.completeExceptionally(throwable);  
-                    }  
-                    else {  
-                        pollCf.complete(null);  
-                    }  
-                });  
-        }  
-        catch (JsonProcessingException |  
-               PayloadConversionException e) {  
-  
-            LOG.error("Failed to convert sports activity to JSON", e);
-            pollCf.completeExceptionally(e);  
-        }  
-  
-        return pollCf;  
-    }  
-  
-    @Override  
-    public CompletableFuture<?> pause(PauseReason reason) {  
-        LOG.info("Paused sports activity feed polling handler");  
-  
-        return CompletableFuture.completedFuture(null);  
-    }  
-  
-    @Override  
-    public CompletableFuture<?> resume(ResumeReason reason) {  
-        LOG.info("Resumed sports activity feed polling handler");  
-  
-        return CompletableFuture.completedFuture(null);  
-    }  
+public final class SportsActivityFeedPollingSourceHandler
+        implements PollingSourceHandler {
+
+  static final String DEFAULT_POLLING_TOPIC_PATH =
+          "default/sports/activity/feed/snapshot";
+
+  private static final Logger LOG =
+          LoggerFactory.getLogger(
+                  SportsActivityFeedPollingSourceHandler.class);
+
+  private final SportsActivityFeedClient sportsActivityFeedClient;
+  private final Publisher publisher;
+  private final StateHandler stateHandler;
+  private final ObjectMapper objectMapper;
+  private final String topicPath;
+
+  public SportsActivityFeedPollingSourceHandler(
+          SportsActivityFeedClient sportsActivityFeedClient,
+          ServiceDefinition serviceDefinition,
+          Publisher publisher,
+          StateHandler stateHandler,
+          ObjectMapper objectMapper) {
+
+    this.sportsActivityFeedClient =
+            requireNonNull(sportsActivityFeedClient,
+                    "sportActivityFeedClient");
+
+    this.publisher = requireNonNull(publisher, "publisher");
+    this.stateHandler = requireNonNull(stateHandler, "stateHandler");
+    requireNonNull(serviceDefinition, "serviceDefinition");
+    this.objectMapper = requireNonNull(objectMapper, "objectMapper");
+
+    topicPath = serviceDefinition.getParameters()
+            .getOrDefault("topicPath", DEFAULT_POLLING_TOPIC_PATH)
+            .toString();
+  }
+
+  @Override
+  public CompletableFuture<?> poll() {
+    final CompletableFuture<?> pollCf = new CompletableFuture<>();
+
+    if (!stateHandler.getState().equals(ServiceState.ACTIVE)) {
+      pollCf.complete(null);
+
+      return pollCf;
+    }
+
+    final Collection<SportsActivity> activities =
+            sportsActivityFeedClient.getLatestSportsActivities();
+
+    if (activities.isEmpty()) {
+      pollCf.complete(null);
+
+      return pollCf;
+    }
+
+    try {
+      final String value = objectMapper.writeValueAsString(activities);
+
+      publisher.publish(topicPath, value)
+              .whenComplete((o, throwable) -> {
+                if (throwable != null) {
+                  pollCf.completeExceptionally(throwable);
+                }
+                else {
+                  pollCf.complete(null);
+                }
+              });
+    }
+    catch (JsonProcessingException |
+           PayloadConversionException e) {
+
+      LOG.error(
+              "Failed to convert sports activity to configured type", e);
+
+      pollCf.completeExceptionally(e);
+    }
+
+    return pollCf;
+  }
+
+  @Override
+  public CompletableFuture<?> pause(PauseReason reason) {
+    LOG.info("Paused sports activity feed polling handler");
+
+    return CompletableFuture.completedFuture(null);
+  }
+
+  @Override
+  public CompletableFuture<?> resume(ResumeReason reason) {
+    LOG.info("Resumed sports activity feed polling handler");
+
+    return CompletableFuture.completedFuture(null);
+  }
 }
 ```
 
@@ -664,7 +666,7 @@ You have now built a fully functioning Gateway adapter that handles both streami
 - Controlling the Gateway adapter through the Diffusion console (pause, resume and stop).
 
 Several prebuilt Gateway adapters are ready and require configuration to connect to various datasources.  The existing DiffusionData Gateway adapters are:
-- Kafka Adapter
-- CDC Adapter
-- REST Adapter
-- Redis Adapter
+- Kafka Adapter.
+- CDC Adapter.
+- REST Adapter.
+- Redis Adapter.
