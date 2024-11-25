@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jcip.annotations.ThreadSafe;
 
 @ThreadSafe
-public final class SportsActivityFeedSnapshotPollingSourceHandlerImpl
+public final class SportsActivityFeedPollingSourceHandler
     implements PollingSourceHandler {
 
     static final String DEFAULT_POLLING_TOPIC_PATH =
@@ -30,7 +30,7 @@ public final class SportsActivityFeedSnapshotPollingSourceHandlerImpl
 
     private static final Logger LOG =
         LoggerFactory.getLogger(
-            SportsActivityFeedSnapshotPollingSourceHandlerImpl.class);
+            SportsActivityFeedPollingSourceHandler.class);
 
     private final SportsActivityFeedClient sportsActivityFeedClient;
     private final Publisher publisher;
@@ -38,7 +38,7 @@ public final class SportsActivityFeedSnapshotPollingSourceHandlerImpl
     private final ObjectMapper objectMapper;
     private final String topicPath;
 
-    public SportsActivityFeedSnapshotPollingSourceHandlerImpl(
+    public SportsActivityFeedPollingSourceHandler(
         SportsActivityFeedClient sportsActivityFeedClient,
         ServiceDefinition serviceDefinition,
         Publisher publisher,

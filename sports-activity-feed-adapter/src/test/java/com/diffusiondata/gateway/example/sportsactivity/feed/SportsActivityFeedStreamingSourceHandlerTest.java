@@ -1,6 +1,6 @@
 package com.diffusiondata.gateway.example.sportsactivity.feed;
 
-import static com.diffusiondata.gateway.example.sportsactivity.feed.SportsActivityFeedListenerStreamingSourceHandlerImpl.DEFAULT_STREAMING_TOPIC_PREFIX;
+import static com.diffusiondata.gateway.example.sportsactivity.feed.SportsActivityFeedStreamingSourceHandler.DEFAULT_STREAMING_TOPIC_PREFIX;
 import static com.diffusiondata.pretend.example.sportsactivity.feed.model.SportsActivityTestUtils.createPopulatedSportsActivity;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -37,7 +37,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
-class SportsActivityFeedListenerStreamingSourceHandlerImplTest {
+class SportsActivityFeedStreamingSourceHandlerTest {
     @Mock
     private SportsActivityFeedClient sportsActivityFeedClientMock;
 
@@ -61,7 +61,7 @@ class SportsActivityFeedListenerStreamingSourceHandlerImplTest {
             .thenReturn(Map.of("topicPrefix",
                 DEFAULT_STREAMING_TOPIC_PREFIX));
 
-        handler = new SportsActivityFeedListenerStreamingSourceHandlerImpl(
+        handler = new SportsActivityFeedStreamingSourceHandler(
             sportsActivityFeedClientMock,
             serviceDefinitionMock,
             publisherMock,
@@ -233,12 +233,12 @@ class SportsActivityFeedListenerStreamingSourceHandlerImplTest {
     }
 
     private String getImplsTopicPrefix() {
-        return ((SportsActivityFeedListenerStreamingSourceHandlerImpl) handler)
+        return ((SportsActivityFeedStreamingSourceHandler) handler)
             .getTopicPrefix();
     }
 
     private String getImplsListenerIdentifier() {
-        return ((SportsActivityFeedListenerStreamingSourceHandlerImpl) handler)
+        return ((SportsActivityFeedStreamingSourceHandler) handler)
             .getListenerIdentifier();
     }
 }

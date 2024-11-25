@@ -10,8 +10,8 @@
   },
   "services": [
     {
-      "serviceName": "polling-sports-activity-feed-service-1",
-      "serviceType": "polling-sports-activity-feed-service",
+      "serviceName": "sportsActivityFeedPoller",
+      "serviceType": "SPORTS_ACTIVITY_FEED_POLLER",
       "config": {
         "framework": {
           "pollIntervalMs": 4500,
@@ -29,8 +29,8 @@
       }
     },
     {
-      "serviceName": "streaming-sports-activity-feed-service-1",
-      "serviceType": "streaming-sports-activity-feed-service",
+      "serviceName": "sportsActivityFeedStreamer",
+      "serviceType": "SPORTS_ACTIVITY_FEED_STREAMER",
       "config": {
         "framework": {
           "topicProperties": {

@@ -23,7 +23,7 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
 @ThreadSafe
-public final class SportsActivityFeedListenerStreamingSourceHandlerImpl
+public final class SportsActivityFeedStreamingSourceHandler
     implements SportsActivityFeedListener,
     StreamingSourceHandler {
 
@@ -32,7 +32,7 @@ public final class SportsActivityFeedListenerStreamingSourceHandlerImpl
 
     private static final Logger LOG =
         LoggerFactory.getLogger(
-            SportsActivityFeedListenerStreamingSourceHandlerImpl.class);
+            SportsActivityFeedStreamingSourceHandler.class);
 
     private final SportsActivityFeedClient sportsActivityFeedClient;
     private final Publisher publisher;
@@ -43,7 +43,7 @@ public final class SportsActivityFeedListenerStreamingSourceHandlerImpl
     @GuardedBy("this")
     private String listenerIdentifier;
 
-    public SportsActivityFeedListenerStreamingSourceHandlerImpl(
+    public SportsActivityFeedStreamingSourceHandler(
         SportsActivityFeedClient sportsActivityFeedClient,
         ServiceDefinition serviceDefinition,
         Publisher publisher,

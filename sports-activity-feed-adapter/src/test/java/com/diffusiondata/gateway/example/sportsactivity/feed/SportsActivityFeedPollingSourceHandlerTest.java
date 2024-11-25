@@ -1,6 +1,6 @@
 package com.diffusiondata.gateway.example.sportsactivity.feed;
 
-import static com.diffusiondata.gateway.example.sportsactivity.feed.SportsActivityFeedSnapshotPollingSourceHandlerImpl.DEFAULT_POLLING_TOPIC_PATH;
+import static com.diffusiondata.gateway.example.sportsactivity.feed.SportsActivityFeedPollingSourceHandler.DEFAULT_POLLING_TOPIC_PATH;
 import static com.diffusiondata.pretend.example.sportsactivity.feed.model.SportsActivityTestUtils.createPopulatedSportsActivity;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -41,7 +41,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
-class SportsActivityFeedSnapshotPollingSourceHandlerImplTest {
+class SportsActivityFeedPollingSourceHandlerTest {
     @Mock
     private SportsActivityFeedClient sportsActivityFeedClientMock;
 
@@ -64,7 +64,7 @@ class SportsActivityFeedSnapshotPollingSourceHandlerImplTest {
         when(serviceDefinitionMock.getParameters())
             .thenReturn(Map.of("topicPrefix", DEFAULT_POLLING_TOPIC_PATH));
 
-        handler = new SportsActivityFeedSnapshotPollingSourceHandlerImpl(
+        handler = new SportsActivityFeedPollingSourceHandler(
             sportsActivityFeedClientMock,
             serviceDefinitionMock,
             publisherMock,
@@ -72,7 +72,7 @@ class SportsActivityFeedSnapshotPollingSourceHandlerImplTest {
             objectMapperMock);
 
         final String topicPrefix =
-            ((SportsActivityFeedSnapshotPollingSourceHandlerImpl) handler)
+            ((SportsActivityFeedPollingSourceHandler) handler)
                 .getTopicPath();
 
         assertThat(topicPrefix, notNullValue());

@@ -29,11 +29,11 @@ public final class SportsActivityFeedGatewayApplication
     static final String APPLICATION_TYPE =
         "sports-activity-feed-application";
 
-    static final String STREAMING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME =
-        "streaming-sports-activity-feed-service";
+    static final String SPORTS_ACTIVITY_FEED_STREAMER_SERVICE_TYPE_NAME =
+        "SPORTS_ACTIVITY_FEED_STREAMER";
 
-    static final String POLLING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME =
-        "polling-sports-activity-feed-service";
+    static final String SPORTS_ACTIVITY_FEED_POLLER_SERVICE_TYPE_NAME =
+        "SPORTS_ACTIVITY_FEED_POLLER";
 
     private static final Logger LOG =
         LoggerFactory.getLogger(SportsActivityFeedGatewayApplication.class);
@@ -59,14 +59,14 @@ public final class SportsActivityFeedGatewayApplication
 
         return DiffusionGatewayFramework.newApplicationDetailsBuilder()
             .addServiceType(
-                POLLING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME,
+                SPORTS_ACTIVITY_FEED_POLLER_SERVICE_TYPE_NAME,
                 ServiceMode.POLLING_SOURCE,
-                "Polled sports activity feed snapshot",
+                "Polls the sports activity feed at a regular interval",
                 null)
             .addServiceType(
-                STREAMING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME,
+                SPORTS_ACTIVITY_FEED_STREAMER_SERVICE_TYPE_NAME,
                 ServiceMode.STREAMING_SOURCE,
-                "Streaming sports activity feed",
+                "Streams the sports activity feed as they are available",
                 null)
             .build(APPLICATION_TYPE, 1);
     }
@@ -81,8 +81,8 @@ public final class SportsActivityFeedGatewayApplication
         final String serviceType =
             serviceDefinition.getServiceType().getName();
 
-        if (STREAMING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME.equals(serviceType)) {
-            return new SportsActivityFeedListenerStreamingSourceHandlerImpl(
+        if (SPORTS_ACTIVITY_FEED_STREAMER_SERVICE_TYPE_NAME.equals(serviceType)) {
+            return new SportsActivityFeedStreamingSourceHandler(
                 sportsActivityFeedClient,
                 serviceDefinition,
                 publisher,
@@ -104,8 +104,8 @@ public final class SportsActivityFeedGatewayApplication
         final String serviceType =
             serviceDefinition.getServiceType().getName();
 
-        if (POLLING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME.equals(serviceType)) {
-            return new SportsActivityFeedSnapshotPollingSourceHandlerImpl(
+        if (SPORTS_ACTIVITY_FEED_POLLER_SERVICE_TYPE_NAME.equals(serviceType)) {
+            return new SportsActivityFeedPollingSourceHandler(
                 sportsActivityFeedClient,
                 serviceDefinition,
                 publisher,

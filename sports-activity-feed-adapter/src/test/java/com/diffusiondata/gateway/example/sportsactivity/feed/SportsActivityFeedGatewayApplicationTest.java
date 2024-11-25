@@ -1,9 +1,9 @@
 package com.diffusiondata.gateway.example.sportsactivity.feed;
 
 import static com.diffusiondata.gateway.example.sportsactivity.feed.SportsActivityFeedGatewayApplication.APPLICATION_TYPE;
-import static com.diffusiondata.gateway.example.sportsactivity.feed.SportsActivityFeedGatewayApplication.POLLING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME;
-import static com.diffusiondata.gateway.example.sportsactivity.feed.SportsActivityFeedGatewayApplication.STREAMING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME;
-import static com.diffusiondata.gateway.example.sportsactivity.feed.SportsActivityFeedListenerStreamingSourceHandlerImpl.DEFAULT_STREAMING_TOPIC_PREFIX;
+import static com.diffusiondata.gateway.example.sportsactivity.feed.SportsActivityFeedGatewayApplication.SPORTS_ACTIVITY_FEED_POLLER_SERVICE_TYPE_NAME;
+import static com.diffusiondata.gateway.example.sportsactivity.feed.SportsActivityFeedGatewayApplication.SPORTS_ACTIVITY_FEED_STREAMER_SERVICE_TYPE_NAME;
+import static com.diffusiondata.gateway.example.sportsactivity.feed.SportsActivityFeedStreamingSourceHandler.DEFAULT_STREAMING_TOPIC_PREFIX;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -102,7 +102,7 @@ class SportsActivityFeedGatewayApplicationTest {
             .thenReturn(serviceTypeMock);
 
         when(serviceTypeMock.getName())
-            .thenReturn(STREAMING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME);
+            .thenReturn(SPORTS_ACTIVITY_FEED_STREAMER_SERVICE_TYPE_NAME);
 
         when(serviceDefinitionMock.getParameters())
             .thenReturn(Map.of("topicPrefix", DEFAULT_STREAMING_TOPIC_PREFIX));
@@ -115,7 +115,7 @@ class SportsActivityFeedGatewayApplicationTest {
 
         assertThat(handler, notNullValue());
         assertThat(handler,
-            instanceOf(SportsActivityFeedListenerStreamingSourceHandlerImpl.class));
+            instanceOf(SportsActivityFeedStreamingSourceHandler.class));
     }
 
     @Test
@@ -142,7 +142,7 @@ class SportsActivityFeedGatewayApplicationTest {
             .thenReturn(serviceTypeMock);
 
         when(serviceTypeMock.getName())
-            .thenReturn(POLLING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME);
+            .thenReturn(SPORTS_ACTIVITY_FEED_POLLER_SERVICE_TYPE_NAME);
 
         when(serviceDefinitionMock.getParameters())
             .thenReturn(Map.of("topicPrefix", DEFAULT_STREAMING_TOPIC_PREFIX));
@@ -155,7 +155,7 @@ class SportsActivityFeedGatewayApplicationTest {
 
         assertThat(handler, notNullValue());
         assertThat(handler,
-            instanceOf(SportsActivityFeedSnapshotPollingSourceHandlerImpl.class));
+            instanceOf(SportsActivityFeedPollingSourceHandler.class));
     }
 
     @Test

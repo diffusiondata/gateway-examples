@@ -173,7 +173,7 @@ public final class Runner {
 ```
 
 ### Polling source handler class and configuration
-Create a class called `SportsActivityFeedSnapshotPollingSourceHandlerImpl` and have it implement the `PollingSourceHandler` interface.  We will use this to periodically poll and request the activities snapshot from the pretend sports activity feed server.  The `PollingSourceHandler` interface will require us to implement the following methods:
+Create a class called `SportsActivityFeedPollingSourceHandler` and have it implement the `PollingSourceHandler` interface.  We will use this to periodically poll and request the activities snapshot from the pretend sports activity feed server.  The `PollingSourceHandler` interface will require us to implement the following methods:
 - `poll` - this method is periodically called by the Gateway framework based on configuration.
 - `pause` - called when the Gateway adapter enters the paused state.
 - `resume` - is called when the Gateway adapter can resume.
@@ -181,7 +181,7 @@ Create a class called `SportsActivityFeedSnapshotPollingSourceHandlerImpl` and h
 In your `poll` method, we will call the pretend sports activity feed server's `getSportsLatestActivities()` using the `SportsActivityFeedClient` reference passed into the constructor.  Below is the complete code for the polling source handler:
 
 ```java
-public final class SportsActivityFeedSnapshotPollingSourceHandlerImpl  
+public final class SportsActivityFeedPollingSourceHandler  
     implements PollingSourceHandler {  
   
     static final String DEFAULT_POLLING_TOPIC_PATH =  
@@ -189,7 +189,7 @@ public final class SportsActivityFeedSnapshotPollingSourceHandlerImpl
   
     private static final Logger LOG =  
         LoggerFactory.getLogger(  
-            SportsActivityFeedSnapshotPollingSourceHandlerImpl.class);  
+            SportsActivityFeedPollingSourceHandler.class);  
   
     private final SportsActivityFeedClient sportsActivityFeedClient;  
     private final Publisher publisher;  
@@ -197,7 +197,7 @@ public final class SportsActivityFeedSnapshotPollingSourceHandlerImpl
     private final ObjectMapper objectMapper;  
     private final String topicPath;  
   
-    public SportsActivityFeedSnapshotPollingSourceHandlerImpl(  
+    public SportsActivityFeedPollingSourceHandler(  
         SportsActivityFeedClient sportsActivityFeedClient,  
         ServiceDefinition serviceDefinition,  
         Publisher publisher,  
@@ -304,7 +304,7 @@ public PollingSourceHandler addPollingSource(
         serviceDefinition.getServiceType().getName();  
   
     if (POLLING_SPORTS_ACTIVITY_FEED_SERVICE_TYPE_NAME.equals(serviceType)) {  
-        return new SportsActivityFeedSnapshotPollingSourceHandlerImpl(  
+        return new SportsActivityFeedPollingSourceHandler(  
             sportsActivityFeedClient,  
             serviceDefinition,  
             publisher,  
