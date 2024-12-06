@@ -665,6 +665,22 @@ You have now built a fully functioning Gateway adapter that handles both streami
 - Prometheus metrics.
 - Controlling the Gateway adapter through the Diffusion console (pause, resume and stop).
 
+### Useful links
+
+Diffusion self-host/on-prem installer: https://www.diffusiondata.com/diffusion-on-premise/
+
+Diffusion Cloud SaaS: https://www.diffusiondata.com/diffusion-cloud/
+
+Diffusion Docker image: https://hub.docker.com/r/pushtechnology/docker-diffusion
+
+Gateway framework user guide: https://docs.diffusiondata.com/gateway-framework/latest/user-guide/contents/index.html
+
+Developing a Gateway adapter: https://docs.diffusiondata.com/gateway-framework/latest/user-guide/contents/writing-a-gateway-application/overview.html
+
+Gateway configuration details: https://docs.diffusiondata.com/gateway-framework/latest/user-guide/contents/configuration/configuration-file-details/configuration-file-details.html
+
+### Prebuilt Gateway adapters
+
 Several prebuilt Gateway adapters are ready and require configuration to connect to various datasources.  The existing DiffusionData Gateway adapters are:
 - Kafka Adapter.
 - CDC Adapter.
