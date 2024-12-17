@@ -14,6 +14,7 @@
         <module>sample-diffusion-adapter</module>
         <module>human-diffusion-adapter</module>
         <module>languageConverter</module>
+        <module>sports-activity-feed-adapter</module>
     </modules>
 
     <properties>

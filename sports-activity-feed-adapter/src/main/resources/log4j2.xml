@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="warn"
+               name="Sports Activity Gateway Adapter"
+               shutdownHook="disable"
+               monitorInterval="30">
+
+    <Properties>
+        <Property name="pattern">%date{yyyy-MM-dd HH:mm:ss.SSS}|%level|%thread|%replace{%msg}{\|}{}|%logger%n%xEx
+        </Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="console">
+            <PatternLayout pattern="${pattern}"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="console"/>
+        </Root>
+
+        <Logger name="com.pushtechnology.diffusion" level="info"/>
+        <Logger name="com.diffusiondata" level="info"/>
+    </Loggers>
+</Configuration>
